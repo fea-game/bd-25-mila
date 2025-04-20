@@ -1,5 +1,7 @@
 # Birthday Detective Game - Task Checklist
 
+Progress: [████░░░░░░░░░░░░░░░░] 8 / 37 tasks (22%)
+
 This document tracks the tasks required to complete the game project.
 
 ## Planning & Setup
