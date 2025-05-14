@@ -16,10 +16,10 @@ const config: Phaser.Types.Core.GameConfig = {
   },
   scale: {
     parent: "game-container",
-    width: 256,
-    height: 256,
+    width: 768,
+    height: 672,
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    mode: Phaser.Scale.HEIGHT_CONTROLS_WIDTH,
+    mode: Phaser.Scale.FIT,
   },
   scene: [PreloadScene, GameScene],
 };
