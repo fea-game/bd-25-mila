@@ -1,13 +1,28 @@
 import "phaser";
 
 const config: Phaser.Types.Core.GameConfig = {
-  type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  type: Phaser.WEBGL,
+  pixelArt: true,
+  roundPixels: true,
+  scale: {
+    parent: 'game-container',
+    width: 256,
+    height: 224,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    mode: Phaser.Scale.FIT,
+  },
+  backgroundColor: '#000000',
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 0, x: 0 },
+      debug: true,
+    },
+  },
   scene: {
-    preload: preload,
-    create: create,
-    update: update
+    preload,
+    create,
+    update
   }
 };
 
@@ -18,8 +33,8 @@ function preload() {
 }
 
 function create() {
-  const text = this.add.text(400, 300, "Hello, Phaser!", {
-    fontSize: "32px",
+  const text = this.add.text(Number(game.config.width) / 2, Number(game.config.height) / 2, "Hello, Phaser!", {
+    fontSize: "16px",
     fill: "#ffffff"
   });
   text.setOrigin(0.5, 0.5); // Center the text
