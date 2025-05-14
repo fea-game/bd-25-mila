@@ -6,3 +6,4 @@ dist
 # temporary files not supposed to be uploaded to git
 assets/images/exterior
 assets/images/interior
+resources

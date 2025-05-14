@@ -11,20 +11,18 @@ export default class GameScene extends Phaser.Scene {
   create() {
     this.character = this.physics.add
       .sprite(
-        this.cameras.main.centerX,
-        this.cameras.main.centerY,
-        "characters"
+        this.cameras.main.width / 2,
+        this.cameras.main.height / 2,
+        "character"
       )
-      .setSize(48, 72)
-      .setOffset(0, 24)
       .play("walk-down");
 
-    this.time.addEvent({
+    /*this.time.addEvent({
       delay: 3000,
       callback: this.changeAnimation,
       callbackScope: this,
-      loop: true,
-    });
+      loop: true
+    });*/
   }
 
   changeAnimation() {

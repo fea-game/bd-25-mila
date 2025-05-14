@@ -1,0 +1,44 @@
+{
+  "anims": [
+    {
+      "key": "walk-down",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "character",
+          "frame": "character_walk_down_0",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "character_walk_down_1",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "character_walk_down_0",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "character_walk_down_2",
+          "duration": 0,
+          "visible": false
+        }
+      ],
+      "frameRate": 6,
+      "duration": 1.5,
+      "skipMissedFrames": true,
+      "delay": 0,
+      "repeat": -1,
+      "repeatDelay": 0,
+      "yoyo": false,
+      "showOnStart": false,
+      "hideOnComplete": false
+    }
+  ],
+  "globalTimeScale": 1
+}
