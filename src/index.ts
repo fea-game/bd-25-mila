@@ -21,8 +21,7 @@ const config: Phaser.Types.Core.GameConfig = {
     autoCenter: Phaser.Scale.CENTER_BOTH,
     mode: Phaser.Scale.HEIGHT_CONTROLS_WIDTH,
   },
-  scene: [PreloadScene, GameScene]
+  scene: [PreloadScene, GameScene],
 };
 
 const game = new Phaser.Game(config);
-
