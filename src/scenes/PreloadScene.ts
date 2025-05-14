@@ -9,12 +9,12 @@ export default class PreloadScene extends Phaser.Scene {
   preload() {
     this.load.animation(
       "characterAnimations",
-      "assets/images/characters/New_Characters_48x48.animations.json"
+      "assets/images/characters/character.animations.json"
     );
     this.load.atlas(
       "character",
-      "assets/images/characters/New_Characters_48x48.png",
-      "assets/images/characters/New_Characters_48x48.atlas.json"
+      "assets/images/characters/character.png",
+      "assets/images/characters/character.atlas.json"
     );
   }
 
