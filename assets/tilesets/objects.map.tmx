@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="8" height="10" tilewidth="48" tileheight="48" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="interior" tilewidth="48" tileheight="48" tilecount="200" columns="20">
+  <image source="../images/interior/interior.png" width="960" height="480"/>
+ </tileset>
+ <tileset firstgid="201" source="Birthday_party_01.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="8" height="10">
+  <data encoding="csv">
+17,18,19,99,118,91,92,0,
+37,38,39,119,138,111,112,0,
+57,58,59,139,158,131,132,0,
+77,78,79,159,0,151,152,0,
+97,98,0,201,202,171,172,0,
+0,0,0,217,218,153,154,0,
+0,0,0,0,0,173,174,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>
