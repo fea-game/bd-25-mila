@@ -1,4 +1,7 @@
 .DS_Store
+node_modules
+dist
+.tsbuild.info
 
 # temporary files not supposed to be uploaded to git
 assets/images/exterior

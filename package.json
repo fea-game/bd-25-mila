@@ -1,0 +1,22 @@
+{
+  "name": "bd-25-mila",
+  "version": "1.0.0",
+  "description": "This repository contains a simple top-down detective game being developed for Mila's 9th birthday.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^22.15.18",
+    "phaser": "^3.88.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  }
+}
