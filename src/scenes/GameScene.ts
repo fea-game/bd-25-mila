@@ -4,6 +4,10 @@ import { Player } from "../game-objects/characters/player/player";
 import { CharacterAnimation } from "../common/animations";
 
 const animations: Array<CharacterAnimation> = [
+  "IDLE_DOWN",
+  "IDLE_LEFT",
+  "IDLE_UP",
+  "IDLE_RIGHT",
   "WALK_DOWN",
   "WALK_LEFT",
   "WALK_UP",

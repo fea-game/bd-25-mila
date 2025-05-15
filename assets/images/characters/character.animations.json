@@ -1,30 +1,114 @@
 {
   "anims": [
     {
-      "key": "walk-down",
+      "key": "player-idle-down",
       "type": "frame",
       "frames": [
         {
           "key": "character",
-          "frame": "character_walk_down_0",
+          "frame": "player_idle_down_0",
+          "duration": 0,
+          "visible": false
+        }
+      ],
+      "frameRate": 0,
+      "duration": 1.5,
+      "skipMissedFrames": true,
+      "delay": 0,
+      "repeat": -1,
+      "repeatDelay": 0,
+      "yoyo": false,
+      "showOnStart": false,
+      "hideOnComplete": false
+    },
+    {
+      "key": "player-idle-left",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "character",
+          "frame": "player_idle_left_0",
+          "duration": 0,
+          "visible": false
+        }
+      ],
+      "frameRate": 0,
+      "duration": 1.5,
+      "skipMissedFrames": true,
+      "delay": 0,
+      "repeat": -1,
+      "repeatDelay": 0,
+      "yoyo": false,
+      "showOnStart": false,
+      "hideOnComplete": false
+    },
+    {
+      "key": "player-idle-right",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "character",
+          "frame": "player_idle_right_0",
+          "duration": 0,
+          "visible": false
+        }
+      ],
+      "frameRate": 0,
+      "duration": 1.5,
+      "skipMissedFrames": true,
+      "delay": 0,
+      "repeat": -1,
+      "repeatDelay": 0,
+      "yoyo": false,
+      "showOnStart": false,
+      "hideOnComplete": false
+    },
+    {
+      "key": "player-idle-up",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "character",
+          "frame": "player_idle_up_0",
+          "duration": 0,
+          "visible": false
+        }
+      ],
+      "frameRate": 0,
+      "duration": 1.5,
+      "skipMissedFrames": true,
+      "delay": 0,
+      "repeat": -1,
+      "repeatDelay": 0,
+      "yoyo": false,
+      "showOnStart": false,
+      "hideOnComplete": false
+    },
+    {
+      "key": "player-walk-down",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "character",
+          "frame": "player_walk_down_0",
           "duration": 0,
           "visible": false
         },
         {
           "key": "character",
-          "frame": "character_walk_down_1",
+          "frame": "player_walk_down_1",
           "duration": 0,
           "visible": false
         },
         {
           "key": "character",
-          "frame": "character_walk_down_0",
+          "frame": "player_walk_down_0",
           "duration": 0,
           "visible": false
         },
         {
           "key": "character",
-          "frame": "character_walk_down_2",
+          "frame": "player_walk_down_2",
           "duration": 0,
           "visible": false
         }
@@ -40,30 +124,30 @@
       "hideOnComplete": false
     },
     {
-      "key": "walk-left",
+      "key": "player-walk-left",
       "type": "frame",
       "frames": [
         {
           "key": "character",
-          "frame": "character_walk_left_0",
+          "frame": "player_walk_left_0",
           "duration": 0,
           "visible": false
         },
         {
           "key": "character",
-          "frame": "character_walk_left_1",
+          "frame": "player_walk_left_1",
           "duration": 0,
           "visible": false
         },
         {
           "key": "character",
-          "frame": "character_walk_left_0",
+          "frame": "player_walk_left_0",
           "duration": 0,
           "visible": false
         },
         {
           "key": "character",
-          "frame": "character_walk_left_2",
+          "frame": "player_walk_left_2",
           "duration": 0,
           "visible": false
         }
@@ -79,30 +163,30 @@
       "hideOnComplete": false
     },
     {
-      "key": "walk-right",
+      "key": "player-walk-right",
       "type": "frame",
       "frames": [
         {
           "key": "character",
-          "frame": "character_walk_right_0",
+          "frame": "player_walk_right_0",
           "duration": 0,
           "visible": false
         },
         {
           "key": "character",
-          "frame": "character_walk_right_1",
+          "frame": "player_walk_right_1",
           "duration": 0,
           "visible": false
         },
         {
           "key": "character",
-          "frame": "character_walk_right_0",
+          "frame": "player_walk_right_0",
           "duration": 0,
           "visible": false
         },
         {
           "key": "character",
-          "frame": "character_walk_right_2",
+          "frame": "player_walk_right_2",
           "duration": 0,
           "visible": false
         }
@@ -118,30 +202,30 @@
       "hideOnComplete": false
     },
     {
-      "key": "walk-up",
+      "key": "player-walk-up",
       "type": "frame",
       "frames": [
         {
           "key": "character",
-          "frame": "character_walk_up_0",
+          "frame": "player_walk_up_0",
           "duration": 0,
           "visible": false
         },
         {
           "key": "character",
-          "frame": "character_walk_up_1",
+          "frame": "player_walk_up_1",
           "duration": 0,
           "visible": false
         },
         {
           "key": "character",
-          "frame": "character_walk_up_0",
+          "frame": "player_walk_up_0",
           "duration": 0,
           "visible": false
         },
         {
           "key": "character",
-          "frame": "character_walk_up_2",
+          "frame": "player_walk_up_2",
           "duration": 0,
           "visible": false
         }
