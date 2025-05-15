@@ -1,6 +1,6 @@
 import "phaser";
-import PreloadScene from "./scenes/PreloadScene";
-import GameScene from "./scenes/GameScene";
+import PreloadScene from "./scenes/preload-scene";
+import GameScene from "./scenes/game-scene";
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.WEBGL,

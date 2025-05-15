@@ -5,6 +5,14 @@ export const SceneKey = {
   Game: "game",
 } as const;
 
+export const Area = {
+  House: "house",
+  Neighborhood: "neighborhood",
+  Forest: "forest",
+} as const;
+
+export type Area = (typeof Area)[keyof typeof Area];
+
 export type GameObject = Phaser.Physics.Arcade.Sprite;
 export type Body = Phaser.Physics.Arcade.Body;
 

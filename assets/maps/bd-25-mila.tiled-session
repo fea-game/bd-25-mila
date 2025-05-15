@@ -5,6 +5,7 @@
     },
     "activeFile": "bd-25-mila-interior.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -108,17 +109,16 @@
         },
         "bd-25-mila-interior.tmx": {
             "expandedGroupLayers": [
-                4,
-                2
+                18
             ],
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1,
-            "selectedLayer": 2,
+            "scale": 0.75,
+            "selectedLayer": 10,
             "viewCenter": {
-                "x": -677,
-                "y": -101
+                "x": 990.6666666666667,
+                "y": 417.33333333333326
             }
         },
         "bd-25-mila-interior.tmx#interior": {
@@ -128,24 +128,25 @@
             "scaleInDock": 1
         }
     },
+    "last.exportedFilePath": "/Users/tobiasbelch/fea/game/bd-25-mila/assets/images/areas/house",
     "last.externalTilesetPath": "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets",
     "last.imagePath": "/Users/tobiasbelch/fea/game/bd-25-mila/assets/images/tilesets",
     "map.fixedSize": true,
     "map.height": 10,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 48,
     "map.tileWidth": 48,
     "map.width": 20,
     "openFiles": [
-        "bd-25-mila-interior.tmx",
-        "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/objects.map.tmx"
+        "bd-25-mila-interior.tmx"
     ],
     "project": "bd-25-mila.tiled-project",
     "recentFiles": [
+        "bd-25-mila-interior.tmx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/interior.map.tmx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/interior.tsx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/objects.map.tmx",
-        "bd-25-mila-interior.tmx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/objects.tsx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/Birthday_party_01.tsx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/Generic_01.tsx",

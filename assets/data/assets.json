@@ -1,0 +1,38 @@
+[
+  {
+    "path": "assets/images/characters",
+    "files": [
+      {
+        "type": "atlas",
+        "key": "character",
+        "textureURL": "character.png",
+        "atlasURL": "character.atlas.json"
+      }
+    ]
+  },
+  {
+    "path": "assets/images/areas/house",
+    "files": [
+      {
+        "type": "image",
+        "key": "house-background",
+        "url": "house-background.png"
+      },
+      {
+        "type": "image",
+        "key": "house-foreground",
+        "url": "house-foreground.png"
+      },
+      {
+        "type": "image",
+        "key": "house-collision",
+        "url": "house-collision.png"
+      },
+      {
+        "type": "tilemapTiledJSON",
+        "key": "house-map",
+        "url": "house.json"
+      }
+    ]
+  }
+]
