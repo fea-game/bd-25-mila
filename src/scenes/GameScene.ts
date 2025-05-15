@@ -1,47 +1,30 @@
 import Phaser from "phaser";
 import { SceneKey } from "../common/types";
+import { KeyboardComponent } from "../components/input/keyboard-component";
 import { Player } from "../game-objects/characters/player/player";
-import { CharacterAnimation } from "../common/animations";
-
-const animations: Array<CharacterAnimation> = [
-  "IDLE_DOWN",
-  "IDLE_LEFT",
-  "IDLE_UP",
-  "IDLE_RIGHT",
-  "WALK_DOWN",
-  "WALK_LEFT",
-  "WALK_UP",
-  "WALK_RIGHT",
-];
-let animIndex = 0;
 
 export default class GameScene extends Phaser.Scene {
-  character: Player;
+  private keyboard: KeyboardComponent;
+  private player: Player;
 
   constructor() {
     super({ key: SceneKey.Game });
   }
 
   create() {
-    this.character = new Player({
+    if (!this.input.keyboard) {
+      console.warn("Phase keyboard plugin not enabled");
+      return;
+    }
+
+    this.keyboard = new KeyboardComponent(this.input.keyboard);
+
+    this.player = new Player({
       scene: this,
       x: this.cameras.main.width / 2,
       y: this.cameras.main.height / 2,
       texture: "character",
+      input: this.keyboard,
     });
-    this.character.animation.play(animations[animIndex]);
-
-    this.time.addEvent({
-      delay: 3000,
-      callback: this.changeAnimation,
-      callbackScope: this,
-      loop: true,
-    });
-  }
-
-  changeAnimation() {
-    animIndex += 1;
-    const nextAnimation = animations[animIndex % animations.length];
-    this.character.animation.play(nextAnimation);
   }
 }

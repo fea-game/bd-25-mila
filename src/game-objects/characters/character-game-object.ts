@@ -3,25 +3,56 @@ import {
   CharacterAnimationComponent,
   Config as CharacterAnimationComponentConfig,
 } from "../../components/game-object/animation-component";
+import { StateMachine } from "../../components/state-machine/state-machine";
+import { ControlsComponent } from "../../components/game-object/controls-component";
+import { InputComponent } from "../../components/input/input-component";
+import { DirectionComponent } from "../../components/game-object/direction-component";
+import { SpeedComponent } from "../../components/game-object/speed-component";
+import { Direction } from "../../common/types";
 
 export type Config = {
   animations: CharacterAnimationComponentConfig;
   frame?: string | number;
+  id?: string;
+  input: InputComponent;
+  onDirectionChange?: (direction: Direction) => void;
   scene: Phaser.Scene;
+  speed: number;
   texture: string;
   x: number;
   y: number;
 };
 
 export abstract class CharacterGameObject extends Phaser.Physics.Arcade.Sprite {
+  declare body: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody;
+
   private animationComponent: CharacterAnimationComponent;
+  private controlsComponent: ControlsComponent;
+  private directionComponent: DirectionComponent;
+  private speedComponent: SpeedComponent;
+  protected stateMachine: StateMachine;
 
   constructor(config: Config) {
-    const { animations, frame, scene, texture, x, y } = config;
+    const {
+      animations,
+      frame,
+      id,
+      input,
+      onDirectionChange,
+      scene,
+      speed,
+      texture,
+      x,
+      y,
+    } = config;
 
     super(scene, x, y, texture, frame);
 
     this.animationComponent = new CharacterAnimationComponent(this, animations);
+    this.controlsComponent = new ControlsComponent(this, input);
+    this.directionComponent = new DirectionComponent(this, onDirectionChange);
+    this.speedComponent = new SpeedComponent(this, speed);
+    this.stateMachine = new StateMachine(id);
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -29,5 +60,24 @@ export abstract class CharacterGameObject extends Phaser.Physics.Arcade.Sprite {
 
   get animation(): CharacterAnimationComponent {
     return this.animationComponent;
+  }
+
+  get controls(): InputComponent {
+    return this.controlsComponent.input;
+  }
+
+  get direction(): Direction {
+    return this.directionComponent.direction;
+  }
+  set direction(direction: Direction) {
+    this.directionComponent.direction = direction;
+  }
+
+  get speed(): number {
+    return this.speedComponent.speed;
+  }
+
+  public update(): void {
+    this.stateMachine.update();
   }
 }
