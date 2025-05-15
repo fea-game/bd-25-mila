@@ -3,7 +3,7 @@ import {
   CharacterAnimationComponent,
   Config as CharacterAnimationComponentConfig,
 } from "../../components/game-object/animation-component";
-import { StateMachine } from "../../components/state-machine/state-machine";
+import { StateMachine } from "../../components/game-object/state-machine/state-machine";
 import { ControlsComponent } from "../../components/game-object/controls-component";
 import { InputComponent } from "../../components/input/input-component";
 import { DirectionComponent } from "../../components/game-object/direction-component";

@@ -1,4 +1,4 @@
-import { CharacterGameObject } from "../../../game-objects/characters/character-game-object";
+import { CharacterGameObject } from "../../../../game-objects/characters/character-game-object";
 import { StateMachine } from "../state-machine";
 import { BaseCharacterState, CharacterState } from "./base-character-state";
 

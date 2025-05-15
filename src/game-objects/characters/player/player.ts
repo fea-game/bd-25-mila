@@ -1,7 +1,7 @@
 import { CharacterAnimation } from "../../../common/animations";
-import { CharacterState } from "../../../components/state-machine/character/base-character-state";
-import { IdleState } from "../../../components/state-machine/character/idle-state";
-import { MovingState } from "../../../components/state-machine/character/moving-state";
+import { CharacterState } from "../../../components/game-object/state-machine/character/base-character-state";
+import { IdleState } from "../../../components/game-object/state-machine/character/idle-state";
+import { MovingState } from "../../../components/game-object/state-machine/character/moving-state";
 import {
   CharacterGameObject,
   Config as CharacterGameObjectConfig,

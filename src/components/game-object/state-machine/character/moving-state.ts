@@ -1,5 +1,5 @@
-import { Direction } from "../../../common/types";
-import { CharacterGameObject } from "../../../game-objects/characters/character-game-object";
+import { Direction } from "../../../../common/types";
+import { CharacterGameObject } from "../../../../game-objects/characters/character-game-object";
 import { StateMachine } from "../state-machine";
 import { BaseCharacterState, CharacterState } from "./base-character-state";
 
@@ -65,6 +65,7 @@ export class MovingState extends BaseCharacterState {
   }
 
   private updateDirection(direction: Direction): void {
+    this.host.direction = direction;
     this.host.animation.play(`walk-${direction}`);
   }
 }

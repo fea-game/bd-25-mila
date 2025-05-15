@@ -13,7 +13,7 @@ export default class GameScene extends Phaser.Scene {
 
   create() {
     if (!this.input.keyboard) {
-      console.warn("Phase keyboard plugin not enabled");
+      console.warn("Phaser keyboard plugin not enabled");
       return;
     }
 
