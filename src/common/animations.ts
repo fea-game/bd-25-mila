@@ -1,0 +1,13 @@
+export const CHARACTER_ANIMATIONS = {
+  IDLE_DOWN: "IDLE_DOWN",
+  IDLE_UP: "IDLE_UP",
+  IDLE_LEFT: "IDLE_LEFT",
+  IDLE_RIGHT: "IDLE_RIGHT",
+  WALK_DOWN: "WALK_DOWN",
+  WALK_UP: "WALK_UP",
+  WALK_LEFT: "WALK_LEFT",
+  WALK_RIGHT: "WALK_RIGHT",
+} as const;
+
+export type CharacterAnimation =
+  (typeof CHARACTER_ANIMATIONS)[keyof typeof CHARACTER_ANIMATIONS];

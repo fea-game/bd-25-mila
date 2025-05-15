@@ -1,23 +1,31 @@
 import Phaser from "phaser";
-import { SceneKey } from "../common/constants";
+import { SceneKey } from "../common/types";
+import { Player } from "../game-objects/characters/player/player";
+import { CharacterAnimation } from "../common/animations";
 
-const animations = ["walk-down", "walk-left", "walk-right", "walk-up"];
+const animations: Array<CharacterAnimation> = [
+  "WALK_DOWN",
+  "WALK_LEFT",
+  "WALK_UP",
+  "WALK_RIGHT",
+];
+let animIndex = 0;
 
 export default class GameScene extends Phaser.Scene {
-  character: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+  character: Player;
 
   constructor() {
     super({ key: SceneKey.Game });
   }
 
   create() {
-    this.character = this.physics.add
-      .sprite(
-        this.cameras.main.width / 2,
-        this.cameras.main.height / 2,
-        "character"
-      )
-      .play(animations[0]);
+    this.character = new Player({
+      scene: this,
+      x: this.cameras.main.width / 2,
+      y: this.cameras.main.height / 2,
+      texture: "character",
+    });
+    this.character.animation.play(animations[animIndex]);
 
     this.time.addEvent({
       delay: 3000,
@@ -28,13 +36,8 @@ export default class GameScene extends Phaser.Scene {
   }
 
   changeAnimation() {
-    const currentAnimation = this.character.anims.currentAnim;
-    if (currentAnimation) {
-      const nextAnimation =
-        animations[
-          (animations.indexOf(currentAnimation.key) + 1) % animations.length
-        ];
-      this.character.play(nextAnimation);
-    }
+    animIndex += 1;
+    const nextAnimation = animations[animIndex % animations.length];
+    this.character.animation.play(nextAnimation);
   }
 }

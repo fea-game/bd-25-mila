@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { SceneKey } from "../common/constants";
+import { SceneKey } from "../common/types";
 
 export default class PreloadScene extends Phaser.Scene {
   constructor() {
