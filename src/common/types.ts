@@ -27,7 +27,9 @@ const AreaLayer = {
   "house-collision": "collision/collision-1",
 } as const satisfies Partial<Record<`${Area}-${LayerType}`, string>>;
 
-export function getAreaLayer(area: Area, type: LayerType) {
+type AreaLayer = (typeof AreaLayer)[keyof typeof AreaLayer];
+
+export function getAreaLayer(area: Area, type: LayerType): AreaLayer {
   return AreaLayer[`${area}-${type}`];
 }
 
@@ -41,4 +43,5 @@ export const Direction = {
   Up: "up",
 } as const;
 
-export type Direction = (typeof Direction)[keyof typeof Direction];
+export type DirectionKey = keyof typeof Direction;
+export type Direction = (typeof Direction)[DirectionKey];

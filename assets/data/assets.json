@@ -6,7 +6,7 @@
         "type": "aseprite",
         "key": "character",
         "textureURL": "character.png",
-        "atlasURL": "character.merged.json"
+        "atlasURL": "character.aesprite.json"
       }
     ]
   },

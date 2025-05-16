@@ -1,17 +1,47 @@
-import { Area, LayerTypeKey } from "./types";
+import { Area, Direction, LayerTypeKey } from "./types";
+
+export const Character = {
+  Player: "player",
+} as const;
+
+type CharacterKey = keyof typeof Character;
+export type Character = (typeof Character)[CharacterKey];
 
 export const Texture = {
   Player: "character",
-  HouseCollisionLayer: "interior",
+} as const satisfies Record<CharacterKey, string>;
+
+type TextureKey = keyof typeof Texture;
+type Texture = (typeof Texture)[TextureKey];
+
+export const AnimationType = {
+  Idle: "idle",
+  Walk: "walk",
 } as const;
 
-type Texture = (typeof Texture)[keyof typeof Texture];
+export type AnimationTypeKey = keyof typeof AnimationType;
+export type AnimationType = (typeof AnimationType)[AnimationTypeKey];
 
-export const Animation = {
-  character: {
-    url: "assets/images/characters/character.animations.json",
-  },
-} as const satisfies Partial<Record<Texture, { url: string }>>;
+const CharacterAnimation = {
+  "player-idle-down": "player-idle-down",
+  "player-idle-left": "player-idle-left",
+  "player-idle-right": "player-idle-right",
+  "player-idle-up": "player-idle-up",
+  "player-walk-down": "player-walk-down",
+  "player-walk-left": "player-walk-left",
+  "player-walk-right": "player-walk-right",
+  "player-walk-up": "player-walk-up",
+} as const satisfies Record<`${Character}-${AnimationType}-${Direction}`, string>;
+
+type CharacterAnimation = (typeof CharacterAnimation)[keyof typeof CharacterAnimation];
+
+export function getCharacterAnimation(
+  character: Character,
+  animation: AnimationType,
+  direction: Direction
+): CharacterAnimation {
+  return CharacterAnimation[`${character}-${animation}-${direction}`];
+}
 
 export const ImageType = {
   Background: "background",
@@ -29,7 +59,9 @@ const AreaImage = {
   "house-objects": "house-objects",
 } as const satisfies Partial<Record<`${Area}-${ImageType}`, string>>;
 
-export function getAreaImage(area: Area, type: ImageType) {
+type AreaImage = (typeof AreaImage)[keyof typeof AreaImage];
+
+export function getAreaImage(area: Area, type: ImageType): AreaImage {
   return AreaImage[`${area}-${type}`];
 }
 
@@ -47,6 +79,8 @@ const AreaTileset = {
   "house-collision": "collision",
 } as const satisfies Partial<Record<`${Area}-${TilesetType}`, string>>;
 
-export function getAreaTileset(area: Area, type: TilesetType) {
+type AreaTileset = (typeof AreaTileset)[keyof typeof AreaTileset];
+
+export function getAreaTileset(area: Area, type: TilesetType): AreaTileset {
   return AreaTileset[`${area}-${type}`];
 }

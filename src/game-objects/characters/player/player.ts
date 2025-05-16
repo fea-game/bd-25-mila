@@ -1,68 +1,23 @@
-import { CharacterAnimation } from "../../../common/animations";
-import { Texture } from "../../../common/assets";
+import { AnimationType, Character, Texture } from "../../../common/assets";
 import { Depth } from "../../../common/config";
 import { CharacterState } from "../../../components/game-object/state-machine/character/base-character-state";
 import { IdleState } from "../../../components/game-object/state-machine/character/idle-state";
 import { MovingState } from "../../../components/game-object/state-machine/character/moving-state";
-import {
-  CharacterGameObject,
-  Config as CharacterGameObjectConfig,
-} from "../character-game-object";
+import { CharacterGameObject, Config as CharacterGameObjectConfig } from "../character-game-object";
 
-type Config = Omit<
-  CharacterGameObjectConfig,
-  "animations" | "speed" | "texture"
->;
+type Config = Omit<CharacterGameObjectConfig, "animations" | "speed" | "texture">;
 
 export class Player extends CharacterGameObject {
-  private static animations: CharacterGameObjectConfig["animations"] = {
-    [CharacterAnimation.IdleDown]: {
-      key: "player-idle-down",
-      repeat: -1,
-      ignoreIfPlaying: true,
-    },
-    [CharacterAnimation.IdleLeft]: {
-      key: "player-idle-left",
-      repeat: -1,
-      ignoreIfPlaying: true,
-    },
-    [CharacterAnimation.IdleRight]: {
-      key: "player-idle-right",
-      repeat: -1,
-      ignoreIfPlaying: true,
-    },
-    [CharacterAnimation.IdleUp]: {
-      key: "player-idle-up",
-      repeat: -1,
-      ignoreIfPlaying: true,
-    },
-    [CharacterAnimation.WalkDown]: {
-      key: "player-walk-down",
-      repeat: -1,
-      ignoreIfPlaying: true,
-    },
-    [CharacterAnimation.WalkLeft]: {
-      key: "player-walk-left",
-      repeat: -1,
-      ignoreIfPlaying: true,
-    },
-    [CharacterAnimation.WalkRight]: {
-      key: "player-walk-right",
-      repeat: -1,
-      ignoreIfPlaying: true,
-    },
-    [CharacterAnimation.WalkUp]: {
-      key: "player-walk-up",
-      repeat: -1,
-      ignoreIfPlaying: true,
-    },
+  private static Animations: CharacterGameObjectConfig["animations"] = {
+    character: Character.Player,
+    animations: [AnimationType.Idle, AnimationType.Walk],
   };
 
   constructor(config: Config) {
     super({
       ...config,
       id: "player",
-      animations: Player.animations,
+      animations: Player.Animations,
       speed: 160,
       texture: Texture.Player,
     });

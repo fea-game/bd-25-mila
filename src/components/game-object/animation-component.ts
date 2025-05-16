@@ -1,9 +1,20 @@
 import * as Phaser from "phaser";
-import { GameObject } from "../../common/types";
+import { Direction, GameObject } from "../../common/types";
 import { BaseGameObjectComponent } from "./base-game-object-component";
-import { CharacterAnimation } from "../../common/animations";
+import { AnimationType, Character, getCharacterAnimation } from "../../common/assets";
 
-export type Config = {
+type AnimationConfig = {
+  repeat: number;
+  ignoreIfPlaying: boolean;
+};
+
+type ConfiguredAnimation = { type: AnimationType; config: AnimationConfig };
+
+type AnimationParameter = AnimationType | ConfiguredAnimation;
+
+type CharacterAnimation = `${AnimationType}-${Direction}`;
+
+type Animations = {
   [key in CharacterAnimation]?: {
     key: string;
     repeat: number;
@@ -11,12 +22,44 @@ export type Config = {
   };
 };
 
-export class CharacterAnimationComponent extends BaseGameObjectComponent {
-  private config: Config;
+export type Config = {
+  character: Character;
+  animations: Array<AnimationParameter>;
+};
 
-  constructor(gameObject: GameObject, config: Config) {
-    super(gameObject);
-    this.config = config;
+export class CharacterAnimationComponent extends BaseGameObjectComponent {
+  private static normalise(animation: AnimationParameter): ConfiguredAnimation {
+    if (typeof animation === "object" && "config" in animation) {
+      return animation;
+    }
+
+    return { type: animation, config: { repeat: -1, ignoreIfPlaying: true } };
+  }
+
+  private static toConfig(character: Character, animations: Array<AnimationParameter>): Animations {
+    const config: Animations = {};
+    const directions: Direction[] = Object.values(Direction);
+
+    for (const animation of animations) {
+      const { type, config: animationConfig } = CharacterAnimationComponent.normalise(animation);
+
+      for (const direction of directions) {
+        config[`${type}-${direction}`] = {
+          ...animationConfig,
+          key: getCharacterAnimation(character, type, direction),
+        };
+      }
+    }
+
+    return config;
+  }
+
+  private config: Animations;
+
+  constructor(host: GameObject, config: Config) {
+    super(host);
+
+    this.config = CharacterAnimationComponent.toConfig(config.character, config.animations);
   }
 
   public isPlaying(): boolean {
@@ -27,10 +70,7 @@ export class CharacterAnimationComponent extends BaseGameObjectComponent {
     return this.config[characterAnimationKey]?.key;
   }
 
-  public play(
-    characterAnimationKey: CharacterAnimation,
-    onFinished?: () => void
-  ): void {
+  public play(characterAnimationKey: CharacterAnimation, onFinished?: () => void): void {
     const animation = this.config[characterAnimationKey];
 
     if (!animation) {
@@ -45,18 +85,14 @@ export class CharacterAnimationComponent extends BaseGameObjectComponent {
     };
 
     if (onFinished) {
-      const animationKey =
-        Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + animation.key;
+      const animationKey = Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + animation.key;
       this.host.once(animationKey, onFinished);
     }
 
     this.host.play(animationConfig, animation.ignoreIfPlaying);
   }
 
-  public playInRevers(
-    characterAnimationKey: CharacterAnimation,
-    onFinished?: () => void
-  ): void {
+  public playInRevers(characterAnimationKey: CharacterAnimation, onFinished?: () => void): void {
     const animation = this.config[characterAnimationKey];
 
     if (!animation) {
@@ -71,8 +107,7 @@ export class CharacterAnimationComponent extends BaseGameObjectComponent {
     };
 
     if (onFinished) {
-      const animationKey =
-        Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + animation.key;
+      const animationKey = Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + animation.key;
       this.host.once(animationKey, onFinished);
     }
 
