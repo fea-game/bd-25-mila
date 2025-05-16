@@ -1,25 +1,11 @@
-import {
-  getAreaImage,
-  getAreaTileset,
-  ImageType,
-  TilesetType,
-} from "../../common/assets";
+import { getAreaImage, getAreaMap, getAreaTileset, ImageType, TilesetType } from "../../common/assets";
 import { Depth } from "../../common/config";
-import {
-  Area,
-  getAreaLayer,
-  LayerType,
-  LayerTypeKey,
-} from "../../common/types";
+import { Area, getAreaLayer, LayerType, LayerTypeKey } from "../../common/types";
 import GameScene from "../../scenes/game-scene";
 import { BaseGameSceneComponent } from "./base-game-scene-component";
 
 export class AreaComponent extends BaseGameSceneComponent {
-  private static ImageLayers: Array<LayerTypeKey> = [
-    "Background",
-    "Foreground",
-    "Objects",
-  ];
+  private static ImageLayers: Array<LayerTypeKey> = ["Background", "Foreground"];
 
   private area: Area;
   #collisionLayer: Phaser.Tilemaps.TilemapLayer;
@@ -29,6 +15,10 @@ export class AreaComponent extends BaseGameSceneComponent {
 
     this.area = area;
     this.create();
+  }
+
+  get collisionLayer(): Phaser.Tilemaps.TilemapLayer {
+    return this.#collisionLayer;
   }
 
   private create(): void {
@@ -46,7 +36,7 @@ export class AreaComponent extends BaseGameSceneComponent {
   }
 
   private createCollisionLayer() {
-    const map = this.host.make.tilemap({ key: `${this.area}-map` });
+    const map = this.host.make.tilemap({ key: getAreaMap(this.area) });
 
     const collisionTiles = map.addTilesetImage(
       getAreaTileset(this.area, TilesetType.Collision),
@@ -56,23 +46,12 @@ export class AreaComponent extends BaseGameSceneComponent {
       throw new Error("Error while creating collision tileset!");
     }
 
-    const collisionLayer = map.createLayer(
-      getAreaLayer(this.area, LayerType.Collision),
-      [collisionTiles],
-      0,
-      0
-    );
+    const collisionLayer = map.createLayer(getAreaLayer(this.area, LayerType.Collision), [collisionTiles], 0, 0);
     if (!collisionLayer) {
       throw new Error("Error while creating collision layer!");
     }
 
-    this.#collisionLayer = collisionLayer
-      .setDepth(Depth.Collision)
-      .setAlpha(0.3);
+    this.#collisionLayer = collisionLayer.setDepth(Depth.Collision).setAlpha(0.3);
     this.#collisionLayer.setCollision([collisionLayer.tileset[0].firstgid]);
-  }
-
-  get collisionLayer(): Phaser.Tilemaps.TilemapLayer {
-    return this.#collisionLayer;
   }
 }

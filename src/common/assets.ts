@@ -65,9 +65,17 @@ export function getAreaImage(area: Area, type: ImageType): AreaImage {
   return AreaImage[`${area}-${type}`];
 }
 
-export const Map = {
-  "house-map": "house.map",
-} as const;
+const AreaMap = {
+  forest: "forest-map",
+  house: "house-map",
+  neighborhood: "neighborhood-map",
+} as const satisfies Record<Area, string>;
+
+type AreaMap = (typeof AreaMap)[keyof typeof AreaMap];
+
+export function getAreaMap(area: Area): AreaMap {
+  return AreaMap[area];
+}
 
 export const TilesetType = {
   Collision: "collision",
