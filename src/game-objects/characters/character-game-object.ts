@@ -2,12 +2,12 @@ import Phaser from "phaser";
 import {
   CharacterAnimationComponent,
   Config as CharacterAnimationComponentConfig,
-} from "../../components/game-object/animation-component";
+} from "../../components/game-object/character/animation-component";
 import { StateMachine } from "../../components/game-object/state-machine/state-machine";
-import { ControlsComponent } from "../../components/game-object/controls-component";
+import { ControlsComponent } from "../../components/game-object/character/controls-component";
 import { InputComponent } from "../../components/input/input-component";
-import { DirectionComponent } from "../../components/game-object/direction-component";
-import { SpeedComponent } from "../../components/game-object/speed-component";
+import { DirectionComponent } from "../../components/game-object/character/direction-component";
+import { SpeedComponent } from "../../components/game-object/character/speed-component";
 import { Direction } from "../../common/types";
 
 export type Config = {
@@ -33,18 +33,7 @@ export abstract class CharacterGameObject extends Phaser.Physics.Arcade.Sprite {
   protected stateMachine: StateMachine;
 
   constructor(config: Config) {
-    const {
-      animations,
-      frame,
-      id,
-      input,
-      onDirectionChange,
-      scene,
-      speed,
-      texture,
-      x,
-      y,
-    } = config;
+    const { animations, frame, id, input, onDirectionChange, scene, speed, texture, x, y } = config;
 
     super(scene, x, y, texture, frame);
 

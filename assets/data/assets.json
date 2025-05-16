@@ -1,16 +1,5 @@
 [
   {
-    "path": "assets/images/characters",
-    "files": [
-      {
-        "type": "aseprite",
-        "key": "character",
-        "textureURL": "character.png",
-        "atlasURL": "character.aesprite.json"
-      }
-    ]
-  },
-  {
     "path": "assets/images/areas/house",
     "files": [
       {
@@ -37,6 +26,28 @@
         "type": "tilemapTiledJSON",
         "key": "house-map",
         "url": "house-map.json"
+      }
+    ]
+  },
+  {
+    "path": "assets/images/characters",
+    "files": [
+      {
+        "type": "aseprite",
+        "key": "character",
+        "textureURL": "character.png",
+        "atlasURL": "character.aesprite.json"
+      }
+    ]
+  },
+  {
+    "path": "assets/images/objects",
+    "files": [
+      {
+        "type": "aseprite",
+        "key": "animated-objects",
+        "textureURL": "animated-objects.png",
+        "atlasURL": "animated-objects.aesprite.json"
       }
     ]
   }

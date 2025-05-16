@@ -1,7 +1,7 @@
 import * as Phaser from "phaser";
-import { Direction, GameObject } from "../../common/types";
-import { BaseGameObjectComponent } from "./base-game-object-component";
-import { AnimationType, Character, getCharacterAnimation } from "../../common/assets";
+import { Direction, GameObject } from "../../../common/types";
+import { BaseGameObjectComponent } from "../base-game-object-component";
+import { AnimationType, Character, getCharacterAnimation } from "../../../common/assets";
 
 type AnimationConfig = {
   repeat: number;

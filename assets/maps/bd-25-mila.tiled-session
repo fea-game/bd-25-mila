@@ -47,6 +47,7 @@
             "scaleInDock": 1
         },
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/Birthday_party_01.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
@@ -73,6 +74,17 @@
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/Tileset_73_MV.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/animated-objects.map.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 273,
+                "y": 297
+            }
+        },
+        "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/animated-objects.map.tmx#interior": {
+            "scaleInDock": 1
         },
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/interior.map.tmx": {
             "scale": 1.5,
@@ -112,19 +124,24 @@
                 18
             ],
             "expandedObjectLayers": [
-                2
+                2,
+                19
             ],
             "scale": 0.75,
             "selectedLayer": 10,
             "viewCenter": {
-                "x": 990.6666666666667,
-                "y": 417.33333333333326
+                "x": 980,
+                "y": 406.66666666666674
             }
+        },
+        "bd-25-mila-interior.tmx#collision": {
+            "scaleInDock": 1
         },
         "bd-25-mila-interior.tmx#interior": {
             "scaleInDock": 1
         },
         "bd-25-mila-interior.tmx#objects": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         }
     },
@@ -156,7 +173,7 @@
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/Tileset_48x48_6.tsx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/Tileset_73_MV.tsx"
     ],
-    "tileset.embedInMap": true,
+    "tileset.embedInMap": false,
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { SceneKey } from "../common/types";
+import { AnimatedTextures } from "../common/assets";
 
 export default class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -17,6 +18,8 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   private createAnimations() {
-    this.anims.createFromAseprite("character");
+    for (const anim of AnimatedTextures) {
+      this.anims.createFromAseprite(anim);
+    }
   }
 }

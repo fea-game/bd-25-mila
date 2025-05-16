@@ -9,10 +9,29 @@ export type Character = (typeof Character)[CharacterKey];
 
 export const Texture = {
   Player: "character",
-} as const satisfies Record<CharacterKey, string>;
+  BlueBalloon: "animated-objects",
+  GreenBalloon: "animated-objects",
+  RedBalloon: "animated-objects",
+  YellowBalloon: "animated-objects",
+} as const satisfies Record<CharacterKey | string, string>;
 
-type TextureKey = keyof typeof Texture;
-type Texture = (typeof Texture)[TextureKey];
+export type TextureKey = keyof typeof Texture;
+export type Texture = (typeof Texture)[TextureKey];
+
+export const AnimatedTextures: Array<Texture> = [Texture.Player, Texture.YellowBalloon];
+
+export const TextureAnimation = {
+  BlueBalloon: "blue-balloon",
+  GreenBalloon: "green-balloon",
+  RedBalloon: "red-balloon",
+  YellowBalloon: "yellow-balloon",
+} as const satisfies Partial<Record<TextureKey, string>>;
+
+type TextureAnimation = (typeof TextureAnimation)[keyof typeof TextureAnimation];
+
+export function getTextureAnimation(texture: TextureKey): TextureAnimation {
+  return TextureAnimation[texture];
+}
 
 export const AnimationType = {
   Idle: "idle",

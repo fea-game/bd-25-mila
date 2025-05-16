@@ -3,6 +3,7 @@ import { Area, SceneKey } from "../common/types";
 import { KeyboardComponent } from "../components/input/keyboard-component";
 import { Player } from "../game-objects/characters/player/player";
 import { AreaComponent } from "../components/game-scene/area-component";
+import { Balloon } from "../game-objects/objects/balloon";
 
 export default class GameScene extends Phaser.Scene {
   private keyboardComponent: KeyboardComponent;
@@ -29,9 +30,12 @@ export default class GameScene extends Phaser.Scene {
       input: this.keyboardComponent,
     });
 
-    //this.cameras.main.setBounds(0, 0, 200, 200);
+    const balloon = new Balloon({ scene: this, x: 450, y: 250, color: "Blue" });
+
     this.cameras.main.startFollow(this.player);
 
     this.physics.add.collider(this.player, this.areaComponent.collisionLayer);
+    this.physics.add.collider(balloon, this.areaComponent.collisionLayer);
+    this.physics.add.collider(this.player, balloon);
   }
 }
