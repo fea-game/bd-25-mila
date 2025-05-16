@@ -1,0 +1,334 @@
+{
+  "frames": {
+    "player_idle_down_0": {
+      "frame": { "x": 48, "y": 24, "w": 48, "h": 72 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 48, "y": 24, "w": 48, "h": 72 },
+      "sourceSize": { "w": 48, "h": 72 },
+      "pivot": { "x": 0.5, "y": 0.5 }
+    },
+    "player_idle_left_0": {
+      "frame": { "x": 48, "y": 120, "w": 48, "h": 72 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 48, "y": 120, "w": 48, "h": 72 },
+      "sourceSize": { "w": 48, "h": 72 },
+      "pivot": { "x": 0.5, "y": 0.5 }
+    },
+    "player_idle_right_0": {
+      "frame": { "x": 48, "y": 216, "w": 48, "h": 72 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 48, "y": 216, "w": 48, "h": 72 },
+      "sourceSize": { "w": 48, "h": 72 },
+      "pivot": { "x": 0.5, "y": 0.5 }
+    },
+    "player_idle_up_0": {
+      "frame": { "x": 48, "y": 312, "w": 48, "h": 72 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 48, "y": 312, "w": 48, "h": 72 },
+      "sourceSize": { "w": 48, "h": 72 },
+      "pivot": { "x": 0.5, "y": 0.5 }
+    },
+    "player_walk_down_0": {
+      "frame": { "x": 48, "y": 24, "w": 48, "h": 72 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 48, "y": 24, "w": 48, "h": 72 },
+      "sourceSize": { "w": 48, "h": 72 },
+      "pivot": { "x": 0.5, "y": 0.5 }
+    },
+    "player_walk_down_1": {
+      "frame": { "x": 0, "y": 24, "w": 48, "h": 72 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 24, "w": 48, "h": 72 },
+      "sourceSize": { "w": 48, "h": 72 },
+      "pivot": { "x": 0.5, "y": 0.5 }
+    },
+    "player_walk_down_2": {
+      "frame": { "x": 96, "y": 24, "w": 48, "h": 72 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 96, "y": 24, "w": 48, "h": 72 },
+      "sourceSize": { "w": 48, "h": 72 },
+      "pivot": { "x": 0.5, "y": 0.5 }
+    },
+    "player_walk_left_0": {
+      "frame": { "x": 48, "y": 120, "w": 48, "h": 72 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 48, "y": 120, "w": 48, "h": 72 },
+      "sourceSize": { "w": 48, "h": 72 },
+      "pivot": { "x": 0.5, "y": 0.5 }
+    },
+    "player_walk_left_1": {
+      "frame": { "x": 0, "y": 120, "w": 48, "h": 72 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 120, "w": 48, "h": 72 },
+      "sourceSize": { "w": 48, "h": 72 },
+      "pivot": { "x": 0.5, "y": 0.5 }
+    },
+    "player_walk_left_2": {
+      "frame": { "x": 96, "y": 120, "w": 48, "h": 72 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 96, "y": 120, "w": 48, "h": 72 },
+      "sourceSize": { "w": 48, "h": 72 },
+      "pivot": { "x": 0.5, "y": 0.5 }
+    }
+  },
+  "meta": {
+    "app": "Aseprite",
+    "version": "1.0",
+    "image": "character.png",
+    "format": "RGBA8888",
+    "size": { "w": 576, "h": 768 },
+    "scale": "1"
+  },
+  "anims": [
+    {
+      "key": "player-idle-down",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "character",
+          "frame": "player_idle_down_0",
+          "duration": 0,
+          "visible": false
+        }
+      ],
+      "frameRate": 0,
+      "duration": 1.5,
+      "skipMissedFrames": true,
+      "delay": 0,
+      "repeat": -1,
+      "repeatDelay": 0,
+      "yoyo": false,
+      "showOnStart": false,
+      "hideOnComplete": false
+    },
+    {
+      "key": "player-idle-left",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "character",
+          "frame": "player_idle_left_0",
+          "duration": 0,
+          "visible": false
+        }
+      ],
+      "frameRate": 0,
+      "duration": 1.5,
+      "skipMissedFrames": true,
+      "delay": 0,
+      "repeat": -1,
+      "repeatDelay": 0,
+      "yoyo": false,
+      "showOnStart": false,
+      "hideOnComplete": false
+    },
+    {
+      "key": "player-idle-right",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "character",
+          "frame": "player_idle_right_0",
+          "duration": 0,
+          "visible": false
+        }
+      ],
+      "frameRate": 0,
+      "duration": 1.5,
+      "skipMissedFrames": true,
+      "delay": 0,
+      "repeat": -1,
+      "repeatDelay": 0,
+      "yoyo": false,
+      "showOnStart": false,
+      "hideOnComplete": false
+    },
+    {
+      "key": "player-idle-up",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "character",
+          "frame": "player_idle_up_0",
+          "duration": 0,
+          "visible": false
+        }
+      ],
+      "frameRate": 0,
+      "duration": 1.5,
+      "skipMissedFrames": true,
+      "delay": 0,
+      "repeat": -1,
+      "repeatDelay": 0,
+      "yoyo": false,
+      "showOnStart": false,
+      "hideOnComplete": false
+    },
+    {
+      "key": "player-walk-down",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "character",
+          "frame": "player_walk_down_0",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "player_walk_down_1",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "player_walk_down_0",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "player_walk_down_2",
+          "duration": 0,
+          "visible": false
+        }
+      ],
+      "frameRate": 6,
+      "duration": 1.5,
+      "skipMissedFrames": true,
+      "delay": 0,
+      "repeat": -1,
+      "repeatDelay": 0,
+      "yoyo": false,
+      "showOnStart": false,
+      "hideOnComplete": false
+    },
+    {
+      "key": "player-walk-left",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "character",
+          "frame": "player_walk_left_0",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "player_walk_left_1",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "player_walk_left_0",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "player_walk_left_2",
+          "duration": 0,
+          "visible": false
+        }
+      ],
+      "frameRate": 6,
+      "duration": 1.5,
+      "skipMissedFrames": true,
+      "delay": 0,
+      "repeat": -1,
+      "repeatDelay": 0,
+      "yoyo": false,
+      "showOnStart": false,
+      "hideOnComplete": false
+    },
+    {
+      "key": "player-walk-right",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "character",
+          "frame": "player_walk_right_0",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "player_walk_right_1",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "player_walk_right_0",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "player_walk_right_2",
+          "duration": 0,
+          "visible": false
+        }
+      ],
+      "frameRate": 6,
+      "duration": 1.5,
+      "skipMissedFrames": true,
+      "delay": 0,
+      "repeat": -1,
+      "repeatDelay": 0,
+      "yoyo": false,
+      "showOnStart": false,
+      "hideOnComplete": false
+    },
+    {
+      "key": "player-walk-up",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "character",
+          "frame": "player_walk_up_0",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "player_walk_up_1",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "player_walk_up_0",
+          "duration": 0,
+          "visible": false
+        },
+        {
+          "key": "character",
+          "frame": "player_walk_up_2",
+          "duration": 0,
+          "visible": false
+        }
+      ],
+      "frameRate": 6,
+      "duration": 1.5,
+      "skipMissedFrames": true,
+      "delay": 0,
+      "repeat": -1,
+      "repeatDelay": 0,
+      "yoyo": false,
+      "showOnStart": false,
+      "hideOnComplete": false
+    }
+  ]
+}
