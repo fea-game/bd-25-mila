@@ -3,10 +3,10 @@
     "path": "assets/images/characters",
     "files": [
       {
-        "type": "atlas",
+        "type": "aseprite",
         "key": "character",
         "textureURL": "character.png",
-        "atlasURL": "character.atlas.json"
+        "atlasURL": "character.merged.json"
       }
     ]
   },
