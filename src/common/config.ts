@@ -1,6 +1,7 @@
 export const Depth = {
   Background: 0,
-  Player: 1,
-  Foreground: 2,
-  Collision: 3,
+  Collision: 1,
+  Player: 2,
+  Foreground: 3,
+  Objects: 4,
 } as const;

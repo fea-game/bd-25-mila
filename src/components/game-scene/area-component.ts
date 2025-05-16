@@ -33,6 +33,11 @@ export class AreaComponent extends BaseGameSceneComponent {
       .setOrigin(0)
       .setDepth(Depth.Foreground);
 
+    this.host.add
+      .image(0, 0, getAreaImage(this.area, ImageType.Objects), 0)
+      .setOrigin(0)
+      .setDepth(Depth.Objects);
+
     const map = this.host.make.tilemap({ key: `${this.area}-map` });
 
     const collisionTiles = map.addTilesetImage(
@@ -53,8 +58,10 @@ export class AreaComponent extends BaseGameSceneComponent {
       throw new Error("Error while creating collision layer!");
     }
 
-    this.#collisionLayer = collisionLayer.setDepth(Depth.Collision).setAlpha(0);
-    this.#collisionLayer.setCollision([2]);
+    this.#collisionLayer = collisionLayer
+      .setDepth(Depth.Collision)
+      .setAlpha(0.3);
+    this.#collisionLayer.setCollision([collisionLayer.tileset[0].firstgid]);
   }
 
   get collisionLayer(): Phaser.Tilemaps.TilemapLayer {

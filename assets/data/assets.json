@@ -29,9 +29,14 @@
         "url": "house-collision.png"
       },
       {
+        "type": "image",
+        "key": "house-objects",
+        "url": "house-objects.png"
+      },
+      {
         "type": "tilemapTiledJSON",
         "key": "house-map",
-        "url": "house.json"
+        "url": "house-map.json"
       }
     ]
   }

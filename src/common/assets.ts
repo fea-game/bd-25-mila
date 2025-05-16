@@ -17,6 +17,7 @@ export const ImageType = {
   Background: "background",
   Collision: "collision",
   Foreground: "foreground",
+  Objects: "objects",
 } as const;
 
 type ImageType = (typeof ImageType)[keyof typeof ImageType];
@@ -25,6 +26,7 @@ const AreaImage = {
   "house-background": "house-background",
   "house-collision": "house-collision",
   "house-foreground": "house-foreground",
+  "house-objects": "house-objects",
 } as const satisfies Partial<Record<`${Area}-${ImageType}`, string>>;
 
 export function getAreaImage(area: Area, type: ImageType) {
@@ -42,7 +44,7 @@ export const TilesetType = {
 type TilesetType = (typeof TilesetType)[keyof typeof TilesetType];
 
 const AreaTileset = {
-  "house-collision": "interior",
+  "house-collision": "collision",
 } as const satisfies Partial<Record<`${Area}-${TilesetType}`, string>>;
 
 export function getAreaTileset(area: Area, type: TilesetType) {
