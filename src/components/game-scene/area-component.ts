@@ -2,16 +2,25 @@ import {
   getAreaImage,
   getAreaTileset,
   ImageType,
-  Map,
   TilesetType,
 } from "../../common/assets";
 import { Depth } from "../../common/config";
-import { getAreaLayer, Layer, LayerType } from "../../common/map";
-import { Area } from "../../common/types";
+import {
+  Area,
+  getAreaLayer,
+  LayerType,
+  LayerTypeKey,
+} from "../../common/types";
 import GameScene from "../../scenes/game-scene";
 import { BaseGameSceneComponent } from "./base-game-scene-component";
 
 export class AreaComponent extends BaseGameSceneComponent {
+  private static ImageLayers: Array<LayerTypeKey> = [
+    "Background",
+    "Foreground",
+    "Objects",
+  ];
+
   private area: Area;
   #collisionLayer: Phaser.Tilemaps.TilemapLayer;
 
@@ -23,21 +32,20 @@ export class AreaComponent extends BaseGameSceneComponent {
   }
 
   private create(): void {
-    this.host.add
-      .image(0, 0, getAreaImage(this.area, ImageType.Background), 0)
-      .setOrigin(0)
-      .setDepth(Depth.Background);
+    this.createImageLayers();
+    this.createCollisionLayer();
+  }
 
-    this.host.add
-      .image(0, 0, getAreaImage(this.area, ImageType.Foreground), 0)
-      .setOrigin(0)
-      .setDepth(Depth.Foreground);
+  private createImageLayers() {
+    AreaComponent.ImageLayers.forEach((layerTypeKey) => {
+      this.host.add
+        .image(0, 0, getAreaImage(this.area, ImageType[layerTypeKey]), 0)
+        .setOrigin(0)
+        .setDepth(Depth[layerTypeKey]);
+    });
+  }
 
-    this.host.add
-      .image(0, 0, getAreaImage(this.area, ImageType.Objects), 0)
-      .setOrigin(0)
-      .setDepth(Depth.Objects);
-
+  private createCollisionLayer() {
     const map = this.host.make.tilemap({ key: `${this.area}-map` });
 
     const collisionTiles = map.addTilesetImage(

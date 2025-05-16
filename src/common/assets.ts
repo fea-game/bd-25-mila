@@ -1,4 +1,4 @@
-import { Area } from "./types";
+import { Area, LayerTypeKey } from "./types";
 
 export const Texture = {
   Player: "character",
@@ -18,7 +18,7 @@ export const ImageType = {
   Collision: "collision",
   Foreground: "foreground",
   Objects: "objects",
-} as const;
+} as const satisfies Record<LayerTypeKey, string>;
 
 type ImageType = (typeof ImageType)[keyof typeof ImageType];
 
@@ -39,7 +39,7 @@ export const Map = {
 
 export const TilesetType = {
   Collision: "collision",
-} as const;
+} as const satisfies Partial<Record<LayerTypeKey, string>>;
 
 type TilesetType = (typeof TilesetType)[keyof typeof TilesetType];
 

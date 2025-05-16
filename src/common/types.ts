@@ -13,6 +13,24 @@ export const Area = {
 
 export type Area = (typeof Area)[keyof typeof Area];
 
+export const LayerType = {
+  Background: "background",
+  Collision: "collision",
+  Foreground: "foreground",
+  Objects: "objects",
+} as const;
+
+export type LayerTypeKey = keyof typeof LayerType;
+type LayerType = (typeof LayerType)[LayerTypeKey];
+
+const AreaLayer = {
+  "house-collision": "collision/collision-1",
+} as const satisfies Partial<Record<`${Area}-${LayerType}`, string>>;
+
+export function getAreaLayer(area: Area, type: LayerType) {
+  return AreaLayer[`${area}-${type}`];
+}
+
 export type GameObject = Phaser.Physics.Arcade.Sprite;
 export type Body = Phaser.Physics.Arcade.Body;
 
