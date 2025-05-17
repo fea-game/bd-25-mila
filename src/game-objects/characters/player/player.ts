@@ -18,7 +18,7 @@ export class Player extends CharacterGameObject {
       ...config,
       id: "player",
       animations: Player.Animations,
-      speed: 160,
+      speed: 180,
       texture: Texture.Player,
     });
 

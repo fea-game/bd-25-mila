@@ -8,197 +8,140 @@
       "spriteSourceSize": { "x": 48, "y": 24, "w": 48, "h": 72 },
       "sourceSize": { "w": 48, "h": 72 },
       "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 1000
     },
     "1": {
       "name": "player-idle-left-0",
       "frame": { "x": 48, "y": 120, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 48, "y": 120, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 1000
     },
     "2": {
       "name": "player-idle-right-0",
       "frame": { "x": 48, "y": 216, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 48, "y": 216, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 1000
     },
     "3": {
       "name": "player-idle-up-0",
       "frame": { "x": 48, "y": 312, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 48, "y": 312, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 1000
     },
     "4": {
       "name": "player-walk-down-0",
       "frame": { "x": 48, "y": 24, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 48, "y": 24, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "5": {
       "name": "player-walk-down-1",
       "frame": { "x": 0, "y": 24, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 24, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "6": {
       "name": "player-walk-down-2",
       "frame": { "x": 48, "y": 24, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 48, "y": 24, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "7": {
       "name": "player-walk-down-3",
       "frame": { "x": 96, "y": 24, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 96, "y": 24, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "8": {
       "name": "player-walk-left-0",
       "frame": { "x": 48, "y": 120, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 48, "y": 120, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "9": {
       "name": "player-walk-left-1",
       "frame": { "x": 0, "y": 120, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 120, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "10": {
       "name": "player-walk-left-2",
       "frame": { "x": 48, "y": 120, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 48, "y": 120, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "11": {
       "name": "player-walk-left-3",
       "frame": { "x": 96, "y": 120, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 96, "y": 120, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "12": {
       "name": "player-walk-right-0",
       "frame": { "x": 48, "y": 216, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 48, "y": 216, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "13": {
       "name": "player-walk-right-1",
       "frame": { "x": 0, "y": 216, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 216, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "14": {
       "name": "player-walk-right-2",
       "frame": { "x": 48, "y": 216, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 48, "y": 216, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "15": {
       "name": "player-walk-right-3",
       "frame": { "x": 96, "y": 216, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 96, "y": 216, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "16": {
       "name": "player-walk-up-0",
       "frame": { "x": 48, "y": 312, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 48, "y": 312, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "17": {
       "name": "player-walk-up-1",
       "frame": { "x": 0, "y": 312, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 312, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "18": {
       "name": "player-walk-up-2",
       "frame": { "x": 48, "y": 312, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 48, "y": 312, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     },
     "19": {
       "name": "player-walk-up-3",
       "frame": { "x": 96, "y": 312, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 96, "y": 312, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
-      "duration": 100
+      "duration": 120
     }
   },
   "meta": {

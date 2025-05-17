@@ -40,8 +40,15 @@
         "#Tileset_48x48_7": {
             "scaleInDock": 1
         },
+        "#character": {
+            "scaleInDock": 1
+        },
         "#interior": {
             "scaleInDock": 1
+        },
+        "#objects": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "#window": {
             "scaleInDock": 1
@@ -104,13 +111,17 @@
         },
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/objects.map.tmx": {
             "scale": 1,
-            "selectedLayer": 0,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": 212,
-                "y": 209
+                "x": 87,
+                "y": 331
             }
         },
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/objects.map.tmx#interior": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/objects.map.tmx#objects": {
             "dynamicWrapping": false,
             "scaleInDock": 1
         },
@@ -121,17 +132,21 @@
         },
         "bd-25-mila-interior.tmx": {
             "expandedGroupLayers": [
-                18
+                18,
+                2,
+                4
             ],
             "expandedObjectLayers": [
+                25,
                 2,
-                19
+                19,
+                4
             ],
             "scale": 0.75,
-            "selectedLayer": 10,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 980,
-                "y": 406.66666666666674
+                "x": 719.9999999999999,
+                "y": 419.99999999999994
             }
         },
         "bd-25-mila-interior.tmx#collision": {
@@ -147,18 +162,19 @@
     },
     "last.exportedFilePath": "/Users/tobiasbelch/fea/game/bd-25-mila/assets/images/areas/house",
     "last.externalTilesetPath": "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets",
-    "last.imagePath": "/Users/tobiasbelch/fea/game/bd-25-mila/assets/images/tilesets",
+    "last.imagePath": "/Users/tobiasbelch/fea/game/bd-25-mila/assets/images/objects",
     "map.fixedSize": true,
-    "map.height": 10,
+    "map.height": 2,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 48,
     "map.tileWidth": 48,
-    "map.width": 20,
+    "map.width": 1,
     "openFiles": [
         "bd-25-mila-interior.tmx"
     ],
     "project": "bd-25-mila.tiled-project",
+    "property.type": "Color",
     "recentFiles": [
         "bd-25-mila-interior.tmx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/interior.map.tmx",
@@ -173,7 +189,7 @@
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/Tileset_48x48_6.tsx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/Tileset_73_MV.tsx"
     ],
-    "tileset.embedInMap": false,
+    "tileset.embedInMap": true,
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
