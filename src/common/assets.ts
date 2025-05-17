@@ -66,7 +66,6 @@ export const ImageType = {
   Background: "background",
   Collision: "collision",
   Foreground: "foreground",
-  Objects: "objects",
 } as const satisfies Record<LayerTypeKey, string>;
 
 type ImageType = (typeof ImageType)[keyof typeof ImageType];
@@ -75,7 +74,6 @@ const AreaImage = {
   "house-background": "house-background",
   "house-collision": "house-collision",
   "house-foreground": "house-foreground",
-  "house-objects": "house-objects",
 } as const satisfies Partial<Record<`${Area}-${ImageType}`, string>>;
 
 type AreaImage = (typeof AreaImage)[keyof typeof AreaImage];

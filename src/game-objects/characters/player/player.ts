@@ -3,11 +3,11 @@ import { Depth } from "../../../common/config";
 import { CharacterState } from "../../../components/game-object/state-machine/character/base-character-state";
 import { IdleState } from "../../../components/game-object/state-machine/character/idle-state";
 import { MovingState } from "../../../components/game-object/state-machine/character/moving-state";
-import { CharacterGameObject, Config as CharacterGameObjectConfig } from "../character-game-object";
+import { BaseCharacter, Config as CharacterGameObjectConfig } from "../base-character";
 
 type Config = Omit<CharacterGameObjectConfig, "animations" | "speed" | "texture">;
 
-export class Player extends CharacterGameObject {
+export class Player extends BaseCharacter {
   private static Animations: CharacterGameObjectConfig["animations"] = {
     character: Character.Player,
     animations: [AnimationType.Idle, AnimationType.Walk],

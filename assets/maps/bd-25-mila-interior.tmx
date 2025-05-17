@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="26" height="16" tilewidth="48" tileheight="48" infinite="1" nextlayerid="26" nextobjectid="29">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="26" height="16" tilewidth="48" tileheight="48" infinite="1" nextlayerid="28" nextobjectid="29">
  <editorsettings>
   <export target="../images/areas/house/house-map.json" format="json"/>
  </editorsettings>
@@ -335,67 +335,66 @@
    </data>
   </layer>
  </group>
- <group id="4" name="objects" locked="1">
-  <layer id="24" name="trigger" width="26" height="16">
-   <data encoding="csv"/>
-  </layer>
-  <objectgroup id="25" name="objects">
-   <object id="14" type="Balloon" gid="282" x="768" y="434.667" width="48" height="96">
-    <properties>
-     <property name="color" propertytype="Color" value="blue"/>
-    </properties>
-   </object>
-   <object id="16" type="Balloon" gid="282" x="1088" y="217.333" width="48" height="96">
-    <properties>
-     <property name="color" propertytype="Color" value="blue"/>
-    </properties>
-   </object>
-   <object id="17" type="Balloon" gid="283" x="618.667" y="350.667" width="48" height="96">
-    <properties>
-     <property name="color" propertytype="Color" value="green"/>
-    </properties>
-   </object>
-   <object id="18" type="Balloon" gid="283" x="805.333" y="609.333" width="48" height="96">
-    <properties>
-     <property name="color" propertytype="Color" value="green"/>
-    </properties>
-   </object>
-   <object id="19" type="Balloon" gid="285" x="1013.33" y="668" width="48" height="96">
-    <properties>
-     <property name="color" propertytype="Color" value="yellow"/>
-    </properties>
-   </object>
-   <object id="20" type="Balloon" gid="285" x="514.667" y="272" width="48" height="96">
-    <properties>
-     <property name="color" propertytype="Color" value="yellow"/>
-    </properties>
-   </object>
-   <object id="21" type="Balloon" gid="284" x="738.667" y="178.667" width="48" height="96">
-    <properties>
-     <property name="color" propertytype="Color" value="red"/>
-    </properties>
-   </object>
-   <object id="23" type="Balloon" gid="284" x="562.667" y="668" width="48" height="96">
-    <properties>
-     <property name="color" propertytype="Color" value="red"/>
-    </properties>
-   </object>
-   <object id="24" type="Balloon" gid="284" x="1069.33" y="426.667" width="48" height="96">
-    <properties>
-     <property name="color" propertytype="Color" value="red"/>
-    </properties>
-   </object>
-   <object id="26" type="Toilet" gid="288" x="243" y="613" width="42" height="105">
-    <properties>
-     <property name="isOpened" type="bool" value="true"/>
-    </properties>
-   </object>
-   <object id="27" gid="289" x="330.667" y="327.667" width="48" height="66"/>
-   <object id="28" type="Plate" gid="290" x="784" y="343.333" width="57" height="60">
-    <properties>
-     <property name="isWithCake" type="bool" value="false"/>
-    </properties>
-   </object>
-  </objectgroup>
+ <group id="26" name="sections">
+  <group id="27" name="section-1">
+   <objectgroup id="25" name="objects">
+    <object id="14" type="Balloon" gid="282" x="768" y="444" width="48" height="96">
+     <properties>
+      <property name="color" propertytype="Color" value="blue"/>
+     </properties>
+    </object>
+    <object id="16" type="Balloon" gid="282" x="1092" y="204" width="48" height="96">
+     <properties>
+      <property name="color" propertytype="Color" value="blue"/>
+     </properties>
+    </object>
+    <object id="17" type="Balloon" gid="283" x="612" y="336" width="48" height="96">
+     <properties>
+      <property name="color" propertytype="Color" value="green"/>
+     </properties>
+    </object>
+    <object id="18" type="Balloon" gid="283" x="792" y="600" width="48" height="96">
+     <properties>
+      <property name="color" propertytype="Color" value="green"/>
+     </properties>
+    </object>
+    <object id="19" type="Balloon" gid="285" x="1008" y="660" width="48" height="96">
+     <properties>
+      <property name="color" propertytype="Color" value="yellow"/>
+     </properties>
+    </object>
+    <object id="20" type="Balloon" gid="285" x="519" y="278" width="48" height="96">
+     <properties>
+      <property name="color" propertytype="Color" value="yellow"/>
+     </properties>
+    </object>
+    <object id="21" type="Balloon" gid="284" x="744" y="192" width="48" height="96">
+     <properties>
+      <property name="color" propertytype="Color" value="red"/>
+     </properties>
+    </object>
+    <object id="23" type="Balloon" gid="284" x="552" y="660" width="48" height="96">
+     <properties>
+      <property name="color" propertytype="Color" value="red"/>
+     </properties>
+    </object>
+    <object id="24" type="Balloon" gid="284" x="1080" y="420" width="48" height="96">
+     <properties>
+      <property name="color" propertytype="Color" value="red"/>
+     </properties>
+    </object>
+    <object id="26" type="Toilet" gid="288" x="240" y="612" width="42" height="105">
+     <properties>
+      <property name="isOpened" type="bool" value="true"/>
+     </properties>
+    </object>
+    <object id="27" type="Player" gid="289" x="330.667" y="327.667" width="48" height="66"/>
+    <object id="28" type="Plate" gid="290" x="780" y="348" width="57" height="60">
+     <properties>
+      <property name="isWithCake" type="bool" value="false"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </group>
  </group>
 </map>

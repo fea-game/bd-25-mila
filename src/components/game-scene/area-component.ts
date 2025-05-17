@@ -1,6 +1,7 @@
 import { getAreaImage, getAreaMap, getAreaTileset, ImageType, TilesetType } from "../../common/assets";
 import { Depth } from "../../common/config";
-import { Area, getAreaLayer, LayerType, LayerTypeKey } from "../../common/types";
+import { Area, getAreaLayer, LayerType, LayerTypeKey, SectionId } from "../../common/types";
+import { BaseObject } from "../../game-objects/objects/base-object";
 import GameScene from "../../scenes/game-scene";
 import { BaseGameSceneComponent } from "./base-game-scene-component";
 
@@ -9,6 +10,12 @@ export class AreaComponent extends BaseGameSceneComponent {
 
   private area: Area;
   #collisionLayer: Phaser.Tilemaps.TilemapLayer;
+  #objectsBySection: Record<
+    SectionId,
+    {
+      objects: BaseObject;
+    }
+  >;
 
   constructor(host: GameScene, area: Area) {
     super(host);

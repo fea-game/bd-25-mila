@@ -1,9 +1,9 @@
-import { CharacterGameObject } from "../../../../game-objects/characters/character-game-object";
+import { BaseCharacter } from "../../../../game-objects/characters/base-character";
 import { StateMachine } from "../state-machine";
 import { BaseCharacterState, CharacterState } from "./base-character-state";
 
 export class IdleState extends BaseCharacterState {
-  constructor(host: CharacterGameObject, stateMachine: StateMachine) {
+  constructor(host: BaseCharacter, stateMachine: StateMachine) {
     super(CharacterState.Idle, host, stateMachine);
   }
 

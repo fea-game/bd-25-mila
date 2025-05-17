@@ -8,7 +8,7 @@ import { ControlsComponent } from "../../components/game-object/character/contro
 import { InputComponent } from "../../components/input/input-component";
 import { DirectionComponent } from "../../components/game-object/character/direction-component";
 import { SpeedComponent } from "../../components/game-object/character/speed-component";
-import { Direction } from "../../common/types";
+import { Direction, GameObject } from "../../common/types";
 
 export type Config = {
   animations: CharacterAnimationComponentConfig;
@@ -23,7 +23,7 @@ export type Config = {
   y: number;
 };
 
-export abstract class CharacterGameObject extends Phaser.Physics.Arcade.Sprite {
+export abstract class BaseCharacter extends GameObject {
   declare body: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody;
 
   private animationComponent: CharacterAnimationComponent;

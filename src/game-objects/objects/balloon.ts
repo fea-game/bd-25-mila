@@ -1,5 +1,6 @@
 import { getTextureAnimation, Texture, TextureKey } from "../../common/assets";
 import { Depth } from "../../common/config";
+import { BaseObject } from "./base-object";
 
 type Color = "Blue" | "Green" | "Red" | "Yellow";
 
@@ -10,7 +11,7 @@ type Config = {
   y: number;
 };
 
-export class Balloon extends Phaser.Physics.Arcade.Sprite {
+export class Balloon extends BaseObject {
   private static getTexture(color: Color): [TextureKey, Texture] {
     const key: TextureKey = `${color}Balloon`;
 
@@ -18,13 +19,15 @@ export class Balloon extends Phaser.Physics.Arcade.Sprite {
   }
 
   #color: Color;
+  public readonly isInteractable = true;
+  public readonly isMovable = true;
 
-  constructor(config: Config) {
-    const [textureKey, texture] = Balloon.getTexture(config.color);
+  constructor({ color, ...config }: Config) {
+    const [textureKey, texture] = Balloon.getTexture(color);
 
-    super(config.scene, config.x, config.y, texture);
+    super({ ...config, texture });
 
-    this.#color = config.color;
+    this.#color = color;
 
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
@@ -42,7 +45,6 @@ export class Balloon extends Phaser.Physics.Arcade.Sprite {
   public get color(): Color {
     return this.#color;
   }
-
   public set color(color: Color) {
     this.#color = color;
 

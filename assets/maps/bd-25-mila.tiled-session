@@ -174,7 +174,7 @@
         "bd-25-mila-interior.tmx"
     ],
     "project": "bd-25-mila.tiled-project",
-    "property.type": "Color",
+    "property.type": "bool",
     "recentFiles": [
         "bd-25-mila-interior.tmx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/interior.map.tmx",

@@ -17,7 +17,6 @@ export const LayerType = {
   Background: "background",
   Collision: "collision",
   Foreground: "foreground",
-  Objects: "objects",
 } as const;
 
 export type LayerTypeKey = keyof typeof LayerType;
@@ -33,7 +32,9 @@ export function getAreaLayer(area: Area, type: LayerType): AreaLayer {
   return AreaLayer[`${area}-${type}`];
 }
 
-export type GameObject = Phaser.Physics.Arcade.Sprite;
+export type SectionId = string;
+
+export abstract class GameObject extends Phaser.Physics.Arcade.Sprite {}
 export type Body = Phaser.Physics.Arcade.Body;
 
 export const Direction = {
