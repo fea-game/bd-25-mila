@@ -388,7 +388,7 @@
       <property name="isOpened" type="bool" value="true"/>
      </properties>
     </object>
-    <object id="27" type="Player" gid="289" x="360" y="324" width="48" height="66"/>
+    <object id="27" type="Player" gid="289" x="348" y="324" width="48" height="66"/>
     <object id="28" type="Plate" gid="290" x="780" y="348" width="57" height="60">
      <properties>
       <property name="isWithCake" type="bool" value="false"/>

@@ -18,7 +18,7 @@ export class Balloon extends BaseObject {
   }
 
   #color: Color;
-  public readonly isInteractable = true;
+  public readonly isInteractable = false;
   public readonly isMovable = true;
 
   constructor({
@@ -38,6 +38,8 @@ export class Balloon extends BaseObject {
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
     this.setDepth(Depth.Objects);
+    this.setDrag(200);
+    this.setMaxVelocity(300);
 
     this.play(
       {

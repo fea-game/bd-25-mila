@@ -4,8 +4,11 @@ import { CharacterState } from "../../../components/game-object/state-machine/ch
 import { IdleState } from "../../../components/game-object/state-machine/character/idle-state";
 import { MovingState } from "../../../components/game-object/state-machine/character/moving-state";
 import { BaseCharacter, Config as CharacterGameObjectConfig } from "../base-character";
+import * as tiled from "../../../tiled/types";
 
-type Config = Omit<CharacterGameObjectConfig, "animations" | "speed" | "texture">;
+type Config = Omit<CharacterGameObjectConfig, "animations" | "speed" | "texture" | "x" | "y"> & {
+  properties: Pick<tiled.Player, "x" | "y">;
+};
 
 export class Player extends BaseCharacter {
   private static Animations: CharacterGameObjectConfig["animations"] = {
@@ -13,13 +16,15 @@ export class Player extends BaseCharacter {
     animations: [AnimationType.Idle, AnimationType.Walk],
   };
 
-  constructor(config: Config) {
+  constructor({ properties, ...config }: Config) {
     super({
       ...config,
       id: "player",
       animations: Player.Animations,
       speed: 180,
       texture: Texture.Player,
+      x: properties.x,
+      y: properties.y - 42,
     });
 
     this.stateMachine.addState(new IdleState(this, this.stateMachine));

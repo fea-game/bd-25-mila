@@ -24,19 +24,11 @@ export default class GameScene extends Phaser.Scene {
 
     this.player = new Player({
       scene: this,
-      x: 850,
-      y: 400,
       input: this.keyboardComponent,
+      properties: this.areaComponent.playerSpawnLocation,
     });
 
     this.cameras.main.startFollow(this.player);
-
-    this.areaComponent.movableObjects.getChildren().forEach((movableObject) => {
-      if (!(movableObject instanceof Phaser.Physics.Arcade.Sprite)) return;
-
-      movableObject.setDrag(200);
-      movableObject.setMaxVelocity(300);
-    });
 
     this.physics.add.collider(this.player, this.areaComponent.collisionLayer);
     this.physics.add.collider(this.areaComponent.movableObjects, this.areaComponent.collisionLayer);

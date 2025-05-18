@@ -14,6 +14,7 @@ export class AreaComponent extends BaseGameSceneComponent {
   private map: Phaser.Tilemaps.Tilemap;
   #collisionLayer: Phaser.Tilemaps.TilemapLayer;
   #movableObjects: Phaser.GameObjects.Group;
+  #playerSpawnLocation: tiled.Player;
   #chunks: Map<tiled.Chunk["id"], {}>;
 
   constructor(host: GameScene, area: Area) {
@@ -29,6 +30,10 @@ export class AreaComponent extends BaseGameSceneComponent {
 
   get movableObjects(): Phaser.GameObjects.Group {
     return this.#movableObjects;
+  }
+
+  get playerSpawnLocation(): tiled.Player {
+    return this.#playerSpawnLocation;
   }
 
   private create(): void {
@@ -91,14 +96,24 @@ export class AreaComponent extends BaseGameSceneComponent {
   }
 
   private createObjects({ layerName }: { chunkId: string; layerName: string }): void {
-    const objects = tiled.getObjectsFromLayer(this.map, layerName);
+    const tiledObjects = tiled.getObjectsFromLayer(this.map, layerName);
 
-    for (const object of objects) {
-      switch (object.type) {
-        case "Balloon":
-          this.#movableObjects.add(new Balloon({ scene: this.host, properties: object }));
-          break;
-        default:
+    for (const tiledObject of tiledObjects) {
+      const object = ((tiledObject: tiled.ValidObject) => {
+        switch (tiledObject.type) {
+          case "Balloon":
+            return new Balloon({ scene: this.host, properties: tiledObject });
+          case "Player":
+            this.#playerSpawnLocation = tiledObject;
+            break;
+          default:
+        }
+      })(tiledObject);
+
+      object?.setDepth(Depth.Objects);
+
+      if (object?.isMovable) {
+        this.#movableObjects.add(object);
       }
     }
   }

@@ -6,4 +6,4 @@ export const Depth = {
   Objects: 3,
   Player: 3,
   Foreground: 4,
-} as const satisfies Record<LayerTypeKey | "Player", number>;
+} as const satisfies Record<LayerTypeKey | "Player" | "Objects", number>;
