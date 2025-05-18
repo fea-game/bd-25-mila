@@ -335,52 +335,52 @@
    </data>
   </layer>
  </group>
- <group id="26" name="sections">
-  <group id="27" name="section-1">
+ <group id="26" name="chunks">
+  <group id="27" name="chunk-1">
    <objectgroup id="25" name="objects">
     <object id="14" type="Balloon" gid="282" x="768" y="444" width="48" height="96">
      <properties>
-      <property name="color" propertytype="Color" value="blue"/>
+      <property name="color" propertytype="Color" value="Blue"/>
      </properties>
     </object>
     <object id="16" type="Balloon" gid="282" x="1092" y="204" width="48" height="96">
      <properties>
-      <property name="color" propertytype="Color" value="blue"/>
+      <property name="color" propertytype="Color" value="Blue"/>
      </properties>
     </object>
     <object id="17" type="Balloon" gid="283" x="612" y="336" width="48" height="96">
      <properties>
-      <property name="color" propertytype="Color" value="green"/>
+      <property name="color" propertytype="Color" value="Green"/>
      </properties>
     </object>
     <object id="18" type="Balloon" gid="283" x="792" y="600" width="48" height="96">
      <properties>
-      <property name="color" propertytype="Color" value="green"/>
+      <property name="color" propertytype="Color" value="Green"/>
      </properties>
     </object>
     <object id="19" type="Balloon" gid="285" x="1008" y="660" width="48" height="96">
      <properties>
-      <property name="color" propertytype="Color" value="yellow"/>
+      <property name="color" propertytype="Color" value="Yellow"/>
      </properties>
     </object>
     <object id="20" type="Balloon" gid="285" x="519" y="278" width="48" height="96">
      <properties>
-      <property name="color" propertytype="Color" value="yellow"/>
+      <property name="color" propertytype="Color" value="Yellow"/>
      </properties>
     </object>
     <object id="21" type="Balloon" gid="284" x="744" y="192" width="48" height="96">
      <properties>
-      <property name="color" propertytype="Color" value="red"/>
+      <property name="color" propertytype="Color" value="Red"/>
      </properties>
     </object>
     <object id="23" type="Balloon" gid="284" x="552" y="660" width="48" height="96">
      <properties>
-      <property name="color" propertytype="Color" value="red"/>
+      <property name="color" propertytype="Color" value="Red"/>
      </properties>
     </object>
     <object id="24" type="Balloon" gid="284" x="1080" y="420" width="48" height="96">
      <properties>
-      <property name="color" propertytype="Color" value="red"/>
+      <property name="color" propertytype="Color" value="Red"/>
      </properties>
     </object>
     <object id="26" type="Toilet" gid="288" x="240" y="612" width="42" height="105">
@@ -388,7 +388,7 @@
       <property name="isOpened" type="bool" value="true"/>
      </properties>
     </object>
-    <object id="27" type="Player" gid="289" x="330.667" y="327.667" width="48" height="66"/>
+    <object id="27" type="Player" gid="289" x="360" y="324" width="48" height="66"/>
     <object id="28" type="Plate" gid="290" x="780" y="348" width="57" height="60">
      <properties>
       <property name="isWithCake" type="bool" value="false"/>

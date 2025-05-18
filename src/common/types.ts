@@ -32,8 +32,6 @@ export function getAreaLayer(area: Area, type: LayerType): AreaLayer {
   return AreaLayer[`${area}-${type}`];
 }
 
-export type SectionId = string;
-
 export abstract class GameObject extends Phaser.Physics.Arcade.Sprite {}
 export type Body = Phaser.Physics.Arcade.Body;
 

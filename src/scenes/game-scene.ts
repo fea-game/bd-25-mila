@@ -3,7 +3,6 @@ import { Area, SceneKey } from "../common/types";
 import { KeyboardComponent } from "../components/input/keyboard-component";
 import { Player } from "../game-objects/characters/player/player";
 import { AreaComponent } from "../components/game-scene/area-component";
-import { Balloon } from "../game-objects/objects/balloon";
 
 export default class GameScene extends Phaser.Scene {
   private keyboardComponent: KeyboardComponent;
@@ -25,17 +24,23 @@ export default class GameScene extends Phaser.Scene {
 
     this.player = new Player({
       scene: this,
-      x: 400,
-      y: 250,
+      x: 850,
+      y: 400,
       input: this.keyboardComponent,
     });
 
-    const balloon = new Balloon({ scene: this, x: 450, y: 250, color: "Blue" });
-
     this.cameras.main.startFollow(this.player);
 
+    this.areaComponent.movableObjects.getChildren().forEach((movableObject) => {
+      if (!(movableObject instanceof Phaser.Physics.Arcade.Sprite)) return;
+
+      movableObject.setDrag(200);
+      movableObject.setMaxVelocity(300);
+    });
+
     this.physics.add.collider(this.player, this.areaComponent.collisionLayer);
-    this.physics.add.collider(balloon, this.areaComponent.collisionLayer);
-    this.physics.add.collider(this.player, balloon);
+    this.physics.add.collider(this.areaComponent.movableObjects, this.areaComponent.collisionLayer);
+    this.physics.add.collider(this.player, this.areaComponent.movableObjects);
+    this.physics.add.collider(this.areaComponent.movableObjects, this.areaComponent.movableObjects);
   }
 }

@@ -1,14 +1,13 @@
 import { getTextureAnimation, Texture, TextureKey } from "../../common/assets";
 import { Depth } from "../../common/config";
 import { BaseObject } from "./base-object";
+import * as tiled from "../../tiled/types";
 
-type Color = "Blue" | "Green" | "Red" | "Yellow";
+type Color = tiled.Balloon["properties"]["color"];
 
 type Config = {
-  color: Color;
   scene: Phaser.Scene;
-  x: number;
-  y: number;
+  properties: Pick<tiled.Balloon, "x" | "y" | "properties">;
 };
 
 export class Balloon extends BaseObject {
@@ -22,10 +21,17 @@ export class Balloon extends BaseObject {
   public readonly isInteractable = true;
   public readonly isMovable = true;
 
-  constructor({ color, ...config }: Config) {
+  constructor({
+    scene,
+    properties: {
+      x,
+      y,
+      properties: { color },
+    },
+  }: Config) {
     const [textureKey, texture] = Balloon.getTexture(color);
 
-    super({ ...config, texture });
+    super({ scene, x, y, texture });
 
     this.#color = color;
 

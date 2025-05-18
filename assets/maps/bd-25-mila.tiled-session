@@ -163,6 +163,7 @@
     "last.exportedFilePath": "/Users/tobiasbelch/fea/game/bd-25-mila/assets/images/areas/house",
     "last.externalTilesetPath": "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets",
     "last.imagePath": "/Users/tobiasbelch/fea/game/bd-25-mila/assets/images/objects",
+    "last.objectTypesPath": "/Users/tobiasbelch/fea/game/bd-25-mila/assets/maps/bd-25-mila.types.json",
     "map.fixedSize": true,
     "map.height": 2,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
@@ -174,7 +175,7 @@
         "bd-25-mila-interior.tmx"
     ],
     "project": "bd-25-mila.tiled-project",
-    "property.type": "bool",
+    "property.type": "NpcType",
     "recentFiles": [
         "bd-25-mila-interior.tmx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/interior.map.tmx",

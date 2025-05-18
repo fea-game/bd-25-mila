@@ -1,0 +1,153 @@
+[
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 2,
+        "members": [
+            {
+                "name": "color",
+                "propertyType": "Color",
+                "type": "string",
+                "value": "Blue"
+            }
+        ],
+        "name": "Balloon",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    },
+    {
+        "id": 7,
+        "name": "Color",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+            "Blue",
+            "Green",
+            "Red",
+            "Yellow"
+        ],
+        "valuesAsFlags": false
+    },
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 10,
+        "members": [
+            {
+                "name": "type",
+                "propertyType": "NpcType",
+                "type": "string",
+                "value": "Dog"
+            }
+        ],
+        "name": "NPC",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    },
+    {
+        "id": 15,
+        "name": "NpcType",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+            "Dog",
+            "Father",
+            "Mother",
+            "Neighbor",
+            "Mother",
+            "Sister",
+            "Thief"
+        ],
+        "valuesAsFlags": false
+    },
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 1,
+        "members": [
+            {
+                "name": "isWithCake",
+                "type": "bool",
+                "value": false
+            }
+        ],
+        "name": "Plate",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 8,
+        "members": [
+        ],
+        "name": "Player",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 4,
+        "members": [
+            {
+                "name": "isOpened",
+                "type": "bool",
+                "value": false
+            }
+        ],
+        "name": "Toilet",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    }
+]

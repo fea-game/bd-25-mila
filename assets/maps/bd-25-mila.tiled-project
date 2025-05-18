@@ -19,7 +19,7 @@
                     "name": "color",
                     "propertyType": "Color",
                     "type": "string",
-                    "value": "blue"
+                    "value": "Blue"
                 }
             ],
             "name": "Balloon",
@@ -42,10 +42,10 @@
             "storageType": "string",
             "type": "enum",
             "values": [
-                "blue",
-                "green",
-                "red",
-                "yellow"
+                "Blue",
+                "Green",
+                "Red",
+                "Yellow"
             ],
             "valuesAsFlags": false
         },
@@ -56,8 +56,9 @@
             "members": [
                 {
                     "name": "type",
+                    "propertyType": "NpcType",
                     "type": "string",
-                    "value": ""
+                    "value": "Dog"
                 }
             ],
             "name": "NPC",
@@ -73,6 +74,22 @@
                 "wangset",
                 "project"
             ]
+        },
+        {
+            "id": 15,
+            "name": "NpcType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "Dog",
+                "Father",
+                "Mother",
+                "Neighbor",
+                "Mother",
+                "Sister",
+                "Thief"
+            ],
+            "valuesAsFlags": false
         },
         {
             "color": "#ffa0a0a4",

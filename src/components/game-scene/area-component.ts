@@ -1,21 +1,20 @@
+import Phaser from "phaser";
 import { getAreaImage, getAreaMap, getAreaTileset, ImageType, TilesetType } from "../../common/assets";
 import { Depth } from "../../common/config";
-import { Area, getAreaLayer, LayerType, LayerTypeKey, SectionId } from "../../common/types";
-import { BaseObject } from "../../game-objects/objects/base-object";
+import { Area, getAreaLayer, LayerType, LayerTypeKey } from "../../common/types";
 import GameScene from "../../scenes/game-scene";
 import { BaseGameSceneComponent } from "./base-game-scene-component";
+import * as tiled from "../../tiled";
+import { Balloon } from "../../game-objects/objects/balloon";
 
 export class AreaComponent extends BaseGameSceneComponent {
   private static ImageLayers: Array<LayerTypeKey> = ["Background", "Foreground"];
 
   private area: Area;
+  private map: Phaser.Tilemaps.Tilemap;
   #collisionLayer: Phaser.Tilemaps.TilemapLayer;
-  #objectsBySection: Record<
-    SectionId,
-    {
-      objects: BaseObject;
-    }
-  >;
+  #movableObjects: Phaser.GameObjects.Group;
+  #chunks: Map<tiled.Chunk["id"], {}>;
 
   constructor(host: GameScene, area: Area) {
     super(host);
@@ -28,12 +27,20 @@ export class AreaComponent extends BaseGameSceneComponent {
     return this.#collisionLayer;
   }
 
-  private create(): void {
-    this.createImageLayers();
-    this.createCollisionLayer();
+  get movableObjects(): Phaser.GameObjects.Group {
+    return this.#movableObjects;
   }
 
-  private createImageLayers() {
+  private create(): void {
+    this.#movableObjects = this.host.add.group([]);
+    this.#chunks = new Map();
+    this.map = this.host.make.tilemap({ key: getAreaMap(this.area) });
+    this.createImageLayers();
+    this.createCollisionLayer();
+    this.createChunks();
+  }
+
+  private createImageLayers(): void {
     AreaComponent.ImageLayers.forEach((layerTypeKey) => {
       this.host.add
         .image(0, 0, getAreaImage(this.area, ImageType[layerTypeKey]), 0)
@@ -42,10 +49,8 @@ export class AreaComponent extends BaseGameSceneComponent {
     });
   }
 
-  private createCollisionLayer() {
-    const map = this.host.make.tilemap({ key: getAreaMap(this.area) });
-
-    const collisionTiles = map.addTilesetImage(
+  private createCollisionLayer(): void {
+    const collisionTiles = this.map.addTilesetImage(
       getAreaTileset(this.area, TilesetType.Collision),
       getAreaImage(this.area, ImageType.Collision)
     );
@@ -53,12 +58,48 @@ export class AreaComponent extends BaseGameSceneComponent {
       throw new Error("Error while creating collision tileset!");
     }
 
-    const collisionLayer = map.createLayer(getAreaLayer(this.area, LayerType.Collision), [collisionTiles], 0, 0);
+    const collisionLayer = this.map.createLayer(getAreaLayer(this.area, LayerType.Collision), [collisionTiles], 0, 0);
     if (!collisionLayer) {
       throw new Error("Error while creating collision layer!");
     }
 
     this.#collisionLayer = collisionLayer.setDepth(Depth.Collision).setAlpha(0.3);
     this.#collisionLayer.setCollision([collisionLayer.tileset[0].firstgid]);
+  }
+
+  private createChunks(): void {
+    const chunkLayers = tiled.getObjectLayerNames(this.map, tiled.Layer.Chunks).map((layerName) => {
+      const [_, id, group, ...rest] = layerName.split(tiled.LayerNameDelimiter);
+
+      return {
+        layerName,
+        id,
+        group,
+        rest,
+      };
+    });
+
+    for (const { id, layerName, group } of chunkLayers) {
+      if (!this.#chunks.has(id)) {
+        this.#chunks.set(id, {});
+      }
+
+      if (group === tiled.Layer.Objects) {
+        this.createObjects({ chunkId: id, layerName });
+      }
+    }
+  }
+
+  private createObjects({ layerName }: { chunkId: string; layerName: string }): void {
+    const objects = tiled.getObjectsFromLayer(this.map, layerName);
+
+    for (const object of objects) {
+      switch (object.type) {
+        case "Balloon":
+          this.#movableObjects.add(new Balloon({ scene: this.host, properties: object }));
+          break;
+        default:
+      }
+    }
   }
 }
