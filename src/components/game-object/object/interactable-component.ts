@@ -9,7 +9,7 @@ type Config = {
   onInteracted?: () => void;
 };
 
-export class InteractableObjectComponent extends BaseGameObjectComponent {
+export class InteractableComponent extends BaseGameObjectComponent {
   #type: InteractionType;
   #onInteracted?: () => void;
   #canBeInteractedWith: () => boolean;

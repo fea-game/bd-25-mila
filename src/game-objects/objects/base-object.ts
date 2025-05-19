@@ -1,25 +1,25 @@
 import Phaser from "phaser";
 import { GameObject } from "../../common/types";
-import { InteractableObjectComponent } from "../../components/game-object/object/interactable-object-component";
+import { InteractableComponent } from "../../components/game-object/object/interactable-component";
 
 type Config = {
   scene: Phaser.Scene;
   x: number;
   y: number;
   texture: string;
-  isInteractable?: false | Omit<ConstructorParameters<typeof InteractableObjectComponent>[0], "host">;
+  isInteractable?: false | Omit<ConstructorParameters<typeof InteractableComponent>[0], "host">;
   isMovable?: boolean;
 };
 
 export abstract class BaseObject extends GameObject {
-  #isInteractable: false | InteractableObjectComponent;
+  #isInteractable: false | InteractableComponent;
   #isMovable: boolean = false;
 
   constructor(config: Config) {
     super(config.scene, config.x, config.y, config.texture);
 
     this.#isInteractable = config.isInteractable
-      ? new InteractableObjectComponent({ host: this, ...config.isInteractable })
+      ? new InteractableComponent({ host: this, ...config.isInteractable })
       : false;
     this.#isMovable = config.isMovable ?? false;
 
@@ -28,7 +28,7 @@ export abstract class BaseObject extends GameObject {
     this.setOrigin(0, 1).setImmovable(!this.#isMovable);
   }
 
-  get isInteractable(): InteractableObjectComponent | false {
+  get isInteractable(): InteractableComponent | false {
     return this.#isInteractable;
   }
 
