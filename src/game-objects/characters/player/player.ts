@@ -16,6 +16,8 @@ export class Player extends BaseCharacter {
     animations: [AnimationType.Idle, AnimationType.Walk],
   };
 
+  private static ShortenBodyBy = 46;
+
   constructor({ properties, ...config }: Config) {
     super({
       ...config,
@@ -24,14 +26,16 @@ export class Player extends BaseCharacter {
       speed: 180,
       texture: Texture.Player,
       x: properties.x,
-      y: properties.y - 42,
+      y: properties.y - Player.ShortenBodyBy,
     });
 
     this.stateMachine.addState(new IdleState(this, this.stateMachine));
     this.stateMachine.addState(new MovingState(this, this.stateMachine));
     this.stateMachine.setState(CharacterState.Idle);
 
-    this.setDepth(Depth.Player).setBodySize(48, 24).setOffset(0, 48);
+    this.setDepth(Depth.Player)
+      .setBodySize(48, this.height - Player.ShortenBodyBy)
+      .setOffset(0, Player.ShortenBodyBy);
 
     config.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     config.scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {

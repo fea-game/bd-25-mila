@@ -18,8 +18,6 @@ export class Balloon extends BaseObject {
   }
 
   #color: Color;
-  public readonly isInteractable = false;
-  public readonly isMovable = true;
 
   constructor({
     scene,
@@ -31,15 +29,11 @@ export class Balloon extends BaseObject {
   }: Config) {
     const [textureKey, texture] = Balloon.getTexture(color);
 
-    super({ scene, x, y, texture });
+    super({ scene, x, y, texture, isMovable: true });
 
     this.#color = color;
 
-    this.scene.add.existing(this);
-    this.scene.physics.add.existing(this);
-    this.setDepth(Depth.Objects);
-    this.setDrag(200);
-    this.setMaxVelocity(300);
+    this.setDrag(200).setMaxVelocity(300);
 
     this.play(
       {

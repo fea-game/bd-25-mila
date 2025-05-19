@@ -48,6 +48,31 @@
         "key": "animated-objects",
         "textureURL": "animated-objects.png",
         "atlasURL": "animated-objects.aesprite.json"
+      },
+      {
+        "type": "image",
+        "key": "cake",
+        "textureURL": "cake.png"
+      },
+      {
+        "type": "image",
+        "key": "plate-with-cake",
+        "textureURL": "plate-with-cake.png"
+      },
+      {
+        "type": "image",
+        "key": "plate-without-cake",
+        "textureURL": "plate-without-cake.png"
+      },
+      {
+        "type": "image",
+        "key": "toilet-closed",
+        "textureURL": "toilet-closed.png"
+      },
+      {
+        "type": "image",
+        "key": "toilet-opened",
+        "textureURL": "toilet-opened.png"
       }
     ]
   }

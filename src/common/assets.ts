@@ -13,6 +13,11 @@ export const Texture = {
   GreenBalloon: "animated-objects",
   RedBalloon: "animated-objects",
   YellowBalloon: "animated-objects",
+  Cake: "cake",
+  PlateWithCake: "plate-with-cake",
+  PlateWithoutCake: "plate-without-cake",
+  ToiletClosed: "toilet-closed",
+  ToiletOpened: "toilet-opened",
 } as const satisfies Record<CharacterKey | string, string>;
 
 export type TextureKey = keyof typeof Texture;

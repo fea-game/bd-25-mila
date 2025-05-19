@@ -1,11 +1,12 @@
 import Phaser from "phaser";
 import { getAreaImage, getAreaMap, getAreaTileset, ImageType, TilesetType } from "../../common/assets";
 import { Depth } from "../../common/config";
-import { Area, getAreaLayer, LayerType, LayerTypeKey } from "../../common/types";
+import { Area, getAreaLayer, InteractionType, LayerType, LayerTypeKey } from "../../common/types";
 import GameScene from "../../scenes/game-scene";
 import { BaseGameSceneComponent } from "./base-game-scene-component";
 import * as tiled from "../../tiled";
 import { Balloon } from "../../game-objects/objects/balloon";
+import { Toilet } from "../../game-objects/objects/toilet";
 
 export class AreaComponent extends BaseGameSceneComponent {
   private static ImageLayers: Array<LayerTypeKey> = ["Background", "Foreground"];
@@ -13,6 +14,7 @@ export class AreaComponent extends BaseGameSceneComponent {
   private area: Area;
   private map: Phaser.Tilemaps.Tilemap;
   #collisionLayer: Phaser.Tilemaps.TilemapLayer;
+  #interactableObjects: Record<InteractionType, Phaser.GameObjects.Group>;
   #movableObjects: Phaser.GameObjects.Group;
   #playerSpawnLocation: tiled.Player;
   #chunks: Map<tiled.Chunk["id"], {}>;
@@ -28,6 +30,10 @@ export class AreaComponent extends BaseGameSceneComponent {
     return this.#collisionLayer;
   }
 
+  get interactableObjects(): Record<InteractionType, Phaser.GameObjects.Group> {
+    return this.#interactableObjects;
+  }
+
   get movableObjects(): Phaser.GameObjects.Group {
     return this.#movableObjects;
   }
@@ -37,6 +43,9 @@ export class AreaComponent extends BaseGameSceneComponent {
   }
 
   private create(): void {
+    this.#interactableObjects = {
+      action: this.host.add.group([]),
+    };
     this.#movableObjects = this.host.add.group([]);
     this.#chunks = new Map();
     this.map = this.host.make.tilemap({ key: getAreaMap(this.area) });
@@ -106,11 +115,17 @@ export class AreaComponent extends BaseGameSceneComponent {
           case "Player":
             this.#playerSpawnLocation = tiledObject;
             break;
+          case "Toilet":
+            return new Toilet({ scene: this.host, properties: tiledObject });
           default:
         }
       })(tiledObject);
 
       object?.setDepth(Depth.Objects);
+
+      if (object?.isInteractable) {
+        this.#interactableObjects[object.isInteractable.type].add(object);
+      }
 
       if (object?.isMovable) {
         this.#movableObjects.add(object);

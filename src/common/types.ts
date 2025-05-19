@@ -44,3 +44,9 @@ export const Direction = {
 
 export type DirectionKey = keyof typeof Direction;
 export type Direction = (typeof Direction)[DirectionKey];
+
+export const InteractionType = {
+  Action: "action",
+} as const;
+
+export type InteractionType = (typeof InteractionType)[keyof typeof InteractionType];
