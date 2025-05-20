@@ -13,7 +13,7 @@ export class AreaComponent extends BaseGameSceneComponent {
 
   private area: Area;
   private map: Phaser.Tilemaps.Tilemap;
-  #collisionLayer: Phaser.Tilemaps.TilemapLayer;
+  #collisionLayer: Phaser.GameObjects.Group;
   #interactableObjects: Record<InteractionType, Phaser.GameObjects.Group>;
   #movableObjects: Phaser.GameObjects.Group;
   #playerSpawnLocation: tiled.Player;
@@ -26,7 +26,7 @@ export class AreaComponent extends BaseGameSceneComponent {
     this.create();
   }
 
-  get collisionLayer(): Phaser.Tilemaps.TilemapLayer {
+  get collisionLayer() {
     return this.#collisionLayer;
   }
 
@@ -43,6 +43,7 @@ export class AreaComponent extends BaseGameSceneComponent {
   }
 
   private create(): void {
+    this.#collisionLayer = this.host.add.group([]);
     this.#interactableObjects = {
       action: this.host.add.group([]),
     };
@@ -77,8 +78,9 @@ export class AreaComponent extends BaseGameSceneComponent {
       throw new Error("Error while creating collision layer!");
     }
 
-    this.#collisionLayer = collisionLayer.setDepth(Depth.Collision).setAlpha(0.3);
-    this.#collisionLayer.setCollision([collisionLayer.tileset[0].firstgid]);
+    collisionLayer.setDepth(Depth.Collision).setAlpha(0.3).setCollision([collisionLayer.tileset[0].firstgid]);
+
+    this.#collisionLayer.add(collisionLayer);
   }
 
   private createChunks(): void {
@@ -124,7 +126,8 @@ export class AreaComponent extends BaseGameSceneComponent {
       object?.setDepth(Depth.Objects);
 
       if (object?.isInteractable) {
-        this.#interactableObjects[object.isInteractable.type].add(object);
+        this.#collisionLayer.add(object);
+        this.#interactableObjects[object.isInteractable.type].add(object.isInteractable.trigger);
       }
 
       if (object?.isMovable) {

@@ -1,13 +1,18 @@
 import Phaser from "phaser";
-import { Area, SceneKey } from "../common/types";
+import { Area, hasBody, SceneKey } from "../common/types";
 import { KeyboardComponent } from "../components/input/keyboard-component";
 import { Player } from "../game-objects/characters/player/player";
 import { AreaComponent } from "../components/game-scene/area-component";
+import { Interactable, isInteractable } from "../components/game-object/object/interactable-component";
+import { ActionZoneSize } from "../common/config";
 
 export default class GameScene extends Phaser.Scene {
-  private keyboardComponent: KeyboardComponent;
-  private areaComponent: AreaComponent;
-  public player: Player;
+  #keyboardComponent: KeyboardComponent;
+  #areaComponent: AreaComponent;
+  #player: Player;
+  #currentlyOverlapping: Set<Interactable>;
+  #previouslyOverlapping: Set<Interactable>;
+  #currentInteractable: Interactable | undefined;
 
   constructor() {
     super({ key: SceneKey.Game });
@@ -19,33 +24,87 @@ export default class GameScene extends Phaser.Scene {
       return;
     }
 
-    this.keyboardComponent = new KeyboardComponent(this.input.keyboard);
-    this.areaComponent = new AreaComponent(this, Area.House);
+    this.#currentlyOverlapping = new Set();
+    this.#previouslyOverlapping = new Set();
+    this.#keyboardComponent = new KeyboardComponent(this.input.keyboard);
+    this.#areaComponent = new AreaComponent(this, Area.House);
 
-    this.player = new Player({
+    this.#player = new Player({
       scene: this,
-      input: this.keyboardComponent,
-      properties: this.areaComponent.playerSpawnLocation,
+      input: this.#keyboardComponent,
+      properties: this.#areaComponent.playerSpawnLocation,
     });
 
-    this.cameras.main.startFollow(this.player);
+    this.cameras.main.startFollow(this.#player);
 
-    this.physics.add.collider(this.player, this.areaComponent.collisionLayer);
-    this.physics.add.collider(this.player, this.areaComponent.movableObjects);
-    this.physics.add.collider(
-      this.player,
-      this.areaComponent.interactableObjects.action,
-      (...args) => {
-        console.log("COLLIDE", args);
-      },
-      (...args) => {
-        console.log("PROCESS", args);
-        return true;
+    this.physics.add.collider(this.#player, this.#areaComponent.collisionLayer);
+    this.physics.add.collider(this.#player, this.#areaComponent.movableObjects);
+
+    this.physics.add.collider(this.#areaComponent.movableObjects, this.#areaComponent.collisionLayer);
+    this.physics.add.collider(this.#areaComponent.movableObjects, this.#areaComponent.movableObjects);
+  }
+
+  update(): void {
+    // Clear this frame's overlap state
+    this.#currentlyOverlapping.clear();
+
+    // Collect overlaps
+    this.physics.overlap(this.#player, this.#areaComponent.interactableObjects.action, (_, trigger) => {
+      if (!isInteractable(trigger)) return;
+      this.#currentlyOverlapping.add(trigger.host);
+    });
+
+    // No overlaps? Clear everything
+    if (this.#currentlyOverlapping.size === 0) {
+      if (this.#currentInteractable) {
+        this.#currentInteractable.isInteractable.canBeInteractedWith = false;
+        this.#currentInteractable = undefined;
       }
-    );
 
-    this.physics.add.collider(this.areaComponent.movableObjects, this.areaComponent.collisionLayer);
-    this.physics.add.collider(this.areaComponent.movableObjects, this.areaComponent.movableObjects);
-    this.physics.add.collider(this.areaComponent.movableObjects, this.areaComponent.interactableObjects.action);
+      this.#previouslyOverlapping.clear();
+      return;
+    }
+
+    // Determine player's center
+    const playerCenter = new Phaser.Math.Vector2(this.#player.body.center.x, this.#player.body.center.y);
+
+    // Find nearest interactable
+    let nearest: Interactable | undefined;
+    let minDistance = Number.POSITIVE_INFINITY;
+
+    for (const i of this.#currentlyOverlapping) {
+      if (!hasBody(i)) {
+        minDistance = ActionZoneSize;
+        nearest = i;
+
+        continue;
+      }
+
+      const center = new Phaser.Math.Vector2(i.body.center.x, i.body.center.y);
+      const dist = Phaser.Math.Distance.BetweenPoints(playerCenter, center);
+
+      if (dist < minDistance) {
+        minDistance = dist;
+        nearest = i;
+      }
+    }
+
+    // Disable all others
+    for (const i of this.#previouslyOverlapping) {
+      if (i !== nearest) {
+        i.isInteractable.canBeInteractedWith = false;
+      }
+    }
+
+    // Enable nearest
+    if (nearest && nearest !== this.#currentInteractable) {
+      nearest.isInteractable.canBeInteractedWith = true;
+      this.#currentInteractable = nearest;
+    }
+
+    // Store previous frame's set
+    const temp = this.#previouslyOverlapping;
+    this.#previouslyOverlapping = this.#currentlyOverlapping;
+    this.#currentlyOverlapping = temp;
   }
 }

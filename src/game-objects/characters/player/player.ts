@@ -16,7 +16,7 @@ export class Player extends BaseCharacter {
     animations: [AnimationType.Idle, AnimationType.Walk],
   };
 
-  private static ShortenBodyBy = 46;
+  private static ShortenBodyBy = 0;
 
   constructor({ properties, ...config }: Config) {
     super({

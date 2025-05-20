@@ -2,6 +2,8 @@ import Phaser from "phaser";
 import { InputComponent } from "./input-component";
 
 export class KeyboardComponent extends InputComponent {
+  public static readonly ActionKey: keyof typeof Phaser.Input.Keyboard.KeyCodes = "B";
+
   #cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
   #actionKey: Phaser.Input.Keyboard.Key;
 
@@ -9,9 +11,7 @@ export class KeyboardComponent extends InputComponent {
     super();
 
     this.#cursorKeys = keyboardPlugin.createCursorKeys();
-    this.#actionKey = keyboardPlugin.addKey(
-      Phaser.Input.Keyboard.KeyCodes.SPACE
-    );
+    this.#actionKey = keyboardPlugin.addKey(Phaser.Input.Keyboard.KeyCodes[KeyboardComponent.ActionKey]);
   }
 
   override get isUpDown(): boolean {

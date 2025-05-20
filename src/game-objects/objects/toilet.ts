@@ -2,18 +2,24 @@ import { Texture } from "../../common/assets";
 import { BaseObject } from "./base-object";
 import * as tiled from "../../tiled/types";
 import { InteractionType } from "../../common/types";
+import { Interactable, InteractableComponent } from "../../components/game-object/object/interactable-component";
 
 type Config = {
   scene: Phaser.Scene;
   properties: Pick<tiled.Toilet, "x" | "y" | "properties">;
 };
 
-export class Toilet extends BaseObject {
+export class Toilet extends BaseObject implements Interactable {
   private static getTexture(isOpened: boolean): Texture {
     return Texture[`Toilet${isOpened ? "Opened" : "Closed"}`];
   }
 
+  private static ShortenBodyBy = 54;
+
+  #isInteractable: InteractableComponent;
   #isOpened: boolean;
+
+  public readonly isMovable = false;
 
   constructor({
     scene,
@@ -23,15 +29,23 @@ export class Toilet extends BaseObject {
       properties: { isOpened },
     },
   }: Config) {
-    super({
-      scene,
-      x,
-      y,
-      texture: Toilet.getTexture(isOpened),
-      isInteractable: { type: InteractionType.Action },
-    });
+    super({ scene, x, y, texture: Toilet.getTexture(isOpened) });
 
     this.#isOpened = isOpened;
+
+    this.setBodySize(this.displayWidth, this.displayHeight - Toilet.ShortenBodyBy).setOffset(0, Toilet.ShortenBodyBy);
+    this.setImmovable(true);
+    this.#isInteractable = new InteractableComponent({
+      host: this,
+      type: InteractionType.Action,
+      interact: () => {
+        this.isOpened = false;
+      },
+    });
+  }
+
+  get isInteractable(): InteractableComponent {
+    return this.#isInteractable;
   }
 
   public get isOpened(): boolean {

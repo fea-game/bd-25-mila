@@ -1,5 +1,4 @@
 import { getTextureAnimation, Texture, TextureKey } from "../../common/assets";
-import { Depth } from "../../common/config";
 import { BaseObject } from "./base-object";
 import * as tiled from "../../tiled/types";
 
@@ -19,6 +18,9 @@ export class Balloon extends BaseObject {
 
   #color: Color;
 
+  public readonly isInteractable = false;
+  public readonly isMovable = true;
+
   constructor({
     scene,
     properties: {
@@ -29,7 +31,7 @@ export class Balloon extends BaseObject {
   }: Config) {
     const [textureKey, texture] = Balloon.getTexture(color);
 
-    super({ scene, x, y, texture, isMovable: true });
+    super({ scene, x, y, texture });
 
     this.#color = color;
 

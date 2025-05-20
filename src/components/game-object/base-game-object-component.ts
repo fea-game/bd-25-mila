@@ -1,6 +1,6 @@
 import { Body, GameObject } from "../../common/types";
 
-export class BaseGameObjectComponent {
+export abstract class BaseGameObjectComponent {
   static getFrom<T>(host: GameObject | Body): T {
     return host[`_${this.name}`] as T;
   }

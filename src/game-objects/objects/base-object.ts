@@ -7,32 +7,17 @@ type Config = {
   x: number;
   y: number;
   texture: string;
-  isInteractable?: false | Omit<ConstructorParameters<typeof InteractableComponent>[0], "host">;
-  isMovable?: boolean;
 };
 
 export abstract class BaseObject extends GameObject {
-  #isInteractable: false | InteractableComponent;
-  #isMovable: boolean = false;
+  public abstract isMovable: boolean;
+  public abstract isInteractable: false | InteractableComponent;
 
   constructor(config: Config) {
     super(config.scene, config.x, config.y, config.texture);
 
-    this.#isInteractable = config.isInteractable
-      ? new InteractableComponent({ host: this, ...config.isInteractable })
-      : false;
-    this.#isMovable = config.isMovable ?? false;
-
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
-    this.setOrigin(0, 1).setImmovable(!this.#isMovable);
-  }
-
-  get isInteractable(): InteractableComponent | false {
-    return this.#isInteractable;
-  }
-
-  get isMovable(): boolean {
-    return this.#isMovable;
+    this.setOrigin(0, 1);
   }
 }
