@@ -5,18 +5,24 @@ import { IdleState } from "../../../components/game-object/state-machine/charact
 import { MovingState } from "../../../components/game-object/state-machine/character/moving-state";
 import { BaseCharacter, Config as CharacterGameObjectConfig } from "../base-character";
 import * as tiled from "../../../tiled/types";
+import { Actor, InteractionComponent } from "../../../components/game-object/character/interaction-component";
+import { InteractionType } from "../../../common/types";
 
 type Config = Omit<CharacterGameObjectConfig, "animations" | "speed" | "texture" | "x" | "y"> & {
   properties: Pick<tiled.Player, "x" | "y">;
 };
 
-export class Player extends BaseCharacter {
+export class Player extends BaseCharacter implements Actor<typeof Player.InteractionTypes> {
   private static Animations: CharacterGameObjectConfig["animations"] = {
     character: Character.Player,
     animations: [AnimationType.Idle, AnimationType.Walk],
   };
 
+  private static InteractionTypes: InteractionType[] = ["action"];
+
   private static ShortenBodyBy = 0;
+
+  #isActor: InteractionComponent<typeof Player.InteractionTypes>;
 
   constructor({ properties, ...config }: Config) {
     super({
@@ -28,6 +34,8 @@ export class Player extends BaseCharacter {
       x: properties.x,
       y: properties.y - Player.ShortenBodyBy,
     });
+
+    this.#isActor = new InteractionComponent(this, Player.InteractionTypes);
 
     this.stateMachine.addState(new IdleState(this, this.stateMachine));
     this.stateMachine.addState(new MovingState(this, this.stateMachine));
@@ -41,5 +49,9 @@ export class Player extends BaseCharacter {
     config.scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       config.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
     });
+  }
+
+  get isActor(): InteractionComponent<typeof Player.InteractionTypes> {
+    return this.#isActor;
   }
 }

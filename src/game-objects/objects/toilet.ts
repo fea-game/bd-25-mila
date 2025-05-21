@@ -9,7 +9,7 @@ type Config = {
   properties: Pick<tiled.Toilet, "x" | "y" | "properties">;
 };
 
-export class Toilet extends BaseObject implements Interactable {
+export class Toilet extends BaseObject implements Interactable<typeof InteractionType.Action> {
   private static getTexture(isOpened: boolean): Texture {
     return Texture[`Toilet${isOpened ? "Opened" : "Closed"}`];
   }
@@ -39,7 +39,7 @@ export class Toilet extends BaseObject implements Interactable {
       host: this,
       type: InteractionType.Action,
       interact: () => {
-        this.isOpened = false;
+        this.isOpened = !this.#isOpened;
       },
     });
   }

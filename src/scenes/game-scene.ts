@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { Area, hasBody, SceneKey } from "../common/types";
+import { Area, hasBody, InteractionType, SceneKey } from "../common/types";
 import { KeyboardComponent } from "../components/input/keyboard-component";
 import { Player } from "../game-objects/characters/player/player";
 import { AreaComponent } from "../components/game-scene/area-component";
@@ -10,9 +10,8 @@ export default class GameScene extends Phaser.Scene {
   #keyboardComponent: KeyboardComponent;
   #areaComponent: AreaComponent;
   #player: Player;
-  #currentlyOverlapping: Set<Interactable>;
-  #previouslyOverlapping: Set<Interactable>;
-  #currentInteractable: Interactable | undefined;
+  #currentlyOverlapping: Set<Interactable<InteractionType>>;
+  #previouslyOverlapping: Set<Interactable<InteractionType>>;
 
   constructor() {
     super({ key: SceneKey.Game });
@@ -48,17 +47,22 @@ export default class GameScene extends Phaser.Scene {
     // Clear this frame's overlap state
     this.#currentlyOverlapping.clear();
 
+    const interactionType = InteractionType.Action;
+
     // Collect overlaps
-    this.physics.overlap(this.#player, this.#areaComponent.interactableObjects.action, (_, trigger) => {
+    this.physics.overlap(this.#player, this.#areaComponent.interactableObjects[interactionType], (_, trigger) => {
       if (!isInteractable(trigger)) return;
       this.#currentlyOverlapping.add(trigger.host);
     });
 
+    let isPlayerFocused = this.#player.isActor.getFocused(interactionType);
+
     // No overlaps? Clear everything
     if (this.#currentlyOverlapping.size === 0) {
-      if (this.#currentInteractable) {
-        this.#currentInteractable.isInteractable.canBeInteractedWith = false;
-        this.#currentInteractable = undefined;
+      if (isPlayerFocused) {
+        isPlayerFocused.isInteractable.unfocus();
+        this.#player.isActor.unfocus(interactionType);
+        isPlayerFocused = undefined;
       }
 
       this.#previouslyOverlapping.clear();
@@ -69,7 +73,7 @@ export default class GameScene extends Phaser.Scene {
     const playerCenter = new Phaser.Math.Vector2(this.#player.body.center.x, this.#player.body.center.y);
 
     // Find nearest interactable
-    let nearest: Interactable | undefined;
+    let nearest: Interactable<typeof interactionType> | undefined;
     let minDistance = Number.POSITIVE_INFINITY;
 
     for (const i of this.#currentlyOverlapping) {
@@ -92,14 +96,15 @@ export default class GameScene extends Phaser.Scene {
     // Disable all others
     for (const i of this.#previouslyOverlapping) {
       if (i !== nearest) {
-        i.isInteractable.canBeInteractedWith = false;
+        i.isInteractable.unfocus();
       }
     }
 
     // Enable nearest
-    if (nearest && nearest !== this.#currentInteractable) {
-      nearest.isInteractable.canBeInteractedWith = true;
-      this.#currentInteractable = nearest;
+    if (nearest && nearest !== isPlayerFocused) {
+      isPlayerFocused = nearest;
+      this.#player.isActor.focus(nearest);
+      nearest.isInteractable.focus(this.#player);
     }
 
     // Store previous frame's set
