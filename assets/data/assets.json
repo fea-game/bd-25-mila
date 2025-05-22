@@ -55,12 +55,6 @@
         "key": "tobias",
         "textureURL": "tobias.png",
         "atlasURL": "tobias.aesprite.json"
-      },
-      {
-        "type": "aseprite",
-        "key": "character",
-        "textureURL": "character.png",
-        "atlasURL": "character.aesprite.json"
       }
     ]
   },

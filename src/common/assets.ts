@@ -1,7 +1,6 @@
 import { Area, Direction, LayerTypeKey } from "./types";
 
 export const Character = {
-  Player: "player",
   Amelie: "amelie",
   Cynthia: "cynthia",
   Mila: "mila",
@@ -12,7 +11,6 @@ type CharacterKey = keyof typeof Character;
 export type Character = (typeof Character)[CharacterKey];
 
 export const Texture = {
-  Player: "character",
   Amelie: "amelie",
   Cynthia: "cynthia",
   Mila: "mila",
@@ -36,7 +34,6 @@ export const AnimatedTextures: Array<Texture> = [
   Texture.Cynthia,
   Texture.Mila,
   Texture.Tobias,
-  Texture.Player,
   Texture.YellowBalloon,
 ];
 
