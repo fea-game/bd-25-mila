@@ -25,6 +25,8 @@ export type Config = {
 };
 
 export abstract class BaseCharacter extends GameObject {
+  protected static ShortenBodyBy = 48;
+
   declare body: Body;
 
   private animationComponent: CharacterAnimationComponent;
@@ -50,6 +52,7 @@ export abstract class BaseCharacter extends GameObject {
     scene.physics.add.existing(this);
 
     this.setOrigin(0, 1);
+    this.setBodySize(this.width, this.height - BaseCharacter.ShortenBodyBy).setOffset(0, BaseCharacter.ShortenBodyBy);
   }
 
   get animation(): CharacterAnimationComponent {

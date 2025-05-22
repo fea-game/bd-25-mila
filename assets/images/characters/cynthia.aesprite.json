@@ -368,7 +368,7 @@
   "meta": {
     "app": "manually compiled",
     "version": "1.0",
-    "image": "cynthia.png",
+    "image": "cynthia-party-hat.png",
     "format": "RGBA8888",
     "size": { "w": 1152, "h": 288 },
     "scale": "1",

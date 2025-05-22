@@ -35,25 +35,25 @@
       {
         "type": "aseprite",
         "key": "amelie",
-        "textureURL": "amelie.png",
+        "textureURL": "amelie-party-hat.png",
         "atlasURL": "amelie.aesprite.json"
       },
       {
         "type": "aseprite",
         "key": "cynthia",
-        "textureURL": "cynthia.png",
+        "textureURL": "cynthia-party-hat.png",
         "atlasURL": "cynthia.aesprite.json"
       },
       {
         "type": "aseprite",
         "key": "mila",
-        "textureURL": "mila.png",
+        "textureURL": "mila-party-hat.png",
         "atlasURL": "mila.aesprite.json"
       },
       {
         "type": "aseprite",
         "key": "tobias",
-        "textureURL": "tobias.png",
+        "textureURL": "tobias-party-hat.png",
         "atlasURL": "tobias.aesprite.json"
       }
     ]
