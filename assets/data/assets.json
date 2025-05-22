@@ -41,6 +41,17 @@
     ]
   },
   {
+    "path": "assets/images/hud",
+    "files": [
+      {
+        "type": "aseprite",
+        "key": "controls",
+        "textureURL": "controls.png",
+        "atlasURL": "controls.aesprite.json"
+      }
+    ]
+  },
+  {
     "path": "assets/images/objects",
     "files": [
       {

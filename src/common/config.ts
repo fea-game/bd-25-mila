@@ -6,6 +6,7 @@ export const Depth = {
   Player: 3,
   Foreground: 4,
   Objects: 5,
-} as const satisfies Record<LayerTypeKey | "Player" | "Objects", number>;
+  Indicators: 6,
+} as const satisfies Record<LayerTypeKey | "Indicators" | "Objects" | "Player", number>;
 
 export const ActionZoneSize = 60;

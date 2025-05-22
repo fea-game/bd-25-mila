@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { InputComponent } from "./input-component";
 
 export class KeyboardComponent extends InputComponent {
-  public static readonly ActionKey: keyof typeof Phaser.Input.Keyboard.KeyCodes = "B";
+  public static readonly ActionKey: keyof typeof Phaser.Input.Keyboard.KeyCodes = "X";
 
   #cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
   #actionKey: Phaser.Input.Keyboard.Key;

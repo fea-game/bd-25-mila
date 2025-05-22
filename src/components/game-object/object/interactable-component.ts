@@ -3,6 +3,7 @@ import { ActionZoneSize } from "../../../common/config";
 import { assertsHasBody, Body, GameObject, InteractionType } from "../../../common/types";
 import { BaseGameObjectComponent } from "../base-game-object-component";
 import { Actor } from "../character/interaction-component";
+import { Indicator } from "../../../game-objects/helper/indicator";
 
 type Config<T extends InteractionType> = {
   host: GameObject & Interactable<T>;
@@ -39,10 +40,11 @@ export class InteractableComponent<T extends InteractionType = InteractionType> 
     };
   }
 
+  #type: T;
   #canBeInteractedWith: boolean;
   #isFocused: Actor<T[]> | false;
-  #type: T;
   #trigger: InteractionTrigger<T>;
+  #indicator?: Indicator;
 
   public readonly interact: (actor: Actor<T[]>, onFinished?: () => void) => void;
 
@@ -99,19 +101,16 @@ export class InteractableComponent<T extends InteractionType = InteractionType> 
 
     this.#isFocused = actor;
 
-    console.log("FOCUS", this.#isFocused, this);
-
-    // TODO: show indicator
+    this.#indicator = this.#indicator ?? new Indicator({ host: this.host, texture: "controls", frame: 0 });
+    this.#indicator.setScale(2).show();
   }
 
   public unfocus(): void {
     if (!this.#isFocused) return;
 
     this.#isFocused = false;
-
-    console.log("UNFOCUS", this.#isFocused, this);
-
-    // TODO: hide indicator
+    this.#indicator?.hide();
+    this.#indicator = undefined;
   }
 
   public getFocuser(): Actor<T[]> | undefined {
@@ -129,6 +128,7 @@ export class InteractableComponent<T extends InteractionType = InteractionType> 
 
     this.#trigger.x = x;
     this.#trigger.y = y;
+    this.#indicator?.update();
   }
 }
 
