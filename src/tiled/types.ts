@@ -36,10 +36,10 @@ export const Enum = {
   },
   NpcType: {
     Dog: "Dog",
-    Father: "Father",
-    Mother: "Mother",
+    Tobias: "Tobias",
+    Cynthia: "Cynthia",
     Neightbor: "Neighbor",
-    Sister: "Sister",
+    Amelie: "Amelie",
     Thief: "Thief",
   },
 } as const;

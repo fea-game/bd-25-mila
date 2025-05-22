@@ -30,6 +30,10 @@ export class StateMachine {
     this.#currentState?.onUpdate?.();
   }
 
+  get id(): string {
+    return this.#id;
+  }
+
   get state(): State | undefined {
     return this.#currentState;
   }

@@ -46,9 +46,10 @@ export abstract class BaseCharacter extends GameObject {
     this.speedComponent = new SpeedComponent(this, speed);
     this.stateMachine = new StateMachine(id);
 
-    this.setOrigin(0, 1);
     scene.add.existing(this);
     scene.physics.add.existing(this);
+
+    this.setOrigin(0, 1);
   }
 
   get animation(): CharacterAnimationComponent {

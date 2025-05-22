@@ -6,7 +6,6 @@ import {
   LayerNameDelimiter,
   NPC,
   NpcType,
-  type Object,
   ValidObjectMappedByType,
   ObjectProperty,
   ObjectType,

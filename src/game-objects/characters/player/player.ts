@@ -13,26 +13,26 @@ type Config = Omit<CharacterGameObjectConfig, "animations" | "speed" | "texture"
 };
 
 export class Player extends BaseCharacter implements Actor<typeof Player.InteractionTypes> {
+  private static PlayerCharacterKey = "Mila";
+
   private static Animations: CharacterGameObjectConfig["animations"] = {
-    character: Character.Player,
+    character: Character[Player.PlayerCharacterKey],
     animations: [AnimationType.Idle, AnimationType.Walk],
   };
 
   private static InteractionTypes: InteractionType[] = ["action"];
-
-  private static ShortenBodyBy = 0;
 
   #isActor: InteractionComponent<typeof Player.InteractionTypes>;
 
   constructor({ properties, ...config }: Config) {
     super({
       ...config,
-      id: "player",
+      id: Character[Player.PlayerCharacterKey],
       animations: Player.Animations,
       speed: 180,
-      texture: Texture.Player,
+      texture: Texture[Player.PlayerCharacterKey],
       x: properties.x,
-      y: properties.y - Player.ShortenBodyBy,
+      y: properties.y,
     });
 
     this.#isActor = new InteractionComponent(this, Player.InteractionTypes);
@@ -41,9 +41,7 @@ export class Player extends BaseCharacter implements Actor<typeof Player.Interac
     this.stateMachine.addState(new MovingState(this, this.stateMachine));
     this.stateMachine.setState(CharacterState.Idle);
 
-    this.setDepth(Depth.Player)
-      .setBodySize(48, this.height - Player.ShortenBodyBy)
-      .setOffset(0, Player.ShortenBodyBy);
+    this.setDepth(Depth.Player);
 
     config.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     config.scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {

@@ -86,7 +86,7 @@
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 273,
+                "x": 272.5,
                 "y": 297
             }
         },
@@ -113,8 +113,8 @@
             "scale": 1,
             "selectedLayer": 7,
             "viewCenter": {
-                "x": -91,
-                "y": 331
+                "x": 816.5,
+                "y": 439
             }
         },
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/objects.map.tmx#interior": {
@@ -132,23 +132,23 @@
         },
         "bd-25-mila-interior.tmx": {
             "expandedGroupLayers": [
-                18,
                 27,
                 26,
+                18,
                 4
             ],
             "expandedObjectLayers": [
-                25,
                 27,
                 26,
-                2,
-                19
+                19,
+                25,
+                2
             ],
             "scale": 0.75,
             "selectedLayer": 11,
             "viewCenter": {
-                "x": 548,
-                "y": 486.66666666666663
+                "x": 320,
+                "y": 12.666666666666657
             }
         },
         "bd-25-mila-interior.tmx#collision": {
@@ -183,10 +183,10 @@
     "project": "bd-25-mila.tiled-project",
     "property.type": "NpcType",
     "recentFiles": [
-        "bd-25-mila-interior.tmx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/interior.tsx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/animated-objects.map.tmx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/objects.map.tmx",
+        "bd-25-mila-interior.tmx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/interior.map.tmx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/objects.tsx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/Birthday_party_01.tsx",

@@ -38,6 +38,7 @@ export default class GameScene extends Phaser.Scene {
 
     this.physics.add.collider(this.#player, this.#areaComponent.collisionLayer);
     this.physics.add.collider(this.#player, this.#areaComponent.movableObjects);
+    this.physics.add.collider(this.#areaComponent.npcs, this.#areaComponent.movableObjects);
 
     this.physics.add.collider(this.#areaComponent.movableObjects, this.#areaComponent.collisionLayer);
     this.physics.add.collider(this.#areaComponent.movableObjects, this.#areaComponent.movableObjects);

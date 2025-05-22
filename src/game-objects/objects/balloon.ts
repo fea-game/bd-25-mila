@@ -1,6 +1,7 @@
 import { getTextureAnimation, Texture, TextureKey } from "../../common/assets";
 import { BaseObject } from "./base-object";
 import * as tiled from "../../tiled/types";
+import { Depth } from "../../common/config";
 
 type Color = tiled.Balloon["properties"]["color"];
 
@@ -35,7 +36,7 @@ export class Balloon extends BaseObject {
 
     this.#color = color;
 
-    this.setDrag(200).setMaxVelocity(300);
+    this.setDepth(Depth.Objects).setDrag(200).setMaxVelocity(300);
 
     this.play(
       {

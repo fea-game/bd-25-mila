@@ -5,9 +5,6 @@
       "frame": { "x": 48, "y": 24, "w": 48, "h": 72 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 48, "y": 24, "w": 48, "h": 72 },
-      "sourceSize": { "w": 48, "h": 72 },
-      "pivot": { "x": 0.5, "y": 0.5 },
       "duration": 1000
     },
     "1": {

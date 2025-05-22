@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="26" height="16" tilewidth="48" tileheight="48" infinite="1" nextlayerid="28" nextobjectid="29">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="26" height="16" tilewidth="48" tileheight="48" infinite="1" nextlayerid="28" nextobjectid="32">
  <editorsettings>
   <export target="../images/areas/house/house-map.json" format="json"/>
  </editorsettings>
@@ -33,7 +33,7 @@
    <image source="../images/objects/toilet-closed.png" width="42" height="105"/>
   </tile>
   <tile id="6">
-   <image source="../images/objects/toilet-open.png" width="42" height="105"/>
+   <image source="../images/objects/toilet-opened.png" width="42" height="105"/>
   </tile>
   <tile id="7">
    <image source="../images/objects/player.png" width="48" height="66"/>
@@ -392,6 +392,21 @@
     <object id="28" type="Plate" gid="290" x="780" y="348" width="57" height="60">
      <properties>
       <property name="isWithCake" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="29" type="NPC" gid="289" x="672" y="432" width="48" height="66">
+     <properties>
+      <property name="type" propertytype="NpcType" value="Amelie"/>
+     </properties>
+    </object>
+    <object id="30" type="NPC" gid="289" x="672" y="300" width="48" height="66">
+     <properties>
+      <property name="type" propertytype="NpcType" value="Cynthia"/>
+     </properties>
+    </object>
+    <object id="31" type="NPC" gid="289" x="660" y="372" width="48" height="66">
+     <properties>
+      <property name="type" propertytype="NpcType" value="Tobias"/>
      </properties>
     </object>
    </objectgroup>

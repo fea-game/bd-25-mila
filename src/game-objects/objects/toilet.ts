@@ -3,6 +3,7 @@ import { BaseObject } from "./base-object";
 import * as tiled from "../../tiled/types";
 import { InteractionType } from "../../common/types";
 import { Interactable, InteractableComponent } from "../../components/game-object/object/interactable-component";
+import { Depth } from "../../common/config";
 
 type Config = {
   scene: Phaser.Scene;
@@ -34,6 +35,7 @@ export class Toilet extends BaseObject implements Interactable<typeof Interactio
     this.#isOpened = isOpened;
 
     this.setBodySize(this.displayWidth, this.displayHeight - Toilet.ShortenBodyBy).setOffset(0, Toilet.ShortenBodyBy);
+    this.setDepth(Depth.Objects);
     this.setImmovable(true);
     this.#isInteractable = new InteractableComponent({
       host: this,

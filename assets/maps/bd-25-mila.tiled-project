@@ -82,11 +82,10 @@
             "type": "enum",
             "values": [
                 "Dog",
-                "Father",
-                "Mother",
+                "Tobias",
                 "Neighbor",
-                "Mother",
-                "Sister",
+                "Cynthia",
+                "Amelie",
                 "Thief"
             ],
             "valuesAsFlags": false

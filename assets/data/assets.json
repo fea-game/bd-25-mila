@@ -34,6 +34,30 @@
     "files": [
       {
         "type": "aseprite",
+        "key": "amelie",
+        "textureURL": "amelie.png",
+        "atlasURL": "amelie.aesprite.json"
+      },
+      {
+        "type": "aseprite",
+        "key": "cynthia",
+        "textureURL": "cynthia.png",
+        "atlasURL": "cynthia.aesprite.json"
+      },
+      {
+        "type": "aseprite",
+        "key": "mila",
+        "textureURL": "mila.png",
+        "atlasURL": "mila.aesprite.json"
+      },
+      {
+        "type": "aseprite",
+        "key": "tobias",
+        "textureURL": "tobias.png",
+        "atlasURL": "tobias.aesprite.json"
+      },
+      {
+        "type": "aseprite",
         "key": "character",
         "textureURL": "character.png",
         "atlasURL": "character.aesprite.json"

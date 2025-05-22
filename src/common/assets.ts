@@ -2,6 +2,10 @@ import { Area, Direction, LayerTypeKey } from "./types";
 
 export const Character = {
   Player: "player",
+  Amelie: "amelie",
+  Cynthia: "cynthia",
+  Mila: "mila",
+  Tobias: "tobias",
 } as const;
 
 type CharacterKey = keyof typeof Character;
@@ -9,6 +13,10 @@ export type Character = (typeof Character)[CharacterKey];
 
 export const Texture = {
   Player: "character",
+  Amelie: "amelie",
+  Cynthia: "cynthia",
+  Mila: "mila",
+  Tobias: "tobias",
   BlueBalloon: "animated-objects",
   GreenBalloon: "animated-objects",
   RedBalloon: "animated-objects",
@@ -23,7 +31,14 @@ export const Texture = {
 export type TextureKey = keyof typeof Texture;
 export type Texture = (typeof Texture)[TextureKey];
 
-export const AnimatedTextures: Array<Texture> = [Texture.Player, Texture.YellowBalloon];
+export const AnimatedTextures: Array<Texture> = [
+  Texture.Amelie,
+  Texture.Cynthia,
+  Texture.Mila,
+  Texture.Tobias,
+  Texture.Player,
+  Texture.YellowBalloon,
+];
 
 export const TextureAnimation = {
   BlueBalloon: "blue-balloon",
@@ -46,25 +61,14 @@ export const AnimationType = {
 export type AnimationTypeKey = keyof typeof AnimationType;
 export type AnimationType = (typeof AnimationType)[AnimationTypeKey];
 
-const CharacterAnimation = {
-  "player-idle-down": "player-idle-down",
-  "player-idle-left": "player-idle-left",
-  "player-idle-right": "player-idle-right",
-  "player-idle-up": "player-idle-up",
-  "player-walk-down": "player-walk-down",
-  "player-walk-left": "player-walk-left",
-  "player-walk-right": "player-walk-right",
-  "player-walk-up": "player-walk-up",
-} as const satisfies Record<`${Character}-${AnimationType}-${Direction}`, string>;
-
-type CharacterAnimation = (typeof CharacterAnimation)[keyof typeof CharacterAnimation];
+type CharacterAnimation = `${Character}-${AnimationType}-${Direction}`;
 
 export function getCharacterAnimation(
   character: Character,
   animation: AnimationType,
   direction: Direction
 ): CharacterAnimation {
-  return CharacterAnimation[`${character}-${animation}-${direction}`];
+  return `${character}-${animation}-${direction}`;
 }
 
 export const ImageType = {

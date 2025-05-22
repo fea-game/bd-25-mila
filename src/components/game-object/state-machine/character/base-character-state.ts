@@ -1,4 +1,4 @@
-import { CharacterGameObject } from "../../../game-objects/characters/character-game-object";
+import { BaseCharacter } from "../../../../game-objects/characters/base-character";
 import { State, StateMachine } from "../state-machine";
 
 export const CharacterState = {
@@ -6,19 +6,14 @@ export const CharacterState = {
   Moving: "moving",
 } as const;
 
-export type CharacterState =
-  (typeof CharacterState)[keyof typeof CharacterState];
+export type CharacterState = (typeof CharacterState)[keyof typeof CharacterState];
 
 export abstract class BaseCharacterState implements State {
   public readonly name: CharacterState;
-  protected host: CharacterGameObject;
+  protected host: BaseCharacter;
   protected stateMachine: StateMachine;
 
-  constructor(
-    name: CharacterState,
-    host: CharacterGameObject,
-    stateMachine: StateMachine
-  ) {
+  constructor(name: CharacterState, host: BaseCharacter, stateMachine: StateMachine) {
     this.name = name;
     this.host = host;
     this.stateMachine = stateMachine;

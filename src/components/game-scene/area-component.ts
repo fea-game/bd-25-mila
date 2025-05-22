@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { getAreaImage, getAreaMap, getAreaTileset, ImageType, TilesetType } from "../../common/assets";
+import { Character, getAreaImage, getAreaMap, getAreaTileset, ImageType, TilesetType } from "../../common/assets";
 import { Depth } from "../../common/config";
 import { Area, getAreaLayer, InteractionType, LayerType, LayerTypeKey } from "../../common/types";
 import GameScene from "../../scenes/game-scene";
@@ -7,6 +7,8 @@ import { BaseGameSceneComponent } from "./base-game-scene-component";
 import * as tiled from "../../tiled";
 import { Balloon } from "../../game-objects/objects/balloon";
 import { Toilet } from "../../game-objects/objects/toilet";
+import { Npc } from "../../game-objects/characters/npc";
+import { InputComponent } from "../input/input-component";
 
 export class AreaComponent extends BaseGameSceneComponent {
   private static ImageLayers: Array<LayerTypeKey> = ["Background", "Foreground"];
@@ -16,6 +18,7 @@ export class AreaComponent extends BaseGameSceneComponent {
   #collisionLayer: Phaser.GameObjects.Group;
   #interactableObjects: Record<InteractionType, Phaser.GameObjects.Group>;
   #movableObjects: Phaser.GameObjects.Group;
+  #npcs: Phaser.GameObjects.Group;
   #playerSpawnLocation: tiled.Player;
   #chunks: Map<tiled.Chunk["id"], {}>;
 
@@ -26,7 +29,7 @@ export class AreaComponent extends BaseGameSceneComponent {
     this.create();
   }
 
-  get collisionLayer() {
+  get collisionLayer(): Phaser.GameObjects.Group {
     return this.#collisionLayer;
   }
 
@@ -36,6 +39,10 @@ export class AreaComponent extends BaseGameSceneComponent {
 
   get movableObjects(): Phaser.GameObjects.Group {
     return this.#movableObjects;
+  }
+
+  get npcs(): Phaser.GameObjects.Group {
+    return this.#npcs;
   }
 
   get playerSpawnLocation(): tiled.Player {
@@ -48,6 +55,7 @@ export class AreaComponent extends BaseGameSceneComponent {
       action: this.host.add.group([]),
     };
     this.#movableObjects = this.host.add.group([]);
+    this.#npcs = this.host.add.group([]);
     this.#chunks = new Map();
     this.map = this.host.make.tilemap({ key: getAreaMap(this.area) });
     this.createImageLayers();
@@ -114,6 +122,8 @@ export class AreaComponent extends BaseGameSceneComponent {
         switch (tiledObject.type) {
           case "Balloon":
             return new Balloon({ scene: this.host, properties: tiledObject });
+          case "NPC":
+            return new Npc({ scene: this.host, input: new InputComponent(), properties: tiledObject });
           case "Player":
             this.#playerSpawnLocation = tiledObject;
             break;
@@ -123,7 +133,10 @@ export class AreaComponent extends BaseGameSceneComponent {
         }
       })(tiledObject);
 
-      object?.setDepth(Depth.Objects);
+      if (object instanceof Npc) {
+        this.#npcs.add(object);
+        this.#collisionLayer.add(object);
+      }
 
       if (object?.isInteractable) {
         this.#collisionLayer.add(object);

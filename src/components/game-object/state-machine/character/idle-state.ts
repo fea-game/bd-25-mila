@@ -13,6 +13,8 @@ export class IdleState extends BaseCharacterState {
   }
 
   public onUpdate(): void {
+    this.host.animation.play(`idle-${this.host.direction}`);
+
     if (this.host.controls.isNoMovement) return;
 
     this.stateMachine.setState(CharacterState.Moving);
