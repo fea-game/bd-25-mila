@@ -2,6 +2,7 @@ import { getTextureAnimation, Texture, TextureKey } from "../../common/assets";
 import { BaseObject } from "./base-object";
 import * as tiled from "../../tiled/types";
 import { Depth } from "../../common/config";
+import { PushableComponent } from "../../components/game-object/object/pushable-component";
 
 type Color = tiled.Balloon["properties"]["color"];
 
@@ -18,9 +19,9 @@ export class Balloon extends BaseObject {
   }
 
   #color: Color;
+  #isPushable: PushableComponent;
 
   public readonly isInteractable = false;
-  public readonly isMovable = true;
 
   constructor({
     scene,
@@ -35,8 +36,10 @@ export class Balloon extends BaseObject {
     super({ scene, x, y, texture });
 
     this.#color = color;
-
-    this.setDepth(Depth.Objects).setDrag(200).setMaxVelocity(300);
+    this.#isPushable = new PushableComponent({
+      host: this,
+      baseDepth: Depth.Objects,
+    });
 
     this.play(
       {
@@ -62,5 +65,9 @@ export class Balloon extends BaseObject {
       },
       true
     );
+  }
+
+  public get isPushable(): PushableComponent {
+    return this.#isPushable;
   }
 }

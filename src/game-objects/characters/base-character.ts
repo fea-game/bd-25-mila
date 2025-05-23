@@ -10,6 +10,7 @@ import { DirectionComponent } from "../../components/game-object/character/direc
 import { SpeedComponent } from "../../components/game-object/character/speed-component";
 import { Body, Direction, GameObject, InteractionType } from "../../common/types";
 import { InteractionComponent, isActor } from "../../components/game-object/character/interaction-component";
+import { Depth } from "../../common/config";
 
 export type Config = {
   animations: CharacterAnimationComponentConfig;
@@ -51,8 +52,11 @@ export abstract class BaseCharacter extends GameObject {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
+    this.setBodySize(this.width, this.height - BaseCharacter.ShortenBodyBy);
+    this.setDepth(Depth.Character);
+    this.setImmovable(true);
+    this.setOffset(0, BaseCharacter.ShortenBodyBy);
     this.setOrigin(0, 1);
-    this.setBodySize(this.width, this.height - BaseCharacter.ShortenBodyBy).setOffset(0, BaseCharacter.ShortenBodyBy);
   }
 
   get animation(): CharacterAnimationComponent {

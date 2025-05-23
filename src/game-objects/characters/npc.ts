@@ -51,7 +51,7 @@ export class Npc extends BaseCharacter {
 
   public readonly isActor = false;
   public readonly isInteractable = false;
-  public readonly isMovable = false;
+  public readonly isPushable = false;
 
   #npcType: NpcType;
 
@@ -72,9 +72,6 @@ export class Npc extends BaseCharacter {
     this.stateMachine.addState(new MovingState(this, this.stateMachine));
     this.stateMachine.setState(CharacterState.Idle);
 
-    this.setDepth(Depth.Npc);
-    this.setImmovable(true);
-
     config.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     config.scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       config.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
@@ -83,7 +80,7 @@ export class Npc extends BaseCharacter {
     if (properties.type === "Amelie") {
       this.scene.time.delayedCall(2000, () => {
         this.move([
-          { direction: Direction.Left, distance: 164 },
+          { direction: Direction.Left, distance: 170 },
           { direction: Direction.Down, distance: 200 },
           { direction: Direction.Right, distance: 20 },
         ]);

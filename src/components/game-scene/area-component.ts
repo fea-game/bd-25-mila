@@ -9,6 +9,7 @@ import { Balloon } from "../../game-objects/objects/balloon";
 import { Toilet } from "../../game-objects/objects/toilet";
 import { Npc } from "../../game-objects/characters/npc";
 import { InputComponent } from "../input/input-component";
+import { Plate } from "../../game-objects/objects/plate";
 
 export class AreaComponent extends BaseGameSceneComponent {
   private static ImageLayers: Array<LayerTypeKey> = ["Background", "Foreground"];
@@ -17,9 +18,9 @@ export class AreaComponent extends BaseGameSceneComponent {
   private map: Phaser.Tilemaps.Tilemap;
   #collisionLayer: Phaser.GameObjects.Group;
   #interactableObjects: Record<InteractionType, Phaser.GameObjects.Group>;
-  #movableObjects: Phaser.GameObjects.Group;
   #npcs: Phaser.GameObjects.Group;
   #playerSpawnLocation: tiled.Player;
+  #pushableObjects: Phaser.GameObjects.Group;
   #chunks: Map<tiled.Chunk["id"], {}>;
 
   constructor(host: GameScene, area: Area) {
@@ -37,10 +38,6 @@ export class AreaComponent extends BaseGameSceneComponent {
     return this.#interactableObjects;
   }
 
-  get movableObjects(): Phaser.GameObjects.Group {
-    return this.#movableObjects;
-  }
-
   get npcs(): Phaser.GameObjects.Group {
     return this.#npcs;
   }
@@ -49,13 +46,17 @@ export class AreaComponent extends BaseGameSceneComponent {
     return this.#playerSpawnLocation;
   }
 
+  get pushableObjects(): Phaser.GameObjects.Group {
+    return this.#pushableObjects;
+  }
+
   private create(): void {
     this.#collisionLayer = this.host.add.group([]);
     this.#interactableObjects = {
       action: this.host.add.group([]),
     };
-    this.#movableObjects = this.host.add.group([]);
     this.#npcs = this.host.add.group([]);
+    this.#pushableObjects = this.host.add.group([]);
     this.#chunks = new Map();
     this.map = this.host.make.tilemap({ key: getAreaMap(this.area) });
     this.createImageLayers();
@@ -124,6 +125,8 @@ export class AreaComponent extends BaseGameSceneComponent {
             return new Balloon({ scene: this.host, properties: tiledObject });
           case "NPC":
             return new Npc({ scene: this.host, input: new InputComponent(), properties: tiledObject });
+          case "Plate":
+            return new Plate({ scene: this.host, properties: tiledObject });
           case "Player":
             this.#playerSpawnLocation = tiledObject;
             break;
@@ -143,8 +146,8 @@ export class AreaComponent extends BaseGameSceneComponent {
         this.#interactableObjects[object.isInteractable.type].add(object.isInteractable.trigger);
       }
 
-      if (object?.isMovable) {
-        this.#movableObjects.add(object);
+      if (object?.isPushable) {
+        this.#pushableObjects.add(object);
       }
     }
   }

@@ -665,7 +665,7 @@
                                  "visible":true,
                                  "width":48,
                                  "x":348,
-                                 "y":324
+                                 "y":336
                                 }, 
                                 {
                                  "gid":290,
@@ -676,7 +676,7 @@
                                         {
                                          "name":"isWithCake",
                                          "type":"bool",
-                                         "value":false
+                                         "value":true
                                         }],
                                  "rotation":0,
                                  "type":"Plate",

@@ -20,7 +20,7 @@ export class Toilet extends BaseObject implements Interactable<typeof Interactio
   #isInteractable: InteractableComponent;
   #isOpened: boolean;
 
-  public readonly isMovable = false;
+  public readonly isPushable = false;
 
   constructor({
     scene,

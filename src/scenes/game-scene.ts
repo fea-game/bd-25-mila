@@ -37,11 +37,11 @@ export default class GameScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.#player);
 
     this.physics.add.collider(this.#player, this.#areaComponent.collisionLayer);
-    this.physics.add.collider(this.#player, this.#areaComponent.movableObjects);
-    this.physics.add.collider(this.#areaComponent.npcs, this.#areaComponent.movableObjects);
+    this.physics.add.collider(this.#player, this.#areaComponent.pushableObjects);
+    this.physics.add.collider(this.#areaComponent.npcs, this.#areaComponent.pushableObjects);
 
-    this.physics.add.collider(this.#areaComponent.movableObjects, this.#areaComponent.collisionLayer);
-    this.physics.add.collider(this.#areaComponent.movableObjects, this.#areaComponent.movableObjects);
+    this.physics.add.collider(this.#areaComponent.pushableObjects, this.#areaComponent.collisionLayer);
+    this.physics.add.collider(this.#areaComponent.pushableObjects, this.#areaComponent.pushableObjects);
   }
 
   update(): void {

@@ -154,6 +154,9 @@
         "bd-25-mila-interior.tmx#collision": {
             "scaleInDock": 1
         },
+        "bd-25-mila-interior.tmx#foreground": {
+            "dynamicWrapping": true
+        },
         "bd-25-mila-interior.tmx#interior": {
             "scaleInDock": 1
         },
@@ -203,5 +206,5 @@
         "height": 48,
         "width": 48
     },
-    "tileset.type": 0
+    "tileset.type": 1
 }

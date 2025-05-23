@@ -41,8 +41,6 @@ export class Player extends BaseCharacter implements Actor<typeof Player.Interac
     this.stateMachine.addState(new MovingState(this, this.stateMachine));
     this.stateMachine.setState(CharacterState.Idle);
 
-    this.setDepth(Depth.Player);
-
     config.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     config.scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       config.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
