@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { Character, getAreaImage, getAreaMap, getAreaTileset, ImageType, TilesetType } from "../../common/assets";
+import { getAreaImage, getAreaMap, getAreaTileset, ImageType, TilesetType } from "../../common/assets";
 import { Depth } from "../../common/config";
 import { Area, getAreaLayer, InteractionType, LayerType, LayerTypeKey } from "../../common/types";
 import GameScene from "../../scenes/game-scene";
@@ -10,15 +10,17 @@ import { Toilet } from "../../game-objects/objects/toilet";
 import { Npc } from "../../game-objects/characters/npc";
 import { InputComponent } from "../input/input-component";
 import { Plate } from "../../game-objects/objects/plate";
+import { Foreground } from "../../game-objects/objects/foreground";
 
 export class AreaComponent extends BaseGameSceneComponent {
-  private static ImageLayers: Array<LayerTypeKey> = ["Background", "Foreground"];
+  private static ImageLayers: Array<LayerTypeKey> = ["Background"];
 
   private area: Area;
   private map: Phaser.Tilemaps.Tilemap;
   #collisionLayer: Phaser.GameObjects.Group;
-  #interactableObjects: Record<InteractionType, Phaser.GameObjects.Group>;
-  #npcs: Phaser.GameObjects.Group;
+  #foregroundLayer: Phaser.GameObjects.Group;
+  #interactableObjects: Record<InteractionType, Phaser.Physics.Arcade.Group>;
+  #npcs: Phaser.Physics.Arcade.Group;
   #playerSpawnLocation: tiled.Player;
   #pushableObjects: Phaser.GameObjects.Group;
   #chunks: Map<tiled.Chunk["id"], {}>;
@@ -34,11 +36,11 @@ export class AreaComponent extends BaseGameSceneComponent {
     return this.#collisionLayer;
   }
 
-  get interactableObjects(): Record<InteractionType, Phaser.GameObjects.Group> {
+  get interactableObjects(): Record<InteractionType, Phaser.Physics.Arcade.Group> {
     return this.#interactableObjects;
   }
 
-  get npcs(): Phaser.GameObjects.Group {
+  get npcs(): Phaser.Physics.Arcade.Group {
     return this.#npcs;
   }
 
@@ -52,14 +54,16 @@ export class AreaComponent extends BaseGameSceneComponent {
 
   private create(): void {
     this.#collisionLayer = this.host.add.group([]);
+    this.#foregroundLayer = this.host.add.group([]);
     this.#interactableObjects = {
-      action: this.host.add.group([]),
+      action: this.host.physics.add.group({ immovable: true, allowGravity: false }),
     };
-    this.#npcs = this.host.add.group([]);
+    this.#npcs = this.host.physics.add.group({ immovable: true, allowGravity: false });
     this.#pushableObjects = this.host.add.group([]);
     this.#chunks = new Map();
     this.map = this.host.make.tilemap({ key: getAreaMap(this.area) });
     this.createImageLayers();
+    this.createForeground();
     this.createCollisionLayer();
     this.createChunks();
   }
@@ -92,17 +96,33 @@ export class AreaComponent extends BaseGameSceneComponent {
     this.#collisionLayer.add(collisionLayer);
   }
 
-  private createChunks(): void {
-    const chunkLayers = tiled.getObjectLayerNames(this.map, tiled.Layer.Chunks).map((layerName) => {
-      const [_, id, group, ...rest] = layerName.split(tiled.LayerNameDelimiter);
+  private createForeground() {
+    const foregroundLayers = tiled.getObjectLayerNames(this.map, { prefix: tiled.Layer.Foreground, minDepth: 1 });
 
-      return {
-        layerName,
-        id,
-        group,
-        rest,
-      };
-    });
+    for (const layer of foregroundLayers) {
+      const objects = tiled.getObjectsFromLayer(this.map, layer, this.area);
+
+      for (const object of objects) {
+        if (object.type === "Foreground") {
+          this.#foregroundLayer.add(new Foreground({ scene: this.host, properties: object }));
+        }
+      }
+    }
+  }
+
+  private createChunks(): void {
+    const chunkLayers = tiled
+      .getObjectLayerNames(this.map, { prefix: tiled.Layer.Chunks, minDepth: 2 })
+      .map((layerName) => {
+        const [_, id, group, ...rest] = layerName.split(tiled.LayerNameDelimiter);
+
+        return {
+          layerName,
+          id,
+          group,
+          rest,
+        };
+      });
 
     for (const { id, layerName, group } of chunkLayers) {
       if (!this.#chunks.has(id)) {
@@ -116,7 +136,7 @@ export class AreaComponent extends BaseGameSceneComponent {
   }
 
   private createObjects({ layerName }: { chunkId: string; layerName: string }): void {
-    const tiledObjects = tiled.getObjectsFromLayer(this.map, layerName);
+    const tiledObjects = tiled.getObjectsFromLayer(this.map, layerName, this.area);
 
     for (const tiledObject of tiledObjects) {
       const object = ((tiledObject: tiled.ValidObject) => {
@@ -142,8 +162,8 @@ export class AreaComponent extends BaseGameSceneComponent {
       }
 
       if (object?.isInteractable) {
-        this.#collisionLayer.add(object);
         this.#interactableObjects[object.isInteractable.type].add(object.isInteractable.trigger);
+        this.#collisionLayer.add(object);
       }
 
       if (object?.isPushable) {

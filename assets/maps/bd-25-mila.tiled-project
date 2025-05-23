@@ -159,6 +159,15 @@
                 "wangset",
                 "project"
             ]
+        },
+        {
+            "id": 16,
+            "name": "Foreground",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+            ],
+            "valuesAsFlags": false
         }
     ]
 }

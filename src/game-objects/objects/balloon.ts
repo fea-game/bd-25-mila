@@ -41,6 +41,9 @@ export class Balloon extends BaseObject {
       baseDepth: Depth.Objects,
     });
 
+    this.setBodySize(this.width - 8, this.height - 40);
+    this.setOffset(6, 0);
+
     this.play(
       {
         key: getTextureAnimation(textureKey),

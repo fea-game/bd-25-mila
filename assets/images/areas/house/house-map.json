@@ -277,7 +277,7 @@
          "name":"background",
          "opacity":1,
          "type":"group",
-         "visible":true,
+         "visible":false,
          "x":0,
          "y":0
         }, 
@@ -332,6 +332,7 @@
                         }],
                  "height":16,
                  "id":16,
+                 "locked":true,
                  "name":"foreground-1",
                  "opacity":1,
                  "startx":0,
@@ -368,6 +369,7 @@
                         }],
                  "height":16,
                  "id":20,
+                 "locked":true,
                  "name":"foreground-2",
                  "opacity":1,
                  "startx":0,
@@ -377,8 +379,79 @@
                  "width":16,
                  "x":0,
                  "y":0
+                }, 
+                {
+                 "class":"Foreground",
+                 "draworder":"topdown",
+                 "id":28,
+                 "name":"foreground",
+                 "objects":[
+                        {
+                         "gid":294,
+                         "height":48,
+                         "id":32,
+                         "name":"",
+                         "rotation":0,
+                         "type":"Foreground",
+                         "visible":true,
+                         "width":288,
+                         "x":144,
+                         "y":384
+                        }, 
+                        {
+                         "gid":295,
+                         "height":48,
+                         "id":33,
+                         "name":"",
+                         "rotation":0,
+                         "type":"Foreground",
+                         "visible":true,
+                         "width":288,
+                         "x":48,
+                         "y":528
+                        }, 
+                        {
+                         "gid":296,
+                         "height":48,
+                         "id":34,
+                         "name":"",
+                         "rotation":0,
+                         "type":"Foreground",
+                         "visible":true,
+                         "width":48,
+                         "x":432,
+                         "y":576
+                        }, 
+                        {
+                         "gid":292,
+                         "height":75,
+                         "id":35,
+                         "name":"",
+                         "rotation":0,
+                         "type":"Foreground",
+                         "visible":true,
+                         "width":117,
+                         "x":300,
+                         "y":240
+                        }, 
+                        {
+                         "gid":293,
+                         "height":27,
+                         "id":36,
+                         "name":"",
+                         "rotation":0,
+                         "type":"Foreground",
+                         "visible":true,
+                         "width":87,
+                         "x":870,
+                         "y":288
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
                 }],
-         "locked":true,
          "name":"foreground",
          "opacity":1,
          "type":"group",
@@ -451,7 +524,7 @@
          "name":"collision",
          "opacity":0.51,
          "type":"group",
-         "visible":true,
+         "visible":false,
          "x":0,
          "y":0
         }, 
@@ -758,12 +831,12 @@
          "name":"chunks",
          "opacity":1,
          "type":"group",
-         "visible":true,
+         "visible":false,
          "x":0,
          "y":0
         }],
- "nextlayerid":28,
- "nextobjectid":32,
+ "nextlayerid":29,
+ "nextobjectid":37,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -884,6 +957,53 @@
                  "imagewidth":45
                 }],
          "tilewidth":57
+        }, 
+        {
+         "columns":0,
+         "firstgid":292,
+         "grid":
+            {
+             "height":1,
+             "orientation":"orthogonal",
+             "width":1
+            },
+         "margin":0,
+         "name":"foreground",
+         "spacing":0,
+         "tilecount":5,
+         "tileheight":75,
+         "tiles":[
+                {
+                 "id":0,
+                 "image":"foreground\/bed.png",
+                 "imageheight":75,
+                 "imagewidth":117
+                }, 
+                {
+                 "id":1,
+                 "image":"foreground\/gifts.png",
+                 "imageheight":27,
+                 "imagewidth":87
+                }, 
+                {
+                 "id":2,
+                 "image":"foreground\/wall-1.png",
+                 "imageheight":48,
+                 "imagewidth":288
+                }, 
+                {
+                 "id":3,
+                 "image":"foreground\/wall-2.png",
+                 "imageheight":48,
+                 "imagewidth":288
+                }, 
+                {
+                 "id":4,
+                 "image":"foreground\/wall-3.png",
+                 "imageheight":48,
+                 "imagewidth":48
+                }],
+         "tilewidth":288
         }],
  "tilewidth":48,
  "type":"map",

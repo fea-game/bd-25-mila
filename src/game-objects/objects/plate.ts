@@ -30,7 +30,7 @@ export class Plate extends BaseObject {
 
     this.#isWithCake = isWithCake;
 
-    this.setDepth(Depth.Objects).setImmovable(true);
+    this.setImmovable(true);
   }
 
   public get isWithCake(): boolean {

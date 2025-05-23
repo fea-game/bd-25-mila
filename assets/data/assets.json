@@ -9,23 +9,43 @@
       },
       {
         "type": "image",
-        "key": "house-foreground",
-        "url": "house-foreground.png"
-      },
-      {
-        "type": "image",
         "key": "house-collision",
         "url": "house-collision.png"
-      },
-      {
-        "type": "image",
-        "key": "house-objects",
-        "url": "house-objects.png"
       },
       {
         "type": "tilemapTiledJSON",
         "key": "house-map",
         "url": "house-map.json"
+      }
+    ]
+  },
+  {
+    "path": "assets/images/areas/house/foreground",
+    "files": [
+      {
+        "type": "image",
+        "key": "house-foreground-bed",
+        "url": "bed.png"
+      },
+      {
+        "type": "image",
+        "key": "house-foreground-gifts",
+        "url": "gifts.png"
+      },
+      {
+        "type": "image",
+        "key": "house-foreground-wall-1",
+        "url": "wall-1.png"
+      },
+      {
+        "type": "image",
+        "key": "house-foreground-wall-2",
+        "url": "wall-2.png"
+      },
+      {
+        "type": "image",
+        "key": "house-foreground-wall-3",
+        "url": "wall-3.png"
       }
     ]
   },

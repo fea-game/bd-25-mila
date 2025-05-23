@@ -1,5 +1,6 @@
 export const ObjectType = {
   Balloon: "Balloon",
+  Foreground: "Foreground",
   NPC: "NPC",
   Plate: "Plate",
   Player: "Player",
@@ -50,9 +51,14 @@ export type NpcType = (typeof Enum.NpcType)[keyof typeof Enum.NpcType];
 export type Chunk = { id: string };
 
 export type Balloon = Object<typeof ObjectType.Balloon> & {
-  type: typeof ObjectType.Balloon;
   properties: {
     color: Color;
+  };
+};
+
+export type Foreground = Object<typeof ObjectType.Foreground> & {
+  properties: {
+    texture: string;
   };
 };
 
@@ -76,10 +82,11 @@ export type Toilet = Object<typeof ObjectType.Toilet> & {
   };
 };
 
-export type ValidObject = Balloon | NPC | Plate | Player | Toilet;
+export type ValidObject = Balloon | Foreground | NPC | Plate | Player | Toilet;
 
 export type ValidObjectMappedByType = {
   Balloon: Balloon;
+  Foreground: Foreground;
   NPC: NPC;
   Plate: Plate;
   Player: Player;
@@ -90,5 +97,6 @@ export const LayerNameDelimiter = "/";
 
 export const Layer = {
   Chunks: "chunks",
+  Foreground: "foreground",
   Objects: "objects",
 } as const;

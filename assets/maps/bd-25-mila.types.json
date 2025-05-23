@@ -39,6 +39,15 @@
         "valuesAsFlags": false
     },
     {
+        "id": 16,
+        "name": "Foreground",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+        ],
+        "valuesAsFlags": false
+    },
+    {
         "color": "#ffa0a0a4",
         "drawFill": true,
         "id": 10,

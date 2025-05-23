@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="26" height="16" tilewidth="48" tileheight="48" infinite="1" nextlayerid="28" nextobjectid="32">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="26" height="16" tilewidth="48" tileheight="48" infinite="1" nextlayerid="29" nextobjectid="37">
  <editorsettings>
   <export target="../images/areas/house/house-map.json" format="json"/>
  </editorsettings>
@@ -45,7 +45,25 @@
    <image source="../images/objects/cake.png" width="45" height="54"/>
   </tile>
  </tileset>
- <group id="2" name="background" locked="1">
+ <tileset firstgid="292" name="foreground" tilewidth="288" tileheight="75" tilecount="5" columns="0">
+  <grid orientation="orthogonal" width="1" height="1"/>
+  <tile id="0">
+   <image source="../images/areas/house/foreground/bed.png" width="117" height="75"/>
+  </tile>
+  <tile id="1">
+   <image source="../images/areas/house/foreground/gifts.png" width="87" height="27"/>
+  </tile>
+  <tile id="2">
+   <image source="../images/areas/house/foreground/wall-1.png" width="288" height="48"/>
+  </tile>
+  <tile id="3">
+   <image source="../images/areas/house/foreground/wall-2.png" width="288" height="48"/>
+  </tile>
+  <tile id="4">
+   <image source="../images/areas/house/foreground/wall-3.png" width="48" height="48"/>
+  </tile>
+ </tileset>
+ <group id="2" name="background" visible="0" locked="1">
   <layer id="1" name="background-1" width="26" height="16">
    <data encoding="csv">
     <chunk x="0" y="0" width="16" height="16">
@@ -229,8 +247,8 @@
    </data>
   </layer>
  </group>
- <group id="3" name="foreground" locked="1">
-  <layer id="16" name="foreground-1" width="26" height="16">
+ <group id="3" name="foreground">
+  <layer id="16" name="foreground-1" width="26" height="16" locked="1">
    <data encoding="csv">
     <chunk x="0" y="0" width="16" height="16">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -270,7 +288,7 @@
 </chunk>
    </data>
   </layer>
-  <layer id="20" name="foreground-2" width="26" height="16">
+  <layer id="20" name="foreground-2" width="26" height="16" locked="1">
    <data encoding="csv">
     <chunk x="0" y="0" width="16" height="16">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -292,8 +310,15 @@
 </chunk>
    </data>
   </layer>
+  <objectgroup id="28" name="foreground" class="Foreground">
+   <object id="32" type="Foreground" gid="294" x="144" y="384" width="288" height="48"/>
+   <object id="33" type="Foreground" gid="295" x="48" y="528" width="288" height="48"/>
+   <object id="34" type="Foreground" gid="296" x="432" y="576" width="48" height="48"/>
+   <object id="35" type="Foreground" gid="292" x="300" y="240" width="117" height="75"/>
+   <object id="36" type="Foreground" gid="293" x="870" y="288" width="87" height="27"/>
+  </objectgroup>
  </group>
- <group id="19" name="collision" locked="1" opacity="0.51">
+ <group id="19" name="collision" visible="0" locked="1" opacity="0.51">
   <layer id="17" name="collision-1" width="26" height="16">
    <data encoding="csv">
     <chunk x="0" y="0" width="16" height="16">
@@ -335,7 +360,7 @@
    </data>
   </layer>
  </group>
- <group id="26" name="chunks">
+ <group id="26" name="chunks" visible="0">
   <group id="27" name="chunk-1">
    <objectgroup id="25" name="objects">
     <object id="14" type="Balloon" gid="282" x="768" y="444" width="48" height="96">

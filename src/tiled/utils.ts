@@ -3,6 +3,7 @@ import {
   Balloon,
   Color,
   Enum,
+  Foreground,
   LayerNameDelimiter,
   NPC,
   NpcType,
@@ -14,20 +15,26 @@ import {
   Toilet,
   ValidObject,
   ObjectWithProperties,
+  Layer,
 } from "./types";
 
 /**
  * Parses the provided Phaser Tilemap and returns all Object layer names with the provided prefix.
  * This function expects the layer names to be in a format like: rooms/1/enemies.
  */
-export function getObjectLayerNames(map: Phaser.Tilemaps.Tilemap, prefix?: string): string[] {
+export function getObjectLayerNames(
+  map: Phaser.Tilemaps.Tilemap,
+  opts: { prefix?: string; minDepth?: number } = {}
+): string[] {
   const objectLayerNames = map.getObjectLayerNames();
+
+  const { prefix, minDepth = 2 } = opts;
 
   if (!prefix) return objectLayerNames;
 
   return objectLayerNames.filter(
     (layerName) =>
-      layerName.startsWith(`${prefix}${LayerNameDelimiter}`) && layerName.split(LayerNameDelimiter).length > 2
+      layerName.startsWith(`${prefix}${LayerNameDelimiter}`) && layerName.split(LayerNameDelimiter).length > minDepth
   );
 }
 
@@ -62,6 +69,30 @@ const ObjectMapper = {
       width,
       height,
       properties: { color },
+    };
+  },
+  Foreground: (
+    { type, x, y, width, height, gid }: Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<"Foreground">,
+    map: Phaser.Tilemaps.Tilemap,
+    areaName: string
+  ): Foreground => {
+    const imageForGid = map.imageCollections
+      .find(({ name }) => name === Layer.Foreground)
+      ?.images.find((image) => gid === image.gid).image;
+
+    const texture = imageForGid
+      ? `${areaName}-${imageForGid.replace(LayerNameDelimiter, "-").replace(".png", "")}`
+      : "";
+
+    return {
+      type,
+      x,
+      y,
+      width,
+      height,
+      properties: {
+        texture,
+      },
     };
   },
   NPC: ({
@@ -147,7 +178,9 @@ const ObjectMapper = {
   },
 } as const satisfies {
   [T in ObjectType]: (
-    tiledObject: Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<T>
+    tiledObject: Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<T>,
+    map: Phaser.Tilemaps.Tilemap,
+    areaName: string
   ) => ValidObjectMappedByType[T] | undefined;
 };
 
@@ -155,7 +188,7 @@ const ObjectMapper = {
  * Finds all of the Tiled Objects for a given layer of a Tilemap, and filters to only objects that include
  * the basic properties for an objects position, width, and height.
  */
-export function getObjectsFromLayer(map: Phaser.Tilemaps.Tilemap, layerName: string): ValidObject[] {
+export function getObjectsFromLayer(map: Phaser.Tilemaps.Tilemap, layerName: string, areaName: string): ValidObject[] {
   const validTiledObjects: ValidObject[] = [];
 
   // get the Tiled object layer by its name
@@ -172,7 +205,9 @@ export function getObjectsFromLayer(map: Phaser.Tilemaps.Tilemap, layerName: str
       // @ts-expect-error (ts-2345) Because tiledObject is narrowed TiledObject & ObjectWithProperties<ObjectType>,
       // which is a union of multiple object types. This is never possible — type can’t simultaneously be all those values.
       // So TypeScript collapses the intersection to never.
-      tiledObject as Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<typeof tiledObject.type>
+      tiledObject as Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<typeof tiledObject.type>,
+      map,
+      areaName
     );
 
     if (!validObject) continue;

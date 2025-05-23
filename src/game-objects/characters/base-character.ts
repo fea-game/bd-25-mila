@@ -54,7 +54,7 @@ export abstract class BaseCharacter extends GameObject {
 
     this.setBodySize(this.width, this.height - BaseCharacter.ShortenBodyBy);
     this.setDepth(Depth.Character);
-    this.setImmovable(true);
+    this.setPushable(false);
     this.setOffset(0, BaseCharacter.ShortenBodyBy);
     this.setOrigin(0, 1);
   }

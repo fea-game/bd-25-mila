@@ -23,6 +23,8 @@ export default class GameScene extends Phaser.Scene {
       return;
     }
 
+    this.physics.world.createDebugGraphic();
+
     this.#currentlyOverlapping = new Set();
     this.#previouslyOverlapping = new Set();
     this.#keyboardComponent = new KeyboardComponent(this.input.keyboard);
