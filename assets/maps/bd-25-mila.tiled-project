@@ -50,6 +50,15 @@
             "valuesAsFlags": false
         },
         {
+            "id": 16,
+            "name": "Foreground",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+            ],
+            "valuesAsFlags": false
+        },
+        {
             "color": "#ffa0a0a4",
             "drawFill": true,
             "id": 10,
@@ -161,11 +170,43 @@
             ]
         },
         {
-            "id": 16,
-            "name": "Foreground",
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 17,
+            "members": [
+                {
+                    "name": "cause",
+                    "propertyType": "TriggerCause",
+                    "type": "string",
+                    "value": "Overlap"
+                },
+                {
+                    "name": "id",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "Trigger",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "id": 18,
+            "name": "TriggerCause",
             "storageType": "string",
             "type": "enum",
             "values": [
+                "Overlap"
             ],
             "valuesAsFlags": false
         }

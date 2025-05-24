@@ -277,7 +277,7 @@
          "name":"background",
          "opacity":1,
          "type":"group",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }, 
@@ -387,7 +387,7 @@
                  "name":"foreground",
                  "objects":[
                         {
-                         "gid":294,
+                         "gid":296,
                          "height":48,
                          "id":32,
                          "name":"",
@@ -399,7 +399,7 @@
                          "y":384
                         }, 
                         {
-                         "gid":295,
+                         "gid":297,
                          "height":48,
                          "id":33,
                          "name":"",
@@ -411,7 +411,7 @@
                          "y":528
                         }, 
                         {
-                         "gid":296,
+                         "gid":298,
                          "height":48,
                          "id":34,
                          "name":"",
@@ -423,7 +423,7 @@
                          "y":576
                         }, 
                         {
-                         "gid":292,
+                         "gid":294,
                          "height":75,
                          "id":35,
                          "name":"",
@@ -435,7 +435,7 @@
                          "y":240
                         }, 
                         {
-                         "gid":293,
+                         "gid":295,
                          "height":27,
                          "id":36,
                          "name":"",
@@ -524,7 +524,7 @@
          "name":"collision",
          "opacity":0.51,
          "type":"group",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }, 
@@ -820,6 +820,35 @@
                          "visible":true,
                          "x":0,
                          "y":0
+                        }, 
+                        {
+                         "draworder":"topdown",
+                         "id":30,
+                         "name":"trigger",
+                         "objects":[
+                                {
+                                 "gid":293,
+                                 "height":144,
+                                 "id":40,
+                                 "name":"",
+                                 "properties":[
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"house-hallway-living-room-transition"
+                                        }],
+                                 "rotation":0,
+                                 "type":"Trigger",
+                                 "visible":true,
+                                 "width":48,
+                                 "x":432,
+                                 "y":576
+                                }],
+                         "opacity":0.61,
+                         "type":"objectgroup",
+                         "visible":true,
+                         "x":0,
+                         "y":0
                         }],
                  "name":"chunk-1",
                  "opacity":1,
@@ -831,12 +860,12 @@
          "name":"chunks",
          "opacity":1,
          "type":"group",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }],
- "nextlayerid":29,
- "nextobjectid":37,
+ "nextlayerid":31,
+ "nextobjectid":41,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -893,7 +922,7 @@
          "margin":0,
          "name":"objects",
          "spacing":0,
-         "tilecount":10,
+         "tilecount":11,
          "tileheight":105,
          "tiles":[
                 {
@@ -955,12 +984,18 @@
                  "image":"..\/..\/objects\/cake.png",
                  "imageheight":54,
                  "imagewidth":45
+                }, 
+                {
+                 "id":11,
+                 "image":"..\/..\/objects\/trigger.png",
+                 "imageheight":48,
+                 "imagewidth":48
                 }],
          "tilewidth":57
         }, 
         {
          "columns":0,
-         "firstgid":292,
+         "firstgid":294,
          "grid":
             {
              "height":1,

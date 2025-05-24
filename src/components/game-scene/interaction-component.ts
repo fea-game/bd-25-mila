@@ -7,7 +7,7 @@ import { Interactable, isInteractable } from "../game-object/object/interactable
 import { BaseGameSceneComponent } from "./base-game-scene-component";
 
 type InteractionObjects = {
-  interactableObjects: Record<InteractionType, Phaser.Physics.Arcade.Group>;
+  interactable: Record<InteractionType, Phaser.Physics.Arcade.Group>;
   player: Player;
 };
 
@@ -41,7 +41,7 @@ export class InteractionComponent extends BaseGameSceneComponent {
     const interactionType = InteractionType.Action;
 
     // Collect overlaps
-    this.host.physics.overlap(this.#source.player, this.#source.interactableObjects[interactionType], (_, trigger) => {
+    this.host.physics.overlap(this.#source.player, this.#source.interactable[interactionType], (_, trigger) => {
       if (!isInteractable(trigger)) return;
       this.#currentlyOverlapping.add(trigger.host);
     });
