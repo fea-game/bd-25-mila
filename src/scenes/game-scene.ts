@@ -4,12 +4,15 @@ import { KeyboardComponent } from "../components/input/keyboard-component";
 import { CollisionComponent } from "../components/game-scene/collision-component";
 import { InteractionComponent } from "../components/game-scene/interaction-component";
 import { ObjectsComponent } from "../components/game-scene/objects-component";
+import { GameScript } from "../scripts/game-script";
+import { HouseScript } from "../scripts/house-script";
 
 export default class GameScene extends Phaser.Scene {
   #collisionComponent: CollisionComponent;
   #interactionComponent: InteractionComponent;
   #keyboardComponent: KeyboardComponent;
   #objectsComponent: ObjectsComponent;
+  #script: GameScript;
 
   constructor() {
     super({ key: SceneKey.Game });
@@ -32,6 +35,10 @@ export default class GameScene extends Phaser.Scene {
     this.#collisionComponent = new CollisionComponent(this, this.#objectsComponent);
     this.#interactionComponent = new InteractionComponent(this, this.#objectsComponent);
 
-    this.cameras.main.startFollow(this.#objectsComponent.player);
+    this.#script = new HouseScript(this, this.#objectsComponent);
+  }
+
+  update(time: number, delta: number): void {
+    this.#script.update(time, delta);
   }
 }
