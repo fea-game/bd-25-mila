@@ -9,7 +9,7 @@ import { InputComponent } from "../../components/input/input-component";
 import { DirectionComponent } from "../../components/game-object/character/direction-component";
 import { SpeedComponent } from "../../components/game-object/character/speed-component";
 import { Body, Direction, GameObject, InteractionType } from "../../common/types";
-import { InteractionComponent, isActor } from "../../components/game-object/character/interaction-component";
+import { ActionComponent, isActor } from "../../components/game-object/character/action-component";
 import { Depth } from "../../common/config";
 
 export type Config = {
@@ -36,7 +36,7 @@ export abstract class BaseCharacter extends GameObject {
   private speedComponent: SpeedComponent;
   protected stateMachine: StateMachine;
 
-  public abstract isActor: false | InteractionComponent;
+  public abstract isActor: false | ActionComponent;
 
   constructor(config: Config) {
     const { animations, frame, id, input, onDirectionChange, scene, speed, texture, x, y } = config;
@@ -85,9 +85,9 @@ export abstract class BaseCharacter extends GameObject {
 
   private maybeAct() {
     if (!this.controls.isActionKeyJustDown) return;
-    if (!isActor(this, InteractionType.Action)) return false;
+    if (!isActor(this)) return false;
 
-    const focused = this.isActor.getFocused(InteractionType.Action);
+    const focused = this.isActor.focused;
     if (!focused?.isInteractable.canBeInteractedWith) return;
 
     focused.isInteractable.interact(this);

@@ -3,7 +3,7 @@ import { ActionZoneSize } from "../../common/config";
 import { hasBody, InteractionType } from "../../common/types";
 import { Player } from "../../game-objects/characters/player/player";
 import GameScene from "../../scenes/game-scene";
-import { Interactable, isInteractable } from "../game-object/object/interactable-component";
+import { Actionable, isActionable } from "../game-object/object/actionable-component";
 import { BaseGameSceneComponent } from "./base-game-scene-component";
 
 type InteractionObjects = {
@@ -13,8 +13,8 @@ type InteractionObjects = {
 
 export class InteractionComponent extends BaseGameSceneComponent {
   #source: InteractionObjects;
-  #currentlyOverlapping: Set<Interactable<InteractionType>>;
-  #previouslyOverlapping: Set<Interactable<InteractionType>>;
+  #currentlyOverlapping: Set<Actionable>;
+  #previouslyOverlapping: Set<Actionable>;
 
   constructor(host: GameScene, source: InteractionObjects) {
     super(host);
@@ -42,17 +42,17 @@ export class InteractionComponent extends BaseGameSceneComponent {
 
     // Collect overlaps
     this.host.physics.overlap(this.#source.player, this.#source.interactable[interactionType], (_, trigger) => {
-      if (!isInteractable(trigger)) return;
+      if (!isActionable(trigger)) return;
       this.#currentlyOverlapping.add(trigger.host);
     });
 
-    let isPlayerFocused = this.#source.player.isActor.getFocused(interactionType);
+    let isPlayerFocused = this.#source.player.isActor.focused;
 
     // No overlaps? Clear everything
     if (this.#currentlyOverlapping.size === 0) {
       if (isPlayerFocused) {
         isPlayerFocused.isInteractable.unfocus();
-        this.#source.player.isActor.unfocus(interactionType);
+        this.#source.player.isActor.unfocus();
         isPlayerFocused = undefined;
       }
 
@@ -64,7 +64,7 @@ export class InteractionComponent extends BaseGameSceneComponent {
     const playerCenter = new Phaser.Math.Vector2(this.#source.player.body.center.x, this.#source.player.body.center.y);
 
     // Find nearest interactable
-    let nearest: Interactable<typeof interactionType> | undefined;
+    let nearest: Actionable | undefined;
     let minDistance = Number.POSITIVE_INFINITY;
 
     for (const i of this.#currentlyOverlapping) {

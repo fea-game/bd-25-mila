@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { GameObject } from "../../common/types";
-import { InteractableComponent } from "../../components/game-object/object/interactable-component";
+import { ActionableComponent } from "../../components/game-object/object/actionable-component";
 import { PushableComponent } from "../../components/game-object/object/pushable-component";
 import { Depth } from "../../common/config";
 
@@ -19,7 +19,7 @@ export abstract class BaseObject extends GameObject {
 
   protected readonly baseDepth: number;
 
-  public abstract isInteractable: false | InteractableComponent;
+  public abstract isInteractable: false | ActionableComponent;
   public abstract isPushable: false | PushableComponent;
 
   constructor(config: Config) {

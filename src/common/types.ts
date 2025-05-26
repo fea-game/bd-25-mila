@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { InteractableComponent } from "../components/game-object/object/interactable-component";
+import { ActionableComponent } from "../components/game-object/object/actionable-component";
 
 export const SceneKey = {
   Preload: "preload",

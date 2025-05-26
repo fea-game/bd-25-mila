@@ -2,22 +2,21 @@ import { Texture } from "../../common/assets";
 import { BaseObject } from "./base-object";
 import * as tiled from "../../tiled/types";
 import { InteractionType } from "../../common/types";
-import { Interactable, InteractableComponent } from "../../components/game-object/object/interactable-component";
-import { Depth } from "../../common/config";
+import { Actionable, ActionableComponent } from "../../components/game-object/object/actionable-component";
 
 type Config = {
   scene: Phaser.Scene;
   properties: Pick<tiled.Toilet, "x" | "y" | "properties">;
 };
 
-export class Toilet extends BaseObject implements Interactable<typeof InteractionType.Action> {
+export class Toilet extends BaseObject implements Actionable {
   private static getTexture(isOpened: boolean): Texture {
     return Texture[`Toilet${isOpened ? "Opened" : "Closed"}`];
   }
 
   private static ShortenBodyBy = 54;
 
-  #isInteractable: InteractableComponent;
+  #isInteractable: ActionableComponent;
   #isOpened: boolean;
 
   public readonly isPushable = false;
@@ -37,7 +36,7 @@ export class Toilet extends BaseObject implements Interactable<typeof Interactio
     this.setBodySize(this.displayWidth, this.displayHeight - Toilet.ShortenBodyBy).setOffset(0, Toilet.ShortenBodyBy);
     this.setImmovable(true);
     this.setPushable(false);
-    this.#isInteractable = new InteractableComponent({
+    this.#isInteractable = new ActionableComponent({
       host: this,
       type: InteractionType.Action,
       interact: () => {
@@ -46,7 +45,7 @@ export class Toilet extends BaseObject implements Interactable<typeof Interactio
     });
   }
 
-  get isInteractable(): InteractableComponent {
+  get isInteractable(): ActionableComponent {
     return this.#isInteractable;
   }
 

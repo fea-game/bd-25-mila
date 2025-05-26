@@ -2,17 +2,17 @@ import Phaser from "phaser";
 import { ActionZoneSize } from "../../../common/config";
 import { assertsHasBody, Body, GameObject, InteractionType } from "../../../common/types";
 import { BaseGameObjectComponent } from "../base-game-object-component";
-import { Actor } from "../character/interaction-component";
+import { Actor } from "../character/action-component";
 import { Indicator } from "../../../game-objects/helper/indicator";
 
-type Config<T extends InteractionType> = {
-  host: GameObject & Interactable<T>;
-  type: T;
-  interact: (actor: Actor<T[]>, onFinished?: () => void) => void;
+type Config = {
+  host: GameObject & Actionable;
+  type: InteractionType;
+  interact: (actor: Actor, onFinished?: () => void) => void;
 };
 
-export class InteractableComponent<T extends InteractionType = InteractionType> extends BaseGameObjectComponent {
-  declare host: GameObject & { body: Body } & Interactable<T>;
+export class ActionableComponent extends BaseGameObjectComponent {
+  declare host: GameObject & { body: Body } & Actionable;
 
   private static getZoneBounds(host: GameObject & { body: Body }): {
     x: number;
@@ -40,21 +40,21 @@ export class InteractableComponent<T extends InteractionType = InteractionType> 
     };
   }
 
-  #type: T;
+  #type: InteractionType;
   #canBeInteractedWith: boolean;
-  #isFocused: Actor<T[]> | false;
-  #trigger: InteractionTrigger<T>;
+  #isFocused: Actor | false;
+  #trigger: ActionTrigger;
   #indicator?: Indicator;
 
-  public readonly interact: (actor: Actor<T[]>, onFinished?: () => void) => void;
+  public readonly interact: (actor: Actor, onFinished?: () => void) => void;
 
-  constructor(config: Config<T>) {
+  constructor(config: Config) {
     super(config.host);
 
     this.canBeInteractedWith = true;
     this.#isFocused = false;
     this.#type = config.type;
-    this.interact = (actor: Actor<T[]>, onFinished?: () => void) => {
+    this.interact = (actor: Actor, onFinished?: () => void) => {
       if (!this.#isFocused) return;
 
       config.interact(actor, onFinished);
@@ -62,7 +62,7 @@ export class InteractableComponent<T extends InteractionType = InteractionType> 
 
     assertsHasBody(this.host);
 
-    const { x, y, width, height } = InteractableComponent.getZoneBounds(this.host);
+    const { x, y, width, height } = ActionableComponent.getZoneBounds(this.host);
     const trigger: any = this.host.scene.add.zone(x, y, width, height);
     trigger.host = this.host;
     this.#trigger = trigger;
@@ -95,7 +95,7 @@ export class InteractableComponent<T extends InteractionType = InteractionType> 
     return this.#trigger;
   }
 
-  public focus(actor: Actor<T[]>): void {
+  public focus(actor: Actor): void {
     if (!this.canBeInteractedWith) return;
     if (this.#isFocused) return;
 
@@ -113,14 +113,14 @@ export class InteractableComponent<T extends InteractionType = InteractionType> 
     this.#indicator = undefined;
   }
 
-  public getFocuser(): Actor<T[]> | undefined {
+  public getFocuser(): Actor | undefined {
     if (!this.#isFocused) return;
 
     return this.#isFocused;
   }
 
   public update(): void {
-    const { x, y } = InteractableComponent.getZoneBounds(this.host);
+    const { x, y } = ActionableComponent.getZoneBounds(this.host);
 
     if (x === this.#trigger.x && y === this.#trigger.y) {
       return;
@@ -132,13 +132,11 @@ export class InteractableComponent<T extends InteractionType = InteractionType> 
   }
 }
 
-export interface Interactable<T extends InteractionType> {
-  isInteractable: InteractableComponent<T>;
+export interface Actionable {
+  isInteractable: ActionableComponent;
 }
 
-export function isInteractable<T, I extends InteractionType = InteractionType>(
-  object: T
-): object is T & InteractionTrigger<I> {
+export function isActionable<T>(object: T): object is T & ActionTrigger {
   if (!object) return false;
   if (typeof object !== "object") return false;
   if (!("host" in object)) return false;
@@ -147,11 +145,11 @@ export function isInteractable<T, I extends InteractionType = InteractionType>(
   if (!("isInteractable" in object.host)) return false;
   if (!object.host.isInteractable) return false;
   if (typeof object.host.isInteractable !== "object") return false;
-  if (!(object.host.isInteractable instanceof InteractableComponent)) return false;
+  if (!(object.host.isInteractable instanceof ActionableComponent)) return false;
 
   return object.host.isInteractable.canBeInteractedWith;
 }
 
-export type InteractionTrigger<T extends InteractionType = InteractionType> = Phaser.GameObjects.Zone & {
-  readonly host: Interactable<T>;
+export type ActionTrigger = Phaser.GameObjects.Zone & {
+  readonly host: Actionable;
 };

@@ -1,18 +1,17 @@
 import { AnimationType, Character, Texture } from "../../../common/assets";
-import { Depth } from "../../../common/config";
 import { CharacterState } from "../../../components/game-object/state-machine/character/base-character-state";
 import { IdleState } from "../../../components/game-object/state-machine/character/idle-state";
 import { MovingState } from "../../../components/game-object/state-machine/character/moving-state";
 import { BaseCharacter, Config as CharacterGameObjectConfig } from "../base-character";
 import * as tiled from "../../../tiled/types";
-import { Actor, InteractionComponent } from "../../../components/game-object/character/interaction-component";
+import { Actor, ActionComponent } from "../../../components/game-object/character/action-component";
 import { InteractionType } from "../../../common/types";
 
 type Config = Omit<CharacterGameObjectConfig, "animations" | "speed" | "texture" | "x" | "y"> & {
   properties: Pick<tiled.Player, "x" | "y">;
 };
 
-export class Player extends BaseCharacter implements Actor<typeof Player.InteractionTypes> {
+export class Player extends BaseCharacter implements Actor {
   private static PlayerCharacterKey = "Mila";
 
   private static Animations: CharacterGameObjectConfig["animations"] = {
@@ -22,7 +21,7 @@ export class Player extends BaseCharacter implements Actor<typeof Player.Interac
 
   private static InteractionTypes: InteractionType[] = ["action"];
 
-  #isActor: InteractionComponent<typeof Player.InteractionTypes>;
+  #isActor: ActionComponent;
 
   constructor({ properties, ...config }: Config) {
     super({
@@ -35,7 +34,7 @@ export class Player extends BaseCharacter implements Actor<typeof Player.Interac
       y: properties.y,
     });
 
-    this.#isActor = new InteractionComponent(this, Player.InteractionTypes);
+    this.#isActor = new ActionComponent(this);
 
     this.stateMachine.addState(new IdleState(this, this.stateMachine));
     this.stateMachine.addState(new MovingState(this, this.stateMachine));
@@ -47,7 +46,7 @@ export class Player extends BaseCharacter implements Actor<typeof Player.Interac
     });
   }
 
-  get isActor(): InteractionComponent<typeof Player.InteractionTypes> {
+  get isActor(): ActionComponent {
     return this.#isActor;
   }
 }
