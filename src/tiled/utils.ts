@@ -16,6 +16,8 @@ import {
   ValidObject,
   ObjectWithProperties,
   Layer,
+  Trigger,
+  TriggerCause,
 } from "./types";
 
 /**
@@ -40,10 +42,13 @@ export function getObjectLayerNames(
 
 const colorValues: string[] = Object.values(Enum.Color);
 const npcTypeValues: string[] = Object.values(Enum.NpcType);
+const triggerCauseValues: string[] = Object.values(Enum.TriggerCause);
 
 const EnumValidator = {
   isColor: (value: unknown): value is Color => typeof value === "string" && colorValues.includes(value),
   isNpcType: (value: unknown): value is NpcType => typeof value === "string" && npcTypeValues.includes(value),
+  isTriggerCause: (value: unknown): value is TriggerCause =>
+    typeof value === "string" && triggerCauseValues.includes(value),
 };
 
 const ObjectMapper = {
@@ -173,6 +178,36 @@ const ObjectMapper = {
       height,
       properties: {
         isOpened: isOpened ?? true,
+      },
+    };
+  },
+  Trigger: ({
+    type,
+    x,
+    y,
+    width,
+    height,
+    properties,
+  }: Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<"Trigger">): Trigger => {
+    const cause = properties.find((prop) => prop.name === "cause")?.value ?? Enum.TriggerCause.Overlap;
+    const id = properties.find((prop) => prop.name === "id")?.value;
+
+    if (!EnumValidator.isTriggerCause(cause)) {
+      throw new Error(`Invalid type ${typeof cause} (${cause}) on Trigger.cause!`);
+    }
+    if (typeof id !== "string") {
+      throw new Error(`Invalid type ${typeof id} (${id}) on Trigger.id!`);
+    }
+
+    return {
+      type,
+      x,
+      y,
+      width,
+      height,
+      properties: {
+        cause,
+        id,
       },
     };
   },

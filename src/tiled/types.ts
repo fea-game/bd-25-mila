@@ -5,6 +5,7 @@ export const ObjectType = {
   Plate: "Plate",
   Player: "Player",
   Toilet: "Toilet",
+  Trigger: "Trigger",
 } as const;
 
 type ObjectTypeKey = keyof typeof ObjectType;
@@ -43,10 +44,14 @@ export const Enum = {
     Amelie: "Amelie",
     Thief: "Thief",
   },
+  TriggerCause: {
+    Overlap: "Overlap",
+  },
 } as const;
 
 export type Color = (typeof Enum.Color)[keyof typeof Enum.Color];
 export type NpcType = (typeof Enum.NpcType)[keyof typeof Enum.NpcType];
+export type TriggerCause = (typeof Enum.TriggerCause)[keyof typeof Enum.TriggerCause];
 
 export type Chunk = { id: string };
 
@@ -82,7 +87,14 @@ export type Toilet = Object<typeof ObjectType.Toilet> & {
   };
 };
 
-export type ValidObject = Balloon | Foreground | NPC | Plate | Player | Toilet;
+export type Trigger = Object<typeof ObjectType.Trigger> & {
+  properties: {
+    id: string;
+    cause: TriggerCause;
+  };
+};
+
+export type ValidObject = Balloon | Foreground | NPC | Plate | Player | Toilet | Trigger;
 
 export type ValidObjectMappedByType = {
   Balloon: Balloon;
@@ -91,6 +103,7 @@ export type ValidObjectMappedByType = {
   Plate: Plate;
   Player: Player;
   Toilet: Toilet;
+  Trigger: Trigger;
 };
 
 export const LayerNameDelimiter = "/";
@@ -99,4 +112,5 @@ export const Layer = {
   Chunks: "chunks",
   Foreground: "foreground",
   Objects: "objects",
+  Trigger: "trigger",
 } as const;

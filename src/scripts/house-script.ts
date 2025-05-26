@@ -3,7 +3,7 @@ import { GameScript, Scene } from "./game-script";
 import { Area, InteractionType } from "../common/types";
 import GameScene from "../scenes/game-scene";
 import { Player } from "../game-objects/characters/player/player";
-import { cinematicIntro } from "./utils";
+import { playCinematicIntro } from "./utils";
 
 export class HouseScript extends GameScript {
   private static getScenes = (host: Scene<unknown>["host"], objects: Scene<unknown>["objects"]) => ({
@@ -22,7 +22,7 @@ export class HouseScript extends GameScript {
       }
 
       public start() {
-        cinematicIntro({
+        playCinematicIntro({
           scene: this.host,
           player: this.objects.player,
           duration: 5000,
