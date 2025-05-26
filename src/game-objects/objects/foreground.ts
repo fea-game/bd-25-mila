@@ -9,7 +9,6 @@ type Config = {
 
 export class Foreground extends BaseObject {
   public readonly isInteractable = false;
-  public readonly isPushable = false;
 
   constructor({
     scene,

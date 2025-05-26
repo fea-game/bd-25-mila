@@ -13,6 +13,9 @@ import { Plate } from "../../game-objects/objects/plate";
 import { Foreground } from "../../game-objects/objects/foreground";
 import { KeyboardComponent } from "../input/keyboard-component";
 import { Player } from "../../game-objects/characters/player/player";
+import { isActionable } from "../game-object/object/actionable-component";
+import { isContactable } from "../game-object/object/contactable-component";
+import { isPushable } from "../game-object/object/pushable-component";
 
 export class ObjectsComponent extends BaseGameSceneComponent {
   public static for({
@@ -35,10 +38,9 @@ export class ObjectsComponent extends BaseGameSceneComponent {
   #image: Phaser.GameObjects.Group;
   #collision: Phaser.GameObjects.Group;
   #foreground: Phaser.GameObjects.Group;
-  #interactable: Record<InteractionType, Phaser.Physics.Arcade.Group>;
+  #interactable: Record<InteractionType, Phaser.GameObjects.Group>;
   #npc: Phaser.Physics.Arcade.Group;
   #player: Player;
-  #pushable: Phaser.GameObjects.Group;
 
   constructor(host: GameScene) {
     super(host);
@@ -48,7 +50,7 @@ export class ObjectsComponent extends BaseGameSceneComponent {
     return this.#collision;
   }
 
-  get interactable(): Record<InteractionType, Phaser.Physics.Arcade.Group> {
+  get interactable(): Record<InteractionType, Phaser.GameObjects.Group> {
     return this.#interactable;
   }
 
@@ -60,19 +62,16 @@ export class ObjectsComponent extends BaseGameSceneComponent {
     return this.#player;
   }
 
-  get pushable(): Phaser.GameObjects.Group {
-    return this.#pushable;
-  }
-
   public create(area: Area, keyboard: KeyboardComponent): void {
     this.#image = this.host.add.group([]);
     this.#collision = this.host.add.group([]);
     this.#foreground = this.host.add.group([]);
     this.#interactable = {
       action: this.host.physics.add.group({ immovable: true, allowGravity: false }),
+      contact: this.host.add.group([]),
+      push: this.host.add.group([]),
     };
     this.#npc = this.host.physics.add.group({ immovable: true, allowGravity: false });
-    this.#pushable = this.host.add.group([]);
 
     const map = this.host.make.tilemap({ key: getAreaMap(area) });
 
@@ -176,12 +175,19 @@ export class ObjectsComponent extends BaseGameSceneComponent {
       }
 
       if (object?.isInteractable) {
-        this.#interactable[object.isInteractable.type].add(object.isInteractable.trigger);
-        this.#collision.add(object);
-      }
-
-      if (object?.isPushable) {
-        this.#pushable.add(object);
+        switch (true) {
+          case isActionable(object):
+            this.#interactable.action.add(object.isInteractable.trigger);
+            this.#collision.add(object);
+            break;
+          case isContactable(object):
+            this.#interactable.contact.add(object);
+            break;
+          case isPushable(object):
+            this.#interactable.push.add(object);
+            break;
+          default:
+        }
       }
     }
   }

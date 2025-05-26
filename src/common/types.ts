@@ -65,6 +65,8 @@ export type Direction = (typeof Direction)[DirectionKey];
 
 export const InteractionType = {
   Action: "action",
+  Contact: "contact",
+  Push: "push",
 } as const;
 
 export type InteractionType = (typeof InteractionType)[keyof typeof InteractionType];

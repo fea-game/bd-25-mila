@@ -1,9 +1,9 @@
 import Phaser from "phaser";
 import { ActionZoneSize } from "../../../common/config";
 import { assertsHasBody, Body, GameObject, InteractionType } from "../../../common/types";
-import { BaseGameObjectComponent } from "../base-game-object-component";
 import { Actor } from "../character/action-component";
 import { Indicator } from "../../../game-objects/helper/indicator";
+import { InteractableComponent } from "./interactable-component";
 
 type Config = {
   host: GameObject & Actionable;
@@ -11,7 +11,7 @@ type Config = {
   interact: (actor: Actor, onFinished?: () => void) => void;
 };
 
-export class ActionableComponent extends BaseGameObjectComponent {
+export class ActionableComponent extends InteractableComponent<typeof InteractionType.Action> {
   declare host: GameObject & { body: Body } & Actionable;
 
   private static getZoneBounds(host: GameObject & { body: Body }): {
@@ -40,8 +40,6 @@ export class ActionableComponent extends BaseGameObjectComponent {
     };
   }
 
-  #type: InteractionType;
-  #canBeInteractedWith: boolean;
   #isFocused: Actor | false;
   #trigger: ActionTrigger;
   #indicator?: Indicator;
@@ -49,11 +47,9 @@ export class ActionableComponent extends BaseGameObjectComponent {
   public readonly interact: (actor: Actor, onFinished?: () => void) => void;
 
   constructor(config: Config) {
-    super(config.host);
+    super({ host: config.host, type: InteractionType.Action });
 
-    this.canBeInteractedWith = true;
     this.#isFocused = false;
-    this.#type = config.type;
     this.interact = (actor: Actor, onFinished?: () => void) => {
       if (!this.#isFocused) return;
 
@@ -74,21 +70,18 @@ export class ActionableComponent extends BaseGameObjectComponent {
     });
   }
 
-  get canBeInteractedWith(): boolean {
-    return this.#canBeInteractedWith;
+  public override get canBeInteractedWith(): boolean {
+    return super.canBeInteractedWith;
   }
-  set canBeInteractedWith(value: boolean) {
-    if (value === this.#canBeInteractedWith) return;
 
-    this.#canBeInteractedWith = value;
+  public override set canBeInteractedWith(value: boolean) {
+    if (value === this.canBeInteractedWith) return;
 
-    if (!this.#canBeInteractedWith) {
+    super.canBeInteractedWith = value;
+
+    if (!this.canBeInteractedWith) {
       this.unfocus();
     }
-  }
-
-  get type(): InteractionType {
-    return this.#type;
   }
 
   get trigger(): Phaser.GameObjects.GameObject {
@@ -136,7 +129,16 @@ export interface Actionable {
   isInteractable: ActionableComponent;
 }
 
-export function isActionable<T>(object: T): object is T & ActionTrigger {
+export function isActionable<T>(object: T): object is T & Actionable {
+  if (!object) return false;
+  if (typeof object !== "object") return false;
+  if (!("isInteractable" in object)) return false;
+  if (typeof object.isInteractable !== "object") return false;
+
+  return object.isInteractable instanceof ActionableComponent;
+}
+
+export function isActionTrigger<T>(object: T): object is T & ActionTrigger {
   if (!object) return false;
   if (typeof object !== "object") return false;
   if (!("host" in object)) return false;

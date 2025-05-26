@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { Depth } from "../../../common/config";
-import { assertsHasBody, Body, GameObject } from "../../../common/types";
-import { BaseGameObjectComponent } from "../base-game-object-component";
+import { assertsHasBody, Body, GameObject, InteractionType } from "../../../common/types";
+import { InteractableComponent } from "./interactable-component";
 
 type Config = {
   host: GameObject;
@@ -10,7 +10,7 @@ type Config = {
   maxVelocity?: number;
 };
 
-export class PushableComponent extends BaseGameObjectComponent {
+export class PushableComponent extends InteractableComponent<typeof InteractionType.Push> {
   private static getDepth(y: number, baseDepth: number): number {
     return baseDepth + y / 10000;
   }
@@ -18,17 +18,15 @@ export class PushableComponent extends BaseGameObjectComponent {
   declare host: GameObject & { body: Body };
 
   #baseDepth: number;
-  #canBePushed: boolean;
   #isBeingPushed: boolean;
   #lastPosition: [x: number, y: number];
 
   constructor(config: Config) {
     const { host, baseDepth = Depth.Objects, drag = 200, maxVelocity = 300 } = config;
 
-    super(host);
+    super({ host, type: InteractionType.Push });
 
     this.#baseDepth = baseDepth;
-    this.#canBePushed = true;
     this.#isBeingPushed = false;
     this.#lastPosition = [this.host.x, this.host.y];
 
@@ -41,15 +39,6 @@ export class PushableComponent extends BaseGameObjectComponent {
     this.host.scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.host.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
     });
-  }
-
-  get canBePushed(): boolean {
-    return this.#canBePushed;
-  }
-  set canBePushed(value: boolean) {
-    if (value === this.#canBePushed) return;
-
-    this.#canBePushed = value;
   }
 
   get isBeingPushed(): boolean {
@@ -67,4 +56,18 @@ export class PushableComponent extends BaseGameObjectComponent {
 
     this.host.setDepth(PushableComponent.getDepth(this.host.y, this.#baseDepth));
   }
+}
+
+export interface Pushable {
+  isInteractable: PushableComponent;
+}
+
+export function isPushable<T>(object: T): object is T & Pushable {
+  if (!object) return false;
+  if (typeof object !== "object") return false;
+  if (!("isInteractable" in object)) return false;
+  if (typeof object.isInteractable !== "object") return false;
+  if (!(object.isInteractable instanceof PushableComponent)) return false;
+
+  return object.isInteractable.canBeInteractedWith;
 }

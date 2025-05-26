@@ -2,7 +2,7 @@ import { getTextureAnimation, Texture, TextureKey } from "../../common/assets";
 import { BaseObject } from "./base-object";
 import * as tiled from "../../tiled/types";
 import { Depth } from "../../common/config";
-import { PushableComponent } from "../../components/game-object/object/pushable-component";
+import { Pushable, PushableComponent } from "../../components/game-object/object/pushable-component";
 
 type Color = tiled.Balloon["properties"]["color"];
 
@@ -11,7 +11,7 @@ type Config = {
   properties: Pick<tiled.Balloon, "x" | "y" | "properties">;
 };
 
-export class Balloon extends BaseObject {
+export class Balloon extends BaseObject implements Pushable {
   private static getTexture(color: Color): [TextureKey, Texture] {
     const key: TextureKey = `${color}Balloon`;
 
@@ -19,9 +19,7 @@ export class Balloon extends BaseObject {
   }
 
   #color: Color;
-  #isPushable: PushableComponent;
-
-  public readonly isInteractable = false;
+  #isInteractable: PushableComponent;
 
   constructor({
     scene,
@@ -36,7 +34,7 @@ export class Balloon extends BaseObject {
     super({ scene, x, y, texture });
 
     this.#color = color;
-    this.#isPushable = new PushableComponent({
+    this.#isInteractable = new PushableComponent({
       host: this,
       baseDepth: Depth.Objects,
     });
@@ -70,7 +68,7 @@ export class Balloon extends BaseObject {
     );
   }
 
-  public get isPushable(): PushableComponent {
-    return this.#isPushable;
+  public get isInteractable(): PushableComponent {
+    return this.#isInteractable;
   }
 }

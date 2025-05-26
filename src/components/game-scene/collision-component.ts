@@ -2,12 +2,13 @@ import Phaser from "phaser";
 import { Player } from "../../game-objects/characters/player/player";
 import GameScene from "../../scenes/game-scene";
 import { BaseGameSceneComponent } from "./base-game-scene-component";
+import { InteractionType } from "../../common/types";
 
 type CollisionObjects = {
   collision: Phaser.GameObjects.Group;
   npc: Phaser.Physics.Arcade.Group;
   player: Player;
-  pushable: Phaser.GameObjects.Group;
+  interactable: Record<InteractionType, Phaser.GameObjects.Group>;
 };
 
 export class CollisionComponent extends BaseGameSceneComponent {
@@ -24,13 +25,11 @@ export class CollisionComponent extends BaseGameSceneComponent {
   public create(): void {
     // Player Collision
     this.host.physics.add.collider(this.#source.player, this.#source.collision);
-    this.host.physics.add.collider(this.#source.player, this.#source.pushable);
 
     // NPC Collision
-    this.host.physics.add.collider(this.#source.npc, this.#source.pushable);
+    this.host.physics.add.collider(this.#source.npc, this.#source.collision);
 
-    // Inter-Object Collision
-    this.host.physics.add.collider(this.#source.pushable, this.#source.collision);
-    this.host.physics.add.collider(this.#source.pushable, this.#source.pushable);
+    // Pushable Object Collision
+    this.host.physics.add.collider(this.#source.interactable.push, this.#source.collision);
   }
 }

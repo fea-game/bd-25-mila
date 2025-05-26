@@ -37,15 +37,18 @@ export class HouseScript extends GameScript {
       public readonly type = "Roaming";
       public readonly area = Area.House;
       public readonly host = host;
+      public readonly objects = objects;
       state = {
         didGoToLivingRoom: false,
       };
 
-      public isFinished = () => {
+      public isFinished() {
         return false;
-      };
+      }
 
-      public start = () => {};
+      public start() {
+        this.host.cameras.main.startFollow(this.objects.player);
+      }
     })(),
   });
 
@@ -57,7 +60,7 @@ export class HouseScript extends GameScript {
       player: Player;
     }
   ) {
-    super(host, objects, HouseScript.getScenes(host, objects), "house-player-waking-up");
+    super(host, objects, HouseScript.getScenes(host, objects), "house-after-waking-up");
   }
 
   public next(currentScene: Scene<unknown>): Scene<unknown> {

@@ -14,7 +14,6 @@ export class Plate extends BaseObject {
   }
 
   public readonly isInteractable = false;
-  public readonly isPushable = false;
 
   #isWithCake: boolean;
 

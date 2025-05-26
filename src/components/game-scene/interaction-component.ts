@@ -3,11 +3,12 @@ import { ActionZoneSize } from "../../common/config";
 import { hasBody, InteractionType } from "../../common/types";
 import { Player } from "../../game-objects/characters/player/player";
 import GameScene from "../../scenes/game-scene";
-import { Actionable, isActionable } from "../game-object/object/actionable-component";
+import { Actionable, isActionTrigger } from "../game-object/object/actionable-component";
 import { BaseGameSceneComponent } from "./base-game-scene-component";
 
 type InteractionObjects = {
-  interactable: Record<InteractionType, Phaser.Physics.Arcade.Group>;
+  interactable: Record<InteractionType, Phaser.GameObjects.Group>;
+  npc: Phaser.Physics.Arcade.Group;
   player: Player;
 };
 
@@ -30,19 +31,27 @@ export class InteractionComponent extends BaseGameSceneComponent {
   }
 
   public create(): void {
+    // Actionable
     this.#currentlyOverlapping = new Set();
     this.#previouslyOverlapping = new Set();
+
+    // Pushable
+    this.host.physics.add.collider(this.#source.player, this.#source.interactable.push);
+    this.host.physics.add.collider(this.#source.npc, this.#source.interactable.push);
+    this.host.physics.add.collider(this.#source.interactable.push, this.#source.interactable.push);
   }
 
   update(): void {
+    this.updateActionables();
+  }
+
+  updateActionables(): void {
     // Clear this frame's overlap state
     this.#currentlyOverlapping.clear();
 
-    const interactionType = InteractionType.Action;
-
     // Collect overlaps
-    this.host.physics.overlap(this.#source.player, this.#source.interactable[interactionType], (_, trigger) => {
-      if (!isActionable(trigger)) return;
+    this.host.physics.overlap(this.#source.player, this.#source.interactable.action, (_, trigger) => {
+      if (!isActionTrigger(trigger)) return;
       this.#currentlyOverlapping.add(trigger.host);
     });
 

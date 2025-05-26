@@ -3,6 +3,7 @@ import { GameObject } from "../../common/types";
 import { ActionableComponent } from "../../components/game-object/object/actionable-component";
 import { PushableComponent } from "../../components/game-object/object/pushable-component";
 import { Depth } from "../../common/config";
+import { ContactableComponent } from "../../components/game-object/object/contactable-component";
 
 type Config = {
   scene: Phaser.Scene;
@@ -19,8 +20,7 @@ export abstract class BaseObject extends GameObject {
 
   protected readonly baseDepth: number;
 
-  public abstract isInteractable: false | ActionableComponent;
-  public abstract isPushable: false | PushableComponent;
+  public abstract isInteractable: false | ActionableComponent | ContactableComponent | PushableComponent;
 
   constructor(config: Config) {
     super(config.scene, config.x, config.y, config.texture);

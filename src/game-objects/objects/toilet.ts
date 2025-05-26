@@ -19,8 +19,6 @@ export class Toilet extends BaseObject implements Actionable {
   #isInteractable: ActionableComponent;
   #isOpened: boolean;
 
-  public readonly isPushable = false;
-
   constructor({
     scene,
     properties: {
