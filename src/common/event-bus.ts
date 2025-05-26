@@ -1,41 +1,28 @@
 import * as Phaser from "phaser";
 import { GameObject } from "./types";
-import { Interactable } from "../game-objects/types";
+import { Contactable } from "../components/game-object/object/contactable-component";
 
-export class EventBus {
+export class EventBus extends Phaser.Events.EventEmitter {
   public static readonly Event = {
-    Interacted: "interacted",
+    Contacted: "contacted",
   } as const;
 
   public static readonly instance: EventBus = new EventBus();
 
-  #emitter: Phaser.Events.EventEmitter;
-
-  constructor() {
-    this.#emitter = new Phaser.Events.EventEmitter();
+  public static getSubject(event: Event, ...tokens: string[]): string {
+    return [event, ...tokens].join("-");
   }
 
-  public emit(...event: Event): void {
-    this.#emitter.emit(...event);
-  }
-
-  public on(event: Event[0], onEvent: Function, context?: any): void {
-    this.#emitter.on(event, onEvent, context);
-  }
-
-  public once(event: Event[0], onEvent: Function, context?: any): void {
-    this.#emitter.once(event, onEvent, context);
-  }
-
-  public off(event: Event[0], onEvent?: Function, context?: any, isOnce?: boolean): void {
-    this.#emitter.off(event, onEvent, context, isOnce);
+  public static contacted(payload: EventPayload[typeof EventBus.Event.Contacted]): void {
+    EventBus.instance.emit(
+      EventBus.getSubject(EventBus.Event.Contacted, payload.interactedWith.isInteractable.id),
+      payload
+    );
   }
 }
 
-type EventPayload = {
-  [EventBus.Event.Interacted]: { actor: GameObject; interactedWith: Interactable };
-};
+type Event = (typeof EventBus.Event)[keyof typeof EventBus.Event];
 
-type Event = {
-  [K in keyof EventPayload]: [K, EventPayload[K]];
-}[keyof EventPayload];
+type EventPayload = {
+  [EventBus.Event.Contacted]: { actor: GameObject; interactedWith: Contactable };
+};

@@ -112,5 +112,4 @@ export const Layer = {
   Chunks: "chunks",
   Foreground: "foreground",
   Objects: "objects",
-  Trigger: "trigger",
 } as const;

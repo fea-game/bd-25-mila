@@ -51,7 +51,6 @@ export class Npc extends BaseCharacter {
 
   public readonly isActor = false;
   public readonly isInteractable = false;
-  public readonly isPushable = false;
 
   #npcType: NpcType;
 
@@ -76,16 +75,6 @@ export class Npc extends BaseCharacter {
     config.scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       config.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
     });
-
-    if (properties.type === "Amelie") {
-      this.scene.time.delayedCall(2000, () => {
-        this.move([
-          { direction: Direction.Left, distance: 170 },
-          { direction: Direction.Down, distance: 200 },
-          { direction: Direction.Right, distance: 20 },
-        ]);
-      });
-    }
   }
 
   public get npcType(): NpcType {
@@ -119,6 +108,7 @@ export class Npc extends BaseCharacter {
   private moveBy(move: Move, onFinished: () => void) {
     const controlsProperty = Npc.getControlsProperty(move.direction);
     const { property: coordProperty, start, target } = Npc.getCoordinates(move, this);
+    const isDistancePositive = target > start;
 
     this.controls[controlsProperty] = true;
 
@@ -126,9 +116,10 @@ export class Npc extends BaseCharacter {
       delay: 16, // check every frame (~60fps)
       loop: true,
       callback: () => {
-        const distance = target - this[coordProperty];
+        const current = this[coordProperty];
+        const isArrived = isDistancePositive ? current >= target : current <= target;
 
-        if (distance >= -1 && distance <= 1) {
+        if (isArrived) {
           this.controls[controlsProperty] = false;
           this.scene.time.removeEvent(checkTimer);
 

@@ -16,6 +16,7 @@ import { Player } from "../../game-objects/characters/player/player";
 import { isActionable } from "../game-object/object/actionable-component";
 import { isContactable } from "../game-object/object/contactable-component";
 import { isPushable } from "../game-object/object/pushable-component";
+import { Trigger } from "../../game-objects/objects/trigger";
 
 export class ObjectsComponent extends BaseGameSceneComponent {
   public static for({
@@ -165,6 +166,8 @@ export class ObjectsComponent extends BaseGameSceneComponent {
             break;
           case "Toilet":
             return new Toilet({ scene: this.host, properties: tiledObject });
+          case "Trigger":
+            return new Trigger({ scene: this.host, properties: tiledObject });
           default:
         }
       })(tiledObject);

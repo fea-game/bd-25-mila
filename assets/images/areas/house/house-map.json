@@ -814,22 +814,11 @@
                                  "width":48,
                                  "x":660,
                                  "y":372
-                                }],
-                         "opacity":1,
-                         "type":"objectgroup",
-                         "visible":true,
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "draworder":"topdown",
-                         "id":30,
-                         "name":"trigger",
-                         "objects":[
+                                }, 
                                 {
                                  "gid":293,
                                  "height":144,
-                                 "id":40,
+                                 "id":44,
                                  "name":"",
                                  "properties":[
                                         {
@@ -844,7 +833,7 @@
                                  "x":432,
                                  "y":576
                                 }],
-                         "opacity":0.61,
+                         "opacity":0.62,
                          "type":"objectgroup",
                          "visible":true,
                          "x":0,
@@ -865,7 +854,7 @@
          "y":0
         }],
  "nextlayerid":31,
- "nextobjectid":41,
+ "nextobjectid":45,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

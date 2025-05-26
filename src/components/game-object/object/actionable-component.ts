@@ -7,7 +7,6 @@ import { InteractableComponent } from "./interactable-component";
 
 type Config = {
   host: GameObject & Actionable;
-  type: InteractionType;
   interact: (actor: Actor, onFinished?: () => void) => void;
 };
 

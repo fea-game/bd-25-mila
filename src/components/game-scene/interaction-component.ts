@@ -5,6 +5,8 @@ import { Player } from "../../game-objects/characters/player/player";
 import GameScene from "../../scenes/game-scene";
 import { Actionable, isActionTrigger } from "../game-object/object/actionable-component";
 import { BaseGameSceneComponent } from "./base-game-scene-component";
+import { EventBus } from "../../common/event-bus";
+import { isContactable } from "../game-object/object/contactable-component";
 
 type InteractionObjects = {
   interactable: Record<InteractionType, Phaser.GameObjects.Group>;
@@ -34,6 +36,13 @@ export class InteractionComponent extends BaseGameSceneComponent {
     // Actionable
     this.#currentlyOverlapping = new Set();
     this.#previouslyOverlapping = new Set();
+
+    // Contactable
+    this.host.physics.add.overlap(this.#source.player, this.#source.interactable.contact, (_, contactable) => {
+      if (!isContactable(contactable)) return;
+
+      EventBus.contacted({ actor: this.#source.player, interactedWith: contactable });
+    });
 
     // Pushable
     this.host.physics.add.collider(this.#source.player, this.#source.interactable.push);

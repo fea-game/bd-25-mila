@@ -3,13 +3,14 @@ import { InteractableComponent } from "./interactable-component";
 
 type Config = {
   host: GameObject & Contactable;
+  id: string;
 };
 
 export class ContactableComponent extends InteractableComponent<typeof InteractionType.Contact> {
   declare host: GameObject & Contactable;
 
   constructor(config: Config) {
-    super({ host: config.host, type: InteractionType.Contact });
+    super({ host: config.host, type: InteractionType.Contact, id: config.id });
   }
 }
 
