@@ -1,46 +1,59 @@
-import Phaser from "phaser";
-import { Area, InteractionType } from "../common/types";
-import { Player } from "../game-objects/characters/player/player";
 import GameScene from "../scenes/game-scene";
+import { GameState } from "../components/game-scene/state-component";
+import { Objects } from "../components/game-scene/objects-component";
 
 export abstract class GameScript<
   I extends string = string,
-  S extends Record<I, Scene<unknown>> = Record<I, Scene<unknown>>
+  T extends SceneType = SceneType,
+  S extends Scene<I, T> = Scene<I, T>,
+  R extends Record<I, S> = Record<I, S>
 > {
-  protected scenes: S;
-  protected _state: State;
+  protected scenes: R;
+  protected state: State<S>;
 
-  public constructor(public readonly host: GameScene, public readonly objects: Objects, scenes: S, firstSceneId: I) {
-    this.scenes = scenes;
+  public constructor(
+    public readonly host: GameScene,
+    public readonly objects: Objects,
+    public readonly gameState: GameState
+  ) {
+    this.scenes = {} as R;
+  }
 
-    this._state = {
+  public add(...scenes: Array<new (script: GameScript) => S>): GameScript<I, T, S, R> {
+    scenes.forEach((ctor) => {
+      const scene = new ctor(this);
+
+      this.scenes[scene.id] = scene as R[I];
+    });
+
+    return this;
+  }
+
+  public start(firstSceneId: I): void {
+    this.state = {
       currentScene: this.scenes[firstSceneId],
       finishedScenes: [],
     };
 
     if (!this.state.currentScene) {
-      throw new Error(`Invalid scene "${firstSceneId}" provided! Must be one of ${Object.keys(this.scenes)}.`);
+      throw new Error(`Invalid scene "${firstSceneId}" provided!`);
     }
 
     this.startCurrentScene();
   }
 
-  public get state(): State {
-    return this._state;
-  }
-
   public update(time: number, delta: number): void {
-    if (this._state.currentScene.isFinished()) {
-      const finishedScene = this._state.currentScene;
-      this._state.finishedScenes.push(finishedScene);
-      this._state.currentScene = this.next(finishedScene);
+    if (this.state.currentScene.isFinished()) {
+      const finishedScene = this.state.currentScene;
+      this.state.finishedScenes.push(finishedScene);
+      this.state.currentScene = this.scenes[this.next(finishedScene.id)];
 
       this.startCurrentScene();
     }
   }
 
   protected startCurrentScene(): void {
-    switch (this._state.currentScene.type) {
+    switch (this.state.currentScene.type) {
       case "Scripted":
         this.objects.player.controls.isMovementLocked = true;
         break;
@@ -49,32 +62,24 @@ export abstract class GameScript<
         this.objects.player.controls.isMovementLocked = false;
         break;
     }
-    this._state.currentScene.start();
+    this.state.currentScene.start();
   }
 
-  public abstract next(currentScene: Scene<unknown>): Scene<unknown>;
+  public abstract next(currentScene: I): I;
 }
 
 export type SceneType = "Roaming" | "Scripted";
 
-type Objects = {
-  interactable: Record<InteractionType, Phaser.Physics.Arcade.Group>;
-  npc: Phaser.Physics.Arcade.Group;
-  player: Player;
-};
+export abstract class Scene<I extends string = string, T extends SceneType = SceneType> {
+  constructor(protected readonly script: GameScript) {}
 
-export abstract class Scene<S, T extends SceneType = SceneType> {
-  public readonly id: string;
-  public readonly area: Area;
-  public readonly type: T;
-  public readonly host: GameScene;
-  public readonly objects: Objects;
-  state: S;
-  abstract isFinished(): boolean;
-  abstract start(): void;
+  public abstract readonly id: I;
+  public abstract readonly type: T;
+  public abstract isFinished(): boolean;
+  public abstract start(): void;
 }
 
-export interface State {
-  currentScene: Scene<unknown>;
-  finishedScenes: Array<Scene<unknown>>;
+export interface State<S> {
+  currentScene: S;
+  finishedScenes: Array<S>;
 }

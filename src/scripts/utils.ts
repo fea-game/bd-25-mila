@@ -1,5 +1,7 @@
 import Phaser from "phaser";
 import { Depth } from "../common/config";
+import { Npc } from "../game-objects/characters/npc";
+import { Objects } from "../components/game-scene/objects-component";
 
 export async function playCinematicIntro({
   scene,
@@ -54,4 +56,38 @@ export async function playCinematicIntro({
   ]);
 
   onComplete?.();
+}
+
+type Npcs = { father: Npc; mother: Npc; sister: Npc };
+
+export function getNpcs(objects: Objects): Partial<Npcs> {
+  return objects.npc.getChildren().reduce((npcs: Partial<Npcs>, npc) => {
+    if (!(npc instanceof Npc)) return npcs;
+
+    switch (npc.npcType) {
+      case "Amelie":
+        npcs.sister = npc;
+        break;
+      case "Cynthia":
+        npcs.mother = npc;
+        break;
+      case "Tobias":
+        npcs.father = npc;
+        break;
+    }
+
+    return npcs;
+  }, {});
+}
+
+type RequireKeys<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: T[P] };
+
+export function assertNpcsPresent<K extends keyof Npcs>(
+  npcs: Partial<Npcs>,
+  requiredKeys: K[]
+): asserts npcs is RequireKeys<Npcs, K> {
+  const missing = requiredKeys.filter((key) => !npcs[key]);
+  if (missing.length > 0) {
+    throw new Error(`Missing required NPCs: ${missing.join(", ")}`);
+  }
 }

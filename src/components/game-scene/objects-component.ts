@@ -18,7 +18,7 @@ import { isContactable } from "../game-object/object/contactable-component";
 import { isPushable } from "../game-object/object/pushable-component";
 import { Trigger } from "../../game-objects/objects/trigger";
 
-export class ObjectsComponent extends BaseGameSceneComponent {
+export class ObjectsComponent extends BaseGameSceneComponent implements Objects {
   public static for({
     area,
     host,
@@ -194,4 +194,11 @@ export class ObjectsComponent extends BaseGameSceneComponent {
       }
     }
   }
+}
+
+export interface Objects {
+  collision: Phaser.GameObjects.Group;
+  interactable: Record<InteractionType, Phaser.GameObjects.Group>;
+  npc: Phaser.Physics.Arcade.Group;
+  player: Player;
 }

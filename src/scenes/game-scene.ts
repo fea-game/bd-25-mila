@@ -6,12 +6,14 @@ import { InteractionComponent } from "../components/game-scene/interaction-compo
 import { ObjectsComponent } from "../components/game-scene/objects-component";
 import { GameScript } from "../scripts/game-script";
 import { HouseScript } from "../scripts/house-script";
+import { StateComponent } from "../components/game-scene/state-component";
 
 export default class GameScene extends Phaser.Scene {
   #collisionComponent: CollisionComponent;
   #interactionComponent: InteractionComponent;
   #keyboardComponent: KeyboardComponent;
   #objectsComponent: ObjectsComponent;
+  #stateComponent: StateComponent;
   #script: GameScript;
 
   constructor() {
@@ -34,8 +36,9 @@ export default class GameScene extends Phaser.Scene {
 
     this.#collisionComponent = new CollisionComponent(this, this.#objectsComponent);
     this.#interactionComponent = new InteractionComponent(this, this.#objectsComponent);
+    this.#stateComponent = new StateComponent(this);
 
-    this.#script = new HouseScript(this, this.#objectsComponent);
+    this.#script = new HouseScript(this, this.#objectsComponent, this.#stateComponent);
   }
 
   update(time: number, delta: number): void {
