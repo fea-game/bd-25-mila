@@ -1,6 +1,6 @@
 import GameScene from "../scenes/game-scene";
-import { GameState } from "../components/game-scene/state-component";
 import { Objects } from "../components/game-scene/objects-component";
+import { GameStateManager } from "../manager/game-state-manager";
 
 export abstract class GameScript<
   I extends string = string,
@@ -10,11 +10,7 @@ export abstract class GameScript<
 > {
   protected scenes: R;
 
-  public constructor(
-    public readonly host: GameScene,
-    public readonly objects: Objects,
-    public readonly gameState: GameState
-  ) {
+  public constructor(public readonly host: GameScene, public readonly objects: Objects) {
     this.scenes = {} as R;
   }
 
@@ -29,9 +25,9 @@ export abstract class GameScript<
   }
 
   public start(firstSceneId: I): void {
-    this.gameState.scene.current = firstSceneId;
+    GameStateManager.instance.scene.current = firstSceneId;
 
-    if (!this.isScene(this.gameState.scene.current)) {
+    if (!this.isScene(GameStateManager.instance.scene.current)) {
       throw new Error(`Invalid scene "${firstSceneId}" provided!`);
     }
 
@@ -39,27 +35,29 @@ export abstract class GameScript<
   }
 
   public update(time: number, delta: number): void {
-    if (!this.isScene(this.gameState.scene.current)) {
-      throw new Error(`No valid current Scene present: ${this.gameState.scene.current}!`);
+    if (!this.isScene(GameStateManager.instance.scene.current)) {
+      throw new Error(`No valid current Scene present: ${GameStateManager.instance.scene.current}!`);
     }
 
-    const currentScene = this.scenes[this.gameState.scene.current];
+    const currentScene = this.scenes[GameStateManager.instance.scene.current];
 
     if (currentScene.isFinished()) {
       const finishedScene = currentScene;
-      this.gameState.scene.finished.push(finishedScene.id);
-      this.gameState.scene.current = this.next(finishedScene.id);
+      GameStateManager.instance.scene.finished.push(finishedScene.id);
+      GameStateManager.instance.scene.current = this.next(finishedScene.id);
 
       this.startCurrentScene();
     }
   }
 
   protected startCurrentScene(): void {
-    if (!this.isScene(this.gameState.scene.current)) {
-      throw new Error(`No valid current Scene present: ${this.gameState.scene.current}!`);
+    if (!this.isScene(GameStateManager.instance.scene.current)) {
+      throw new Error(`No valid current Scene present: ${GameStateManager.instance.scene.current}!`);
     }
 
-    const currentScene = this.scenes[this.gameState.scene.current];
+    this.host.cameras.main.startFollow(this.objects.player);
+
+    const currentScene = this.scenes[GameStateManager.instance.scene.current];
 
     switch (currentScene.type) {
       case "Scripted":

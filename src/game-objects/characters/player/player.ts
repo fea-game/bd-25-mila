@@ -5,31 +5,31 @@ import { MovingState } from "../../../components/game-object/state-machine/chara
 import { BaseCharacter, Config as CharacterGameObjectConfig } from "../base-character";
 import * as tiled from "../../../tiled/types";
 import { Actor, ActionComponent } from "../../../components/game-object/character/action-component";
-import { InteractionType } from "../../../common/types";
+
+export const PlayerType = "Mila";
+export type PlayerType = typeof PlayerType;
 
 type Config = Omit<CharacterGameObjectConfig, "animations" | "speed" | "texture" | "x" | "y"> & {
   properties: Pick<tiled.Player, "x" | "y">;
 };
 
-export class Player extends BaseCharacter implements Actor {
-  private static PlayerCharacterKey = "Mila";
-
+export class Player extends BaseCharacter<PlayerType> implements Actor {
   private static Animations: CharacterGameObjectConfig["animations"] = {
-    character: Character[Player.PlayerCharacterKey],
+    character: Character[PlayerType],
     animations: [AnimationType.Idle, AnimationType.Walk],
   };
 
-  private static InteractionTypes: InteractionType[] = ["action"];
-
   #isActor: ActionComponent;
+
+  public readonly characterType = "Mila";
 
   constructor({ properties, ...config }: Config) {
     super({
       ...config,
-      id: Character[Player.PlayerCharacterKey],
+      id: Character[PlayerType],
       animations: Player.Animations,
       speed: 180,
-      texture: Texture[Player.PlayerCharacterKey],
+      texture: Texture[PlayerType],
       x: properties.x,
       y: properties.y,
     });

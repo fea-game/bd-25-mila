@@ -1,6 +1,9 @@
 import { Depth } from "../../../../common/config";
 import { Direction } from "../../../../common/types";
 import { BaseCharacter } from "../../../../game-objects/characters/base-character";
+import { NpcType } from "../../../../game-objects/characters/npc";
+import { PlayerType } from "../../../../game-objects/characters/player/player";
+import { GameStateManager } from "../../../../manager/game-state-manager";
 import { StateMachine } from "../state-machine";
 import { BaseCharacterState, CharacterState } from "./base-character-state";
 
@@ -9,7 +12,7 @@ export class MovingState extends BaseCharacterState {
     return baseDepth + y / 10000;
   }
 
-  constructor(host: BaseCharacter, stateMachine: StateMachine) {
+  constructor(host: BaseCharacter<PlayerType | NpcType>, stateMachine: StateMachine) {
     super(CharacterState.Moving, host, stateMachine);
 
     this.host.setDepth(MovingState.getDepth(this.host.y));
@@ -57,6 +60,8 @@ export class MovingState extends BaseCharacterState {
 
     this.normalizeVelocity();
     this.host.setDepth(MovingState.getDepth(this.host.y));
+
+    GameStateManager.instance.character[this.host.characterType] = { x: this.host.x, y: this.host.y };
   }
 
   private updateVelocity(isX: boolean, value: number) {

@@ -1,13 +1,14 @@
 import { GameScript, Scene } from "./game-script";
 import { Direction } from "../common/types";
 import GameScene from "../scenes/game-scene";
-import { assertNpcsPresent, getNpcs, playCinematicIntro } from "./utils";
+import { playCinematicIntro } from "./utils";
 import { EventBus } from "../common/event-bus";
 import { Trigger } from "../game-objects/objects/trigger";
 import { Npc } from "../game-objects/characters/npc";
-import { GameState } from "../components/game-scene/state-component";
 import { Objects } from "../components/game-scene/objects-component";
 import { Audio } from "../common/assets";
+import { assertNpcsPresent, getNpcs } from "../common/utils";
+import { GameStateManager } from "../manager/game-state-manager";
 
 const HouseScriptScene = {
   WakingUp: "house-waking-up",
@@ -22,17 +23,17 @@ const HouseScriptSceneValues: string[] = Object.values(HouseScriptScene);
 
 export class HouseScript extends GameScript<HouseScriptScene> {
   public readonly npcs: {
-    father: Npc;
-    mother: Npc;
-    sister: Npc;
+    Amelie: Npc;
+    Cynthia: Npc;
+    Tobias: Npc;
   };
 
-  public constructor(host: GameScene, objects: Objects, gameState: GameState) {
-    super(host, objects, gameState);
+  public constructor(host: GameScene, objects: Objects) {
+    super(host, objects);
 
     const npcs = getNpcs(objects);
 
-    assertNpcsPresent(npcs, ["father", "mother", "sister"]);
+    assertNpcsPresent(npcs, ["Amelie", "Cynthia", "Tobias"]);
 
     this.npcs = npcs;
 
@@ -42,7 +43,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         public readonly type = "Scripted";
 
         public isFinished() {
-          return this.script.gameState.house.wokeUp;
+          return GameStateManager.instance.house.wokeUp;
         }
 
         public start() {
@@ -51,7 +52,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
             player: this.script.objects.player,
             duration: 5000,
             onComplete: () => {
-              this.script.gameState.house.wokeUp = true;
+              GameStateManager.instance.house.wokeUp = true;
             },
           });
         }
@@ -63,21 +64,20 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         public readonly type = "Roaming";
 
         public isFinished() {
-          return this.script.gameState.house.wentToLivingRoom && this.script.gameState.house.sisterMoved;
+          return GameStateManager.instance.house.wentToLivingRoom && GameStateManager.instance.house.sisterMoved;
         }
 
         public start() {
-          this.script.host.cameras.main.startFollow(this.script.objects.player);
-
           this.script.host.time.delayedCall(2000, () => {
-            this.script.npcs.sister.move(
+            console.log("MOVE AMELIE", [this.script.npcs.Amelie.x, this.script.npcs.Amelie.y]);
+            this.script.npcs.Amelie.move(
               [
                 { direction: Direction.Left, distance: 170 },
                 { direction: Direction.Down, distance: 200 },
                 { direction: Direction.Right, distance: 20 },
               ],
               () => {
-                this.script.gameState.house.sisterMoved = true;
+                GameStateManager.instance.house.sisterMoved = true;
               }
             );
           });
@@ -85,7 +85,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           EventBus.instance.once(
             EventBus.getSubject(EventBus.Event.Contacted, Trigger.Id.House.HallwayLivingRoomTransition),
             () => {
-              this.script.gameState.house.wentToLivingRoom = true;
+              GameStateManager.instance.house.wentToLivingRoom = true;
             }
           );
         }
@@ -97,26 +97,24 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         public readonly type = "Scripted";
 
         isFinished() {
-          return this.script.gameState.house.happyBirthdaySung;
+          return GameStateManager.instance.house.happyBirthdaySung;
         }
 
         async start() {
-          this.script.host.cameras.main.startFollow(this.script.objects.player);
-
           await this.moveFamily();
           await this.singHappyBirthday();
 
-          this.script.gameState.house.happyBirthdaySung = true;
+          GameStateManager.instance.house.happyBirthdaySung = true;
         }
 
         async moveFamily() {
           await Promise.allSettled([
             new Promise((resolve) => {
-              this.script.npcs.father.move(
+              this.script.npcs.Tobias.move(
                 [
                   {
                     direction: Direction.Down,
-                    distance: this.script.objects.player.y - this.script.npcs.father.y + 36,
+                    distance: this.script.objects.player.y - this.script.npcs.Tobias.y + 36,
                   },
                   { direction: Direction.Left, distance: 105 },
                 ],
@@ -126,11 +124,11 @@ export class HouseScript extends GameScript<HouseScriptScene> {
               );
             }),
             new Promise((resolve) => {
-              this.script.npcs.mother.move(
+              this.script.npcs.Cynthia.move(
                 [
                   {
                     direction: Direction.Down,
-                    distance: this.script.objects.player.y - this.script.npcs.mother.y - 36,
+                    distance: this.script.objects.player.y - this.script.npcs.Cynthia.y - 36,
                   },
                   { direction: Direction.Left, distance: 100 },
                 ],
@@ -140,10 +138,10 @@ export class HouseScript extends GameScript<HouseScriptScene> {
               );
             }),
             new Promise((resolve) => {
-              this.script.npcs.sister.move(
-                [{ direction: Direction.Up, distance: this.script.npcs.sister.y - this.script.objects.player.y }],
+              this.script.npcs.Amelie.move(
+                [{ direction: Direction.Up, distance: this.script.npcs.Amelie.y - this.script.objects.player.y }],
                 () => {
-                  this.script.npcs.sister.turn(Direction.Left, () => {
+                  this.script.npcs.Amelie.turn(Direction.Left, () => {
                     resolve(undefined);
                   });
                 }
@@ -173,15 +171,15 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           return false;
         }
 
-        public start() {
-          this.script.host.cameras.main.startFollow(this.script.objects.player);
-        }
+        public start() {}
       }
     );
 
-    console.log(this.gameState);
-
-    this.start(this.isScene(this.gameState.scene.current) ? this.gameState.scene.current : "house-waking-up");
+    this.start(
+      this.isScene(GameStateManager.instance.scene.current)
+        ? GameStateManager.instance.scene.current
+        : "house-waking-up"
+    );
   }
 
   protected isScene(value: unknown): value is HouseScriptScene {

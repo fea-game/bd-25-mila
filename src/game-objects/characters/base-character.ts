@@ -8,9 +8,11 @@ import { ControlsComponent } from "../../components/game-object/character/contro
 import { InputComponent } from "../../components/input/input-component";
 import { DirectionComponent } from "../../components/game-object/character/direction-component";
 import { SpeedComponent } from "../../components/game-object/character/speed-component";
-import { Body, Direction, GameObject, InteractionType } from "../../common/types";
+import { Body, Direction, GameObject } from "../../common/types";
 import { ActionComponent, isActor } from "../../components/game-object/character/action-component";
 import { Depth } from "../../common/config";
+import { NpcType } from "./npc";
+import { PlayerType } from "./player/player";
 
 export type Config = {
   animations: CharacterAnimationComponentConfig;
@@ -25,7 +27,7 @@ export type Config = {
   y: number;
 };
 
-export abstract class BaseCharacter extends GameObject {
+export abstract class BaseCharacter<T extends NpcType | PlayerType> extends GameObject {
   protected static ShortenBodyBy = 48;
 
   declare body: Body;
@@ -37,6 +39,7 @@ export abstract class BaseCharacter extends GameObject {
   protected stateMachine: StateMachine;
 
   public abstract isActor: false | ActionComponent;
+  public abstract characterType: T;
 
   constructor(config: Config) {
     const { animations, frame, id, input, onDirectionChange, scene, speed, texture, x, y } = config;

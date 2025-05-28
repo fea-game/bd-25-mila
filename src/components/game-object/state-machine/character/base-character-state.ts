@@ -1,4 +1,6 @@
 import { BaseCharacter } from "../../../../game-objects/characters/base-character";
+import { NpcType } from "../../../../game-objects/characters/npc";
+import { PlayerType } from "../../../../game-objects/characters/player/player";
 import { State, StateMachine } from "../state-machine";
 
 export const CharacterState = {
@@ -10,10 +12,10 @@ export type CharacterState = (typeof CharacterState)[keyof typeof CharacterState
 
 export abstract class BaseCharacterState implements State {
   public readonly name: CharacterState;
-  protected host: BaseCharacter;
+  protected host: BaseCharacter<PlayerType | NpcType>;
   protected stateMachine: StateMachine;
 
-  constructor(name: CharacterState, host: BaseCharacter, stateMachine: StateMachine) {
+  constructor(name: CharacterState, host: BaseCharacter<PlayerType | NpcType>, stateMachine: StateMachine) {
     this.name = name;
     this.host = host;
     this.stateMachine = stateMachine;

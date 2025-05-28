@@ -17,6 +17,7 @@ import { isActionable } from "../game-object/object/actionable-component";
 import { isContactable } from "../game-object/object/contactable-component";
 import { isPushable } from "../game-object/object/pushable-component";
 import { Trigger } from "../../game-objects/objects/trigger";
+import { GameStateManager } from "../../manager/game-state-manager";
 
 export class ObjectsComponent extends BaseGameSceneComponent implements Objects {
   public static for({
@@ -154,14 +155,24 @@ export class ObjectsComponent extends BaseGameSceneComponent implements Objects 
           case "Balloon":
             return new Balloon({ scene: this.host, properties: tiledObject });
           case "NPC":
-            return new Npc({ scene: this.host, input: new InputComponent(), properties: tiledObject });
+            if (!GameStateManager.instance.character[tiledObject.properties.type]) {
+              GameStateManager.instance.character[tiledObject.properties.type] = { x: tiledObject.x, y: tiledObject.y };
+            }
+            return new Npc({
+              scene: this.host,
+              input: new InputComponent(),
+              properties: { ...tiledObject, ...GameStateManager.instance.character[tiledObject.properties.type] },
+            });
           case "Plate":
             return new Plate({ scene: this.host, properties: tiledObject });
           case "Player":
+            if (!GameStateManager.instance.character.Mila) {
+              GameStateManager.instance.character.Mila = { x: tiledObject.x, y: tiledObject.y };
+            }
             this.#player = new Player({
               scene: this.host,
               input: keyboard,
-              properties: tiledObject,
+              properties: { ...tiledObject, ...GameStateManager.instance.character.Mila },
             });
             break;
           case "Toilet":

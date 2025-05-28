@@ -1,5 +1,4 @@
 import { Character, AnimationType, Texture } from "../../common/assets";
-import { Depth } from "../../common/config";
 import { CharacterState } from "../../components/game-object/state-machine/character/base-character-state";
 import { IdleState } from "../../components/game-object/state-machine/character/idle-state";
 import { MovingState } from "../../components/game-object/state-machine/character/moving-state";
@@ -7,13 +6,13 @@ import { BaseCharacter, Config as CharacterGameObjectConfig } from "./base-chara
 import * as tiled from "../../tiled/types";
 import { Direction } from "../../common/types";
 
-type NpcType = tiled.NPC["properties"]["type"];
+export type NpcType = Exclude<tiled.NPC["properties"]["type"], "Dog" | "Neighbor" | "Thief">;
 
 type Config = Omit<CharacterGameObjectConfig, "animations" | "speed" | "texture" | "x" | "y"> & {
   properties: Pick<tiled.NPC, "x" | "y" | "properties">;
 };
 
-export class Npc extends BaseCharacter {
+export class Npc extends BaseCharacter<NpcType> {
   private static getAnimations(npcKey: NpcType): CharacterGameObjectConfig["animations"] {
     return {
       character: Character[npcKey],
@@ -55,6 +54,10 @@ export class Npc extends BaseCharacter {
   #npcType: NpcType;
 
   constructor({ properties: { x, y, properties }, ...config }: Config) {
+    if (properties.type === "Dog" || properties.type === "Neighbor" || properties.type === "Thief") {
+      throw new Error(`${properties.type} NPC isn't supported yet!`);
+    }
+
     super({
       ...config,
       id: Character[properties.type],
@@ -77,7 +80,7 @@ export class Npc extends BaseCharacter {
     });
   }
 
-  public get npcType(): NpcType {
+  public get characterType(): NpcType {
     return this.#npcType;
   }
 
