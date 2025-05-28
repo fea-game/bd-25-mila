@@ -1,5 +1,9 @@
 import { Area, Direction, LayerTypeKey } from "./types";
 
+export const Audio = {
+  HappyBirthday: "happy-birthday",
+} as const;
+
 export const Character = {
   Amelie: "amelie",
   Cynthia: "cynthia",

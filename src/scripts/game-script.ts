@@ -9,7 +9,6 @@ export abstract class GameScript<
   R extends Record<I, S> = Record<I, S>
 > {
   protected scenes: R;
-  protected state: State<S>;
 
   public constructor(
     public readonly host: GameScene,
@@ -30,12 +29,9 @@ export abstract class GameScript<
   }
 
   public start(firstSceneId: I): void {
-    this.state = {
-      currentScene: this.scenes[firstSceneId],
-      finishedScenes: [],
-    };
+    this.gameState.scene.current = firstSceneId;
 
-    if (!this.state.currentScene) {
+    if (!this.isScene(this.gameState.scene.current)) {
       throw new Error(`Invalid scene "${firstSceneId}" provided!`);
     }
 
@@ -43,17 +39,29 @@ export abstract class GameScript<
   }
 
   public update(time: number, delta: number): void {
-    if (this.state.currentScene.isFinished()) {
-      const finishedScene = this.state.currentScene;
-      this.state.finishedScenes.push(finishedScene);
-      this.state.currentScene = this.scenes[this.next(finishedScene.id)];
+    if (!this.isScene(this.gameState.scene.current)) {
+      throw new Error(`No valid current Scene present: ${this.gameState.scene.current}!`);
+    }
+
+    const currentScene = this.scenes[this.gameState.scene.current];
+
+    if (currentScene.isFinished()) {
+      const finishedScene = currentScene;
+      this.gameState.scene.finished.push(finishedScene.id);
+      this.gameState.scene.current = this.next(finishedScene.id);
 
       this.startCurrentScene();
     }
   }
 
   protected startCurrentScene(): void {
-    switch (this.state.currentScene.type) {
+    if (!this.isScene(this.gameState.scene.current)) {
+      throw new Error(`No valid current Scene present: ${this.gameState.scene.current}!`);
+    }
+
+    const currentScene = this.scenes[this.gameState.scene.current];
+
+    switch (currentScene.type) {
       case "Scripted":
         this.objects.player.controls.isMovementLocked = true;
         break;
@@ -62,9 +70,10 @@ export abstract class GameScript<
         this.objects.player.controls.isMovementLocked = false;
         break;
     }
-    this.state.currentScene.start();
+    currentScene.start();
   }
 
+  protected abstract isScene(value: unknown): value is I;
   public abstract next(currentScene: I): I;
 }
 
@@ -77,9 +86,4 @@ export abstract class Scene<I extends string = string, T extends SceneType = Sce
   public abstract readonly type: T;
   public abstract isFinished(): boolean;
   public abstract start(): void;
-}
-
-export interface State<S> {
-  currentScene: S;
-  finishedScenes: Array<S>;
 }

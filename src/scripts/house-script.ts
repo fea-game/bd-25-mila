@@ -7,8 +7,18 @@ import { Trigger } from "../game-objects/objects/trigger";
 import { Npc } from "../game-objects/characters/npc";
 import { GameState } from "../components/game-scene/state-component";
 import { Objects } from "../components/game-scene/objects-component";
+import { Audio } from "../common/assets";
 
-type HouseScriptScene = "house-waking-up" | "house-after-waking-up" | "house-singing-happy-birthday";
+const HouseScriptScene = {
+  WakingUp: "house-waking-up",
+  AfterWakingUp: "house-after-waking-up",
+  SigningHappyBirthday: "house-singing-happy-birthday",
+  AfterSigningHappyBirthday: "house-after-singing-happy-birthday",
+} as const;
+
+type HouseScriptScene = (typeof HouseScriptScene)[keyof typeof HouseScriptScene];
+
+const HouseScriptSceneValues: string[] = Object.values(HouseScriptScene);
 
 export class HouseScript extends GameScript<HouseScriptScene> {
   public readonly npcs: {
@@ -87,13 +97,16 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         public readonly type = "Scripted";
 
         isFinished() {
-          return false;
+          return this.script.gameState.house.happyBirthdaySung;
         }
 
         async start() {
           this.script.host.cameras.main.startFollow(this.script.objects.player);
 
           await this.moveFamily();
+          await this.singHappyBirthday();
+
+          this.script.gameState.house.happyBirthdaySung = true;
         }
 
         async moveFamily() {
@@ -105,7 +118,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
                     direction: Direction.Down,
                     distance: this.script.objects.player.y - this.script.npcs.father.y + 36,
                   },
-                  { direction: Direction.Left, distance: 110 },
+                  { direction: Direction.Left, distance: 105 },
                 ],
                 () => {
                   resolve(undefined);
@@ -138,10 +151,45 @@ export class HouseScript extends GameScript<HouseScriptScene> {
             }),
           ]);
         }
+
+        async singHappyBirthday(): Promise<void> {
+          const sound = this.script.host.sound.add(Audio.HappyBirthday, {
+            volume: 1,
+          });
+
+          return new Promise((resolve) => {
+            sound.once("complete", resolve);
+            sound.play();
+          });
+        }
+      },
+      class extends Scene {
+        declare script: HouseScript;
+
+        public readonly id = "house-after-singing-happy-birthday";
+        public readonly type = "Roaming";
+
+        public isFinished() {
+          return false;
+        }
+
+        public start() {
+          this.script.host.cameras.main.startFollow(this.script.objects.player);
+        }
       }
     );
 
-    this.start("house-waking-up");
+    console.log(this.gameState);
+
+    this.start(this.isScene(this.gameState.scene.current) ? this.gameState.scene.current : "house-waking-up");
+  }
+
+  protected isScene(value: unknown): value is HouseScriptScene {
+    if (!value) return false;
+    if (typeof value !== "string") return false;
+    if (!HouseScriptSceneValues.includes(value)) return false;
+
+    return true;
   }
 
   public next(currentScene: HouseScriptScene): HouseScriptScene {
@@ -150,6 +198,8 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         return "house-after-waking-up";
       case "house-after-waking-up":
         return "house-singing-happy-birthday";
+      case "house-singing-happy-birthday":
+        return "house-after-singing-happy-birthday";
       default:
         return "house-waking-up";
     }

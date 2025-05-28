@@ -1,5 +1,15 @@
 [
   {
+    "path": "assets/audio",
+    "files": [
+      {
+        "type": "audio",
+        "key": "happy-birthday",
+        "url": "happy-birthday.mp3"
+      }
+    ]
+  },
+  {
     "path": "assets/images/areas/house",
     "files": [
       {
