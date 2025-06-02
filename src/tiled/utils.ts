@@ -8,7 +8,6 @@ import {
   NPC,
   NpcType,
   ValidObjectMappedByType,
-  ObjectProperty,
   ObjectType,
   Plate,
   Player,
@@ -60,6 +59,13 @@ const ObjectMapper = {
     height,
     properties,
   }: Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<"Balloon">): Balloon | undefined => {
+    const id = properties?.find((prop) => prop.name === "id")?.value;
+
+    if (typeof id !== "string") {
+      console.error("Balloon doesnt have a valid id", { type, id, properties });
+      return;
+    }
+
     const color = properties?.find((prop) => prop.name === "color")?.value;
 
     if (!EnumValidator.isColor(color)) {
@@ -73,7 +79,7 @@ const ObjectMapper = {
       y,
       width,
       height,
-      properties: { color },
+      properties: { id, color },
     };
   },
   Foreground: (
@@ -108,6 +114,13 @@ const ObjectMapper = {
     height,
     properties,
   }: Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<"NPC">): NPC | undefined => {
+    const id = properties?.find((prop) => prop.name === "id")?.value;
+
+    if (typeof id !== "string") {
+      console.error("NPC doesnt have a valid id", { type, id, properties });
+      return;
+    }
+
     const npcType = properties.find((prop) => prop.name === "type")?.value;
 
     if (!properties || !EnumValidator.isNpcType(npcType)) {
@@ -121,7 +134,7 @@ const ObjectMapper = {
       y,
       width,
       height,
-      properties: { type: npcType },
+      properties: { id, type: npcType },
     };
   },
   Plate: ({
@@ -131,7 +144,14 @@ const ObjectMapper = {
     width,
     height,
     properties,
-  }: Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<"Plate">): Plate => {
+  }: Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<"Plate">): Plate | undefined => {
+    const id = properties?.find((prop) => prop.name === "id")?.value;
+
+    if (typeof id !== "string") {
+      console.error("Plate doesnt have a valid id", { type, id, properties });
+      return;
+    }
+
     const isWithCake = properties.find((prop) => prop.name === "isWithCake")?.value;
 
     return {
@@ -141,6 +161,7 @@ const ObjectMapper = {
       width,
       height,
       properties: {
+        id,
         isWithCake: isWithCake ?? false,
       },
     };
@@ -151,13 +172,22 @@ const ObjectMapper = {
     y,
     width,
     height,
-  }: Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<"Player">): Player => {
+    properties,
+  }: Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<"Player">): Player | undefined => {
+    const id = properties?.find((prop) => prop.name === "id")?.value;
+
+    if (typeof id !== "string") {
+      console.error("Player doesnt have a valid id", { type, id, properties });
+      return;
+    }
+
     return {
       type,
       x,
       y,
       width,
       height,
+      properties: { id },
     };
   },
   Toilet: ({
@@ -167,7 +197,14 @@ const ObjectMapper = {
     width,
     height,
     properties,
-  }: Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<"Toilet">): Toilet => {
+  }: Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<"Toilet">): Toilet | undefined => {
+    const id = properties?.find((prop) => prop.name === "id")?.value;
+
+    if (typeof id !== "string") {
+      console.error("Toilet doesnt have a valid id", { type, id, properties });
+      return;
+    }
+
     const isOpened = properties.find((prop) => prop.name === "isOpened")?.value;
 
     return {
@@ -177,6 +214,7 @@ const ObjectMapper = {
       width,
       height,
       properties: {
+        id,
         isOpened: isOpened ?? true,
       },
     };
@@ -274,33 +312,4 @@ const objectTypes = Object.values(ObjectType);
 
 function isObjectType(value: string): value is ObjectType {
   return objectTypes.includes(value as ObjectType);
-}
-
-/**
- * Returns an array of validated TiledObjectProperty objects from the provided Phaser Tiled Object properties.
- */
-function getProperties(properties: unknown): ObjectProperty[] {
-  const validProperties: ObjectProperty[] = [];
-  if (typeof properties !== "object" || properties === null || properties === undefined || !Array.isArray(properties)) {
-    return validProperties;
-  }
-
-  for (const property of properties) {
-    if (!isProperty(property)) {
-      continue;
-    }
-    validProperties.push(property);
-  }
-
-  return validProperties;
-}
-
-/**
- * Validates that the provided property is of the type TiledObjectProperty.
- */
-function isProperty(property: unknown): property is ObjectProperty {
-  if (typeof property !== "object" || property === null || property === undefined) {
-    return false;
-  }
-  return property["name"] !== undefined && property["type"] !== undefined && property["value"] !== undefined;
 }

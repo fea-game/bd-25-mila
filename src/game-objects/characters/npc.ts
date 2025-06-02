@@ -5,11 +5,12 @@ import { MovingState } from "../../components/game-object/state-machine/characte
 import { BaseCharacter, Config as CharacterGameObjectConfig } from "./base-character";
 import * as tiled from "../../tiled/types";
 import { Direction } from "../../common/types";
+import { GameStateManager } from "../../manager/game-state-manager";
 
 export type NpcType = Exclude<tiled.NPC["properties"]["type"], "Dog" | "Neighbor" | "Thief">;
 
-type Config = Omit<CharacterGameObjectConfig, "animations" | "speed" | "texture" | "x" | "y"> & {
-  properties: Pick<tiled.NPC, "x" | "y" | "properties">;
+type Config = Omit<CharacterGameObjectConfig, "id" | "animations" | "speed" | "texture" | "x" | "y"> & {
+  properties: Pick<tiled.NPC, "x" | "y"> & tiled.NPC["properties"] & { direction?: Direction };
 };
 
 export class Npc extends BaseCharacter<NpcType> {
@@ -53,22 +54,23 @@ export class Npc extends BaseCharacter<NpcType> {
 
   #npcType: NpcType;
 
-  constructor({ properties: { x, y, properties }, ...config }: Config) {
-    if (properties.type === "Dog" || properties.type === "Neighbor" || properties.type === "Thief") {
-      throw new Error(`${properties.type} NPC isn't supported yet!`);
+  constructor({ properties: { id, type, x, y, direction }, ...config }: Config) {
+    if (type === "Dog" || type === "Neighbor" || type === "Thief") {
+      throw new Error(`${type} NPC isn't supported yet!`);
     }
 
     super({
       ...config,
-      id: Character[properties.type],
-      animations: Npc.getAnimations(properties.type),
+      id,
+      animations: Npc.getAnimations(type),
       speed: 180,
-      texture: Texture[properties.type],
-      x: x,
-      y: y,
+      texture: Texture[type],
+      x,
+      y,
+      direction,
     });
 
-    this.#npcType = properties.type;
+    this.#npcType = type;
 
     this.stateMachine.addState(new IdleState(this, this.stateMachine));
     this.stateMachine.addState(new MovingState(this, this.stateMachine));
@@ -86,6 +88,10 @@ export class Npc extends BaseCharacter<NpcType> {
 
   public turn(direction: Direction, onFinished?: () => void): void {
     this.direction = direction;
+
+    const persistenceProperties = this.isPersistable.toPersistenceProperties();
+    GameStateManager.instance.character[persistenceProperties.id] = persistenceProperties;
+
     onFinished?.();
   }
 

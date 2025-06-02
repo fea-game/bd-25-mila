@@ -68,6 +68,9 @@ export abstract class GameScript<
         this.objects.player.controls.isMovementLocked = false;
         break;
     }
+
+    GameStateManager.instance.persist();
+
     currentScene.start();
   }
 

@@ -369,71 +369,89 @@
     <object id="14" type="Balloon" gid="282" x="768" y="444" width="48" height="96">
      <properties>
       <property name="color" propertytype="Color" value="Blue"/>
+      <property name="id" value="balloon-6"/>
      </properties>
     </object>
     <object id="16" type="Balloon" gid="282" x="1092" y="204" width="48" height="96">
      <properties>
       <property name="color" propertytype="Color" value="Blue"/>
+      <property name="id" value="balloon-2"/>
      </properties>
     </object>
     <object id="17" type="Balloon" gid="283" x="612" y="336" width="48" height="96">
      <properties>
       <property name="color" propertytype="Color" value="Green"/>
+      <property name="id" value="balloon-4"/>
      </properties>
     </object>
     <object id="18" type="Balloon" gid="283" x="792" y="600" width="48" height="96">
      <properties>
       <property name="color" propertytype="Color" value="Green"/>
+      <property name="id" value="balloon-7"/>
      </properties>
     </object>
     <object id="19" type="Balloon" gid="285" x="1008" y="660" width="48" height="96">
      <properties>
       <property name="color" propertytype="Color" value="Yellow"/>
+      <property name="id" value="balloon-9"/>
      </properties>
     </object>
     <object id="20" type="Balloon" gid="285" x="519" y="278" width="48" height="96">
      <properties>
       <property name="color" propertytype="Color" value="Yellow"/>
+      <property name="id" value="balloon-3"/>
      </properties>
     </object>
     <object id="21" type="Balloon" gid="284" x="744" y="192" width="48" height="96">
      <properties>
       <property name="color" propertytype="Color" value="Red"/>
+      <property name="id" value="balloon-1"/>
      </properties>
     </object>
     <object id="23" type="Balloon" gid="284" x="552" y="660" width="48" height="96">
      <properties>
       <property name="color" propertytype="Color" value="Red"/>
+      <property name="id" value="balloon-8"/>
      </properties>
     </object>
     <object id="24" type="Balloon" gid="284" x="1080" y="420" width="48" height="96">
      <properties>
       <property name="color" propertytype="Color" value="Red"/>
+      <property name="id" value="balloon-5"/>
      </properties>
     </object>
     <object id="26" type="Toilet" gid="288" x="240" y="612" width="42" height="105">
      <properties>
+      <property name="id" value="toilet-1"/>
       <property name="isOpened" type="bool" value="true"/>
      </properties>
     </object>
-    <object id="27" type="Player" gid="289" x="348" y="336" width="48" height="66"/>
+    <object id="27" type="Player" gid="289" x="348" y="336" width="48" height="66">
+     <properties>
+      <property name="id" value="Mila"/>
+     </properties>
+    </object>
     <object id="28" type="Plate" gid="290" x="780" y="348" width="57" height="60">
      <properties>
+      <property name="id" value="plate-1"/>
       <property name="isWithCake" type="bool" value="false"/>
      </properties>
     </object>
     <object id="29" type="NPC" gid="289" x="672" y="432" width="48" height="66">
      <properties>
+      <property name="id" value="Amelie"/>
       <property name="type" propertytype="NpcType" value="Amelie"/>
      </properties>
     </object>
     <object id="30" type="NPC" gid="289" x="672" y="300" width="48" height="66">
      <properties>
+      <property name="id" value="Cynthia"/>
       <property name="type" propertytype="NpcType" value="Cynthia"/>
      </properties>
     </object>
     <object id="31" type="NPC" gid="289" x="660" y="372" width="48" height="66">
      <properties>
+      <property name="id" value="Tobias"/>
       <property name="type" propertytype="NpcType" value="Tobias"/>
      </properties>
     </object>

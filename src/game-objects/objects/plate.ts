@@ -1,30 +1,23 @@
 import { Texture } from "../../common/assets";
 import { BaseObject } from "./base-object";
 import * as tiled from "../../tiled/types";
-import { Depth } from "../../common/config";
 
 type Config = {
   scene: Phaser.Scene;
-  properties: Pick<tiled.Plate, "x" | "y" | "properties">;
+  properties: Pick<tiled.Plate, "x" | "y"> & tiled.Plate["properties"];
 };
 
 export class Plate extends BaseObject {
-  private static getTexture(isWithCake: Config["properties"]["properties"]["isWithCake"]): Texture {
+  private static getTexture(isWithCake: Config["properties"]["isWithCake"]): Texture {
     return isWithCake ? Texture.PlateWithCake : Texture.PlateWithoutCake;
   }
 
   public readonly isInteractable = false;
+  public readonly isPersistable = false;
 
   #isWithCake: boolean;
 
-  constructor({
-    scene,
-    properties: {
-      x,
-      y,
-      properties: { isWithCake },
-    },
-  }: Config) {
+  constructor({ scene, properties: { x, y, isWithCake } }: Config) {
     super({ scene, x, y, texture: Plate.getTexture(isWithCake) });
 
     this.#isWithCake = isWithCake;

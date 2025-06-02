@@ -5,12 +5,13 @@ import { MovingState } from "../../../components/game-object/state-machine/chara
 import { BaseCharacter, Config as CharacterGameObjectConfig } from "../base-character";
 import * as tiled from "../../../tiled/types";
 import { Actor, ActionComponent } from "../../../components/game-object/character/action-component";
+import { Direction } from "../../../common/types";
 
 export const PlayerType = "Mila";
 export type PlayerType = typeof PlayerType;
 
-type Config = Omit<CharacterGameObjectConfig, "animations" | "speed" | "texture" | "x" | "y"> & {
-  properties: Pick<tiled.Player, "x" | "y">;
+type Config = Omit<CharacterGameObjectConfig, "id" | "animations" | "speed" | "texture" | "x" | "y"> & {
+  properties: Pick<tiled.Player, "x" | "y"> & tiled.Player["properties"] & { direction?: Direction };
 };
 
 export class Player extends BaseCharacter<PlayerType> implements Actor {
@@ -23,15 +24,16 @@ export class Player extends BaseCharacter<PlayerType> implements Actor {
 
   public readonly characterType = "Mila";
 
-  constructor({ properties, ...config }: Config) {
+  constructor({ properties: { id, x, y, direction }, ...config }: Config) {
     super({
       ...config,
-      id: Character[PlayerType],
+      id,
       animations: Player.Animations,
       speed: 180,
       texture: Texture[PlayerType],
-      x: properties.x,
-      y: properties.y,
+      x,
+      y,
+      direction,
     });
 
     this.#isActor = new ActionComponent(this);

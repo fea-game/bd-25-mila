@@ -9,6 +9,11 @@
                 "propertyType": "Color",
                 "type": "string",
                 "value": "Blue"
+            },
+            {
+                "name": "id",
+                "type": "string",
+                "value": ""
             }
         ],
         "name": "Balloon",
@@ -53,6 +58,11 @@
         "id": 10,
         "members": [
             {
+                "name": "id",
+                "type": "string",
+                "value": ""
+            },
+            {
                 "name": "type",
                 "propertyType": "NpcType",
                 "type": "string",
@@ -94,6 +104,11 @@
         "id": 1,
         "members": [
             {
+                "name": "id",
+                "type": "string",
+                "value": ""
+            },
+            {
                 "name": "isWithCake",
                 "type": "bool",
                 "value": false
@@ -118,6 +133,11 @@
         "drawFill": true,
         "id": 8,
         "members": [
+            {
+                "name": "id",
+                "type": "string",
+                "value": ""
+            }
         ],
         "name": "Player",
         "type": "class",
@@ -138,6 +158,11 @@
         "drawFill": true,
         "id": 4,
         "members": [
+            {
+                "name": "id",
+                "type": "string",
+                "value": ""
+            },
             {
                 "name": "isOpened",
                 "type": "bool",

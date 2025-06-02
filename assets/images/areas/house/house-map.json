@@ -550,6 +550,11 @@
                                          "propertytype":"Color",
                                          "type":"string",
                                          "value":"Blue"
+                                        }, 
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"balloon-6"
                                         }],
                                  "rotation":0,
                                  "type":"Balloon",
@@ -569,6 +574,11 @@
                                          "propertytype":"Color",
                                          "type":"string",
                                          "value":"Blue"
+                                        }, 
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"balloon-2"
                                         }],
                                  "rotation":0,
                                  "type":"Balloon",
@@ -588,6 +598,11 @@
                                          "propertytype":"Color",
                                          "type":"string",
                                          "value":"Green"
+                                        }, 
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"balloon-4"
                                         }],
                                  "rotation":0,
                                  "type":"Balloon",
@@ -607,6 +622,11 @@
                                          "propertytype":"Color",
                                          "type":"string",
                                          "value":"Green"
+                                        }, 
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"balloon-7"
                                         }],
                                  "rotation":0,
                                  "type":"Balloon",
@@ -626,6 +646,11 @@
                                          "propertytype":"Color",
                                          "type":"string",
                                          "value":"Yellow"
+                                        }, 
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"balloon-9"
                                         }],
                                  "rotation":0,
                                  "type":"Balloon",
@@ -645,6 +670,11 @@
                                          "propertytype":"Color",
                                          "type":"string",
                                          "value":"Yellow"
+                                        }, 
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"balloon-3"
                                         }],
                                  "rotation":0,
                                  "type":"Balloon",
@@ -664,6 +694,11 @@
                                          "propertytype":"Color",
                                          "type":"string",
                                          "value":"Red"
+                                        }, 
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"balloon-1"
                                         }],
                                  "rotation":0,
                                  "type":"Balloon",
@@ -683,6 +718,11 @@
                                          "propertytype":"Color",
                                          "type":"string",
                                          "value":"Red"
+                                        }, 
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"balloon-8"
                                         }],
                                  "rotation":0,
                                  "type":"Balloon",
@@ -702,6 +742,11 @@
                                          "propertytype":"Color",
                                          "type":"string",
                                          "value":"Red"
+                                        }, 
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"balloon-5"
                                         }],
                                  "rotation":0,
                                  "type":"Balloon",
@@ -716,6 +761,11 @@
                                  "id":26,
                                  "name":"",
                                  "properties":[
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"toilet-1"
+                                        }, 
                                         {
                                          "name":"isOpened",
                                          "type":"bool",
@@ -733,6 +783,12 @@
                                  "height":66,
                                  "id":27,
                                  "name":"",
+                                 "properties":[
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"Mila"
+                                        }],
                                  "rotation":0,
                                  "type":"Player",
                                  "visible":true,
@@ -746,6 +802,11 @@
                                  "id":28,
                                  "name":"",
                                  "properties":[
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"plate-1"
+                                        }, 
                                         {
                                          "name":"isWithCake",
                                          "type":"bool",
@@ -764,6 +825,11 @@
                                  "id":29,
                                  "name":"",
                                  "properties":[
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"Amelie"
+                                        }, 
                                         {
                                          "name":"type",
                                          "propertytype":"NpcType",
@@ -784,6 +850,11 @@
                                  "name":"",
                                  "properties":[
                                         {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"Cynthia"
+                                        }, 
+                                        {
                                          "name":"type",
                                          "propertytype":"NpcType",
                                          "type":"string",
@@ -802,6 +873,11 @@
                                  "id":31,
                                  "name":"",
                                  "properties":[
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"Tobias"
+                                        }, 
                                         {
                                          "name":"type",
                                          "propertytype":"NpcType",

@@ -61,7 +61,8 @@ export class MovingState extends BaseCharacterState {
     this.normalizeVelocity();
     this.host.setDepth(MovingState.getDepth(this.host.y));
 
-    GameStateManager.instance.character[this.host.characterType] = { x: this.host.x, y: this.host.y };
+    const persistenceProperties = this.host.isPersistable.toPersistenceProperties();
+    GameStateManager.instance.character[persistenceProperties.id] = persistenceProperties;
   }
 
   private updateVelocity(isX: boolean, value: number) {

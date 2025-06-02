@@ -4,7 +4,7 @@ import { Contactable, ContactableComponent } from "../../components/game-object/
 
 type Config = {
   scene: Phaser.Scene;
-  properties: Pick<tiled.Trigger, "x" | "y" | "width" | "height" | "properties">;
+  properties: Pick<tiled.Trigger, "x" | "y" | "width" | "height"> & tiled.Trigger["properties"];
 };
 
 export class Trigger extends BaseObject implements Contactable {
@@ -14,18 +14,11 @@ export class Trigger extends BaseObject implements Contactable {
     },
   } as const;
 
+  public readonly isPersistable = false;
+
   #isInteractable: ContactableComponent;
 
-  constructor({
-    scene,
-    properties: {
-      x,
-      y,
-      width,
-      height,
-      properties: { id },
-    },
-  }: Config) {
+  constructor({ scene, properties: { id, x, y, width, height } }: Config) {
     super({ scene, x, y, texture: "transparent" });
 
     this.setDisplaySize(width, height);

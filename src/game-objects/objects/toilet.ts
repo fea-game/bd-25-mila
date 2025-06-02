@@ -1,12 +1,11 @@
 import { Texture } from "../../common/assets";
 import { BaseObject } from "./base-object";
 import * as tiled from "../../tiled/types";
-import { InteractionType } from "../../common/types";
 import { Actionable, ActionableComponent } from "../../components/game-object/object/actionable-component";
 
 type Config = {
   scene: Phaser.Scene;
-  properties: Pick<tiled.Toilet, "x" | "y" | "properties">;
+  properties: Pick<tiled.Toilet, "x" | "y"> & tiled.Toilet["properties"];
 };
 
 export class Toilet extends BaseObject implements Actionable {
@@ -16,17 +15,12 @@ export class Toilet extends BaseObject implements Actionable {
 
   private static ShortenBodyBy = 54;
 
+  public readonly isPersistable = false;
+
   #isInteractable: ActionableComponent;
   #isOpened: boolean;
 
-  constructor({
-    scene,
-    properties: {
-      x,
-      y,
-      properties: { isOpened },
-    },
-  }: Config) {
+  constructor({ scene, properties: { x, y, isOpened } }: Config) {
     super({ scene, x, y, texture: Toilet.getTexture(isOpened) });
 
     this.#isOpened = isOpened;
@@ -36,7 +30,6 @@ export class Toilet extends BaseObject implements Actionable {
     this.setPushable(false);
     this.#isInteractable = new ActionableComponent({
       host: this,
-      type: InteractionType.Action,
       interact: () => {
         this.isOpened = !this.#isOpened;
       },

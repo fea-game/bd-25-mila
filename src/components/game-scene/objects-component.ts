@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { getAreaImage, getAreaMap, getAreaTileset, ImageType, TilesetType } from "../../common/assets";
 import { Depth } from "../../common/config";
-import { Area, getAreaLayer, InteractionType, LayerType, LayerTypeKey } from "../../common/types";
+import { Area, Direction, getAreaLayer, InteractionType, LayerType, LayerTypeKey } from "../../common/types";
 import GameScene from "../../scenes/game-scene";
 import { BaseGameSceneComponent } from "./base-game-scene-component";
 import * as tiled from "../../tiled";
@@ -102,7 +102,7 @@ export class ObjectsComponent extends BaseGameSceneComponent implements Objects 
 
       for (const object of objects) {
         if (object.type === "Foreground") {
-          this.#foreground.add(new Foreground({ scene: this.host, properties: object }));
+          this.#foreground.add(new Foreground({ scene: this.host, properties: { ...object, ...object.properties } }));
         }
       }
     }
@@ -153,32 +153,60 @@ export class ObjectsComponent extends BaseGameSceneComponent implements Objects 
       const object = ((tiledObject: tiled.ValidObject) => {
         switch (tiledObject.type) {
           case "Balloon":
-            return new Balloon({ scene: this.host, properties: tiledObject });
+            if (!GameStateManager.instance[area].objects[tiledObject.properties.id]) {
+              GameStateManager.instance[area].objects[tiledObject.properties.id] = {
+                id: tiledObject.properties.id,
+                x: tiledObject.x,
+                y: tiledObject.y,
+              };
+            }
+            return new Balloon({
+              scene: this.host,
+              properties: {
+                ...tiledObject,
+                ...tiledObject.properties,
+                ...GameStateManager.instance[area].objects[tiledObject.properties.id],
+              },
+            });
           case "NPC":
             if (!GameStateManager.instance.character[tiledObject.properties.type]) {
-              GameStateManager.instance.character[tiledObject.properties.type] = { x: tiledObject.x, y: tiledObject.y };
+              GameStateManager.instance.character[tiledObject.properties.type] = {
+                id: tiledObject.properties.id,
+                x: tiledObject.x,
+                y: tiledObject.y,
+                direction: Direction.Down,
+              };
             }
             return new Npc({
               scene: this.host,
               input: new InputComponent(),
-              properties: { ...tiledObject, ...GameStateManager.instance.character[tiledObject.properties.type] },
+              properties: {
+                ...tiledObject,
+                ...tiledObject.properties,
+                ...GameStateManager.instance.character[tiledObject.properties.type],
+              },
             });
           case "Plate":
-            return new Plate({ scene: this.host, properties: tiledObject });
+            return new Plate({ scene: this.host, properties: { ...tiledObject, ...tiledObject.properties } });
           case "Player":
             if (!GameStateManager.instance.character.Mila) {
-              GameStateManager.instance.character.Mila = { x: tiledObject.x, y: tiledObject.y };
+              GameStateManager.instance.character.Mila = {
+                id: tiledObject.properties.id,
+                x: tiledObject.x,
+                y: tiledObject.y,
+                direction: Direction.Down,
+              };
             }
             this.#player = new Player({
               scene: this.host,
               input: keyboard,
-              properties: { ...tiledObject, ...GameStateManager.instance.character.Mila },
+              properties: { ...tiledObject, ...tiledObject.properties, ...GameStateManager.instance.character.Mila },
             });
             break;
           case "Toilet":
-            return new Toilet({ scene: this.host, properties: tiledObject });
+            return new Toilet({ scene: this.host, properties: { ...tiledObject, ...tiledObject.properties } });
           case "Trigger":
-            return new Trigger({ scene: this.host, properties: tiledObject });
+            return new Trigger({ scene: this.host, properties: { ...tiledObject, ...tiledObject.properties } });
           default:
         }
       })(tiledObject);

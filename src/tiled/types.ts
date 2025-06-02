@@ -57,6 +57,7 @@ export type Chunk = { id: string };
 
 export type Balloon = Object<typeof ObjectType.Balloon> & {
   properties: {
+    id: string;
     color: Color;
   };
 };
@@ -69,20 +70,27 @@ export type Foreground = Object<typeof ObjectType.Foreground> & {
 
 export type NPC = Object<typeof ObjectType.NPC> & {
   properties: {
+    id: string;
     type: NpcType;
   };
 };
 
 export type Plate = Object<typeof ObjectType.Plate> & {
   properties: {
+    id: string;
     isWithCake: boolean;
   };
 };
 
-export type Player = Object<typeof ObjectType.Player>;
+export type Player = Object<typeof ObjectType.Player> & {
+  properties: {
+    id: string;
+  };
+};
 
 export type Toilet = Object<typeof ObjectType.Toilet> & {
   properties: {
+    id: string;
     isOpened: boolean;
   };
 };

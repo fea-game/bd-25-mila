@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { ActionableComponent } from "../components/game-object/object/actionable-component";
+import { PersistableComponent, PersistableProperties } from "../components/game-object/common/persistable-component";
 
 export const SceneKey = {
   Preload: "preload",
@@ -8,8 +8,8 @@ export const SceneKey = {
 
 export const Area = {
   House: "house",
-  Neighborhood: "neighborhood",
-  Forest: "forest",
+  //Neighborhood: "neighborhood",
+  //Forest: "forest",
 } as const;
 
 export type Area = (typeof Area)[keyof typeof Area];

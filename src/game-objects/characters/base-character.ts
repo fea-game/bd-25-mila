@@ -13,11 +13,12 @@ import { ActionComponent, isActor } from "../../components/game-object/character
 import { Depth } from "../../common/config";
 import { NpcType } from "./npc";
 import { PlayerType } from "./player/player";
+import { Persistable, PersistableComponent } from "../../components/game-object/common/persistable-component";
 
 export type Config = {
   animations: CharacterAnimationComponentConfig;
   frame?: string | number;
-  id?: string;
+  id: string;
   input: InputComponent;
   onDirectionChange?: (direction: Direction) => void;
   scene: Phaser.Scene;
@@ -25,30 +26,55 @@ export type Config = {
   texture: string;
   x: number;
   y: number;
+  direction?: Direction;
 };
 
-export abstract class BaseCharacter<T extends NpcType | PlayerType> extends GameObject {
+type Properties = {
+  id: string;
+  x: number;
+  y: number;
+  direction: Direction;
+};
+
+export abstract class BaseCharacter<T extends NpcType | PlayerType>
+  extends GameObject
+  implements Persistable<Properties>
+{
   protected static ShortenBodyBy = 48;
 
   declare body: Body;
+
+  public readonly id: string;
 
   private animationComponent: CharacterAnimationComponent;
   private controlsComponent: ControlsComponent;
   private directionComponent: DirectionComponent;
   private speedComponent: SpeedComponent;
+  private persistableComponent: PersistableComponent<Properties>;
   protected stateMachine: StateMachine;
 
   public abstract isActor: false | ActionComponent;
   public abstract characterType: T;
 
   constructor(config: Config) {
-    const { animations, frame, id, input, onDirectionChange, scene, speed, texture, x, y } = config;
+    const { animations, frame, id, input, onDirectionChange, scene, speed, texture, x, y, direction } = config;
 
     super(scene, x, y, texture, frame);
 
+    this.id = id;
+
     this.animationComponent = new CharacterAnimationComponent(this, animations);
     this.controlsComponent = new ControlsComponent(this, input);
-    this.directionComponent = new DirectionComponent(this, onDirectionChange);
+    this.directionComponent = new DirectionComponent(this, onDirectionChange, direction);
+    this.persistableComponent = new PersistableComponent<Properties>({
+      host: this,
+      toPersistenceProperties: () => ({
+        id: this.id,
+        x: this.x,
+        y: this.y,
+        direction: this.direction,
+      }),
+    });
     this.speedComponent = new SpeedComponent(this, speed);
     this.stateMachine = new StateMachine(id);
 
@@ -75,6 +101,10 @@ export abstract class BaseCharacter<T extends NpcType | PlayerType> extends Game
   }
   set direction(direction: Direction) {
     this.directionComponent.direction = direction;
+  }
+
+  get isPersistable(): PersistableComponent<Properties> {
+    return this.persistableComponent;
   }
 
   get speed(): number {
