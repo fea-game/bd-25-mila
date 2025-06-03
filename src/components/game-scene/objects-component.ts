@@ -12,7 +12,7 @@ import { InputComponent } from "../input/input-component";
 import { Plate } from "../../game-objects/objects/plate";
 import { Foreground } from "../../game-objects/objects/foreground";
 import { KeyboardComponent } from "../input/keyboard-component";
-import { Player } from "../../game-objects/characters/player/player";
+import { Player } from "../../game-objects/characters/player";
 import { isActionable } from "../game-object/object/actionable-component";
 import { isContactable } from "../game-object/object/contactable-component";
 import { isPushable } from "../game-object/object/pushable-component";

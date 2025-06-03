@@ -74,7 +74,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
               [
                 { direction: Direction.Left, distance: 170 },
                 { direction: Direction.Down, distance: 200 },
-                { direction: Direction.Right, distance: 20 },
+                { direction: Direction.Right, distance: 30 },
               ],
               () => {
                 GameStateManager.instance.house.sisterMoved = true;
@@ -116,7 +116,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
                     direction: Direction.Down,
                     distance: this.script.objects.player.y - this.script.npcs.Tobias.y + 36,
                   },
-                  { direction: Direction.Left, distance: 105 },
+                  { direction: Direction.Left, distance: 95 },
                 ],
                 () => {
                   resolve(undefined);
@@ -130,7 +130,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
                     direction: Direction.Down,
                     distance: this.script.objects.player.y - this.script.npcs.Cynthia.y - 36,
                   },
-                  { direction: Direction.Left, distance: 100 },
+                  { direction: Direction.Left, distance: 90 },
                 ],
                 () => {
                   resolve(undefined);

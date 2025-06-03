@@ -1,11 +1,11 @@
-import { AnimationType, Character, Texture } from "../../../common/assets";
-import { CharacterState } from "../../../components/game-object/state-machine/character/base-character-state";
-import { IdleState } from "../../../components/game-object/state-machine/character/idle-state";
-import { MovingState } from "../../../components/game-object/state-machine/character/moving-state";
-import { BaseCharacter, Config as CharacterGameObjectConfig } from "../base-character";
-import * as tiled from "../../../tiled/types";
-import { Actor, ActionComponent } from "../../../components/game-object/character/action-component";
-import { Direction } from "../../../common/types";
+import { AnimationType, Character, Texture } from "../../common/assets";
+import { CharacterState } from "../../components/game-object/state-machine/character/base-character-state";
+import { IdleState } from "../../components/game-object/state-machine/character/idle-state";
+import { MovingState } from "../../components/game-object/state-machine/character/moving-state";
+import { BaseCharacter, Config as CharacterGameObjectConfig } from "./base-character";
+import * as tiled from "../../tiled/types";
+import { Actor, ActionComponent } from "../../components/game-object/character/action-component";
+import { Direction } from "../../common/types";
 
 export const PlayerType = "Mila";
 export type PlayerType = typeof PlayerType;
