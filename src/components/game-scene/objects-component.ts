@@ -204,7 +204,20 @@ export class ObjectsComponent extends BaseGameSceneComponent implements Objects 
             });
             break;
           case "Toilet":
-            return new Toilet({ scene: this.host, properties: { ...tiledObject, ...tiledObject.properties } });
+            if (!GameStateManager.instance[area].objects[tiledObject.properties.id]) {
+              GameStateManager.instance[area].objects[tiledObject.properties.id] = {
+                id: tiledObject.properties.id,
+                isOpened: tiledObject.properties.isOpened,
+              };
+            }
+            return new Toilet({
+              scene: this.host,
+              properties: {
+                ...tiledObject,
+                ...tiledObject.properties,
+                ...GameStateManager.instance[area].objects[tiledObject.properties.id],
+              },
+            });
           case "Trigger":
             return new Trigger({ scene: this.host, properties: { ...tiledObject, ...tiledObject.properties } });
           default:
