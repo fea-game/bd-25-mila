@@ -1,16 +1,17 @@
 import Phaser from "phaser";
 import { Depth } from "../common/config";
 import GameScene from "../scenes/game-scene";
+import { Keyboard } from "../components/input/keyboard-component";
 
-type DialogOption = {
-  text: string;
-  callback: () => void;
-};
+type DialogOption = string;
+
+type Event = ["selected", number] | ["proceeded"] | ["closed"];
 
 export class DialogBox extends Phaser.GameObjects.Container {
   private background: Phaser.GameObjects.Rectangle;
   private textObject: Phaser.GameObjects.Text;
   private continueText: Phaser.GameObjects.Text;
+  private closeText: Phaser.GameObjects.Text;
   private optionTexts: Phaser.GameObjects.Text[] = [];
 
   private fullText = "";
@@ -19,32 +20,38 @@ export class DialogBox extends Phaser.GameObjects.Container {
 
   private readonly padding = 20;
   private readonly textHeight: number;
-  private readonly lineHeight = 24;
   private options: DialogOption[] = [];
+  private keyboard: Keyboard;
 
-  constructor(scene: GameScene, width: number, height: number) {
+  private eventHandler?: (...args: Event) => void;
+
+  constructor(scene: GameScene, keyboard: Keyboard) {
+    const width = scene.scale.width;
+    const height = Math.round(scene.scale.height / 4);
+
     super(scene, 0, scene.scale.height - height);
 
+    this.keyboard = keyboard;
+
     this.setDepth(Depth.Hud);
+    this.setScrollFactor(0);
 
     scene.add.existing(this);
 
     this.background = scene.add.rectangle(0, 0, width, height, 0x800080, 0.8).setOrigin(0, 0);
     this.add(this.background);
 
-    // ✅ Adjust wrap width: subtract *2* padding (left + right)
     this.textObject = scene.add.text(this.padding, this.padding, "", {
       fontSize: "18px",
-      wordWrap: { width: width - this.padding * 3 },
+      wordWrap: { width: width - this.padding * 2 },
       color: "#ffffff",
     });
     this.add(this.textObject);
 
     this.textHeight = height - this.padding * 2;
 
-    // ✅ Add margin to right for prompt
     this.continueText = scene.add
-      .text(width - this.padding, height - this.padding / 2, "[SPACE]", {
+      .text(width - this.padding, height - this.padding / 2, "Weiter", {
         fontSize: "14px",
         color: "#cccccc",
       })
@@ -53,18 +60,40 @@ export class DialogBox extends Phaser.GameObjects.Container {
     this.continueText.setX(width - this.continueText.width);
     this.add(this.continueText);
 
+    this.closeText = scene.add
+      .text(width - this.padding, height - this.padding / 2, "Schließen", {
+        fontSize: "14px",
+        color: "#cccccc",
+      })
+      .setOrigin(1, 1)
+      .setVisible(false);
+    this.closeText.setX(width - this.closeText.width);
+    this.add(this.closeText);
+
     // Input handling
-    scene.input.keyboard.on("keydown-SPACE", this.nextPage, this);
-    scene.input.keyboard.on("keydown-ENTER", this.nextPage, this);
-    scene.input.keyboard.on("keydown-UP", () => this.selectOption(-1));
-    scene.input.keyboard.on("keydown-DOWN", () => this.selectOption(1));
+    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Action), this.onActionDown, this);
+    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Up), () => this.selectOption(-1));
+    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Down), () => this.selectOption(1));
+
+    this.hide();
   }
 
-  public setText(text: string) {
+  public hide() {
+    this.eventHandler?.("closed");
     this.clear();
-    this.fullText = text;
+    this.active = false;
+    this.setVisible(false);
+  }
+
+  public show(text: string, opts: { options?: DialogOption[]; on?: DialogBox["eventHandler"] } = {}) {
+    this.clear();
+    this.options = opts.options || [];
+    this.eventHandler = opts.on;
+    this.active = true;
     this.pages = this.paginate(text);
+    this.currentPageIndex = 0;
     this.showPage(0);
+    this.setVisible(true);
   }
 
   private paginate(text: string): string[] {
@@ -94,31 +123,48 @@ export class DialogBox extends Phaser.GameObjects.Container {
   private showPage(index: number) {
     this.currentPageIndex = index;
     this.textObject.setText(this.pages[index]);
-    this.continueText.setVisible(index < this.pages.length - 1);
-    if (index >= this.pages.length - 1) {
-      this.showOptions();
+
+    if (index < this.pages.length - 1) {
+      this.continueText.setVisible(true);
+      return;
     }
+
+    if (this.options.length) {
+      this.showOptions();
+      return;
+    }
+
+    this.closeText.setVisible(true);
+  }
+
+  private onActionDown() {
+    if (this.continueText.visible) {
+      this.nextPage();
+      return;
+    }
+
+    if (this.closeText.visible) {
+      this.hide();
+      return;
+    }
+
+    this.eventHandler?.("selected", this.selectedOptionIndex);
   }
 
   private nextPage() {
     if (this.currentPageIndex < this.pages.length - 1) {
       this.showPage(this.currentPageIndex + 1);
-    }
-  }
-
-  public setOptions(options: DialogOption[]) {
-    this.options = options;
-    if (this.currentPageIndex === this.pages.length - 1) {
-      this.showOptions();
+      this.eventHandler?.("proceeded");
     }
   }
 
   private showOptions() {
     this.continueText.setVisible(false);
+    this.closeText.setVisible(false);
 
     const startY = this.textObject.y + this.textObject.height + 10;
     this.optionTexts = this.options.map((opt, index) => {
-      const txt = this.scene.add.text(this.padding, startY + index * 24, opt.text, {
+      const txt = this.scene.add.text(this.padding, startY + index * 24, opt, {
         fontSize: "16px",
         color: index === 0 ? "#ffff00" : "#ffffff",
       });
@@ -128,10 +174,9 @@ export class DialogBox extends Phaser.GameObjects.Container {
 
     this.selectedOptionIndex = 0;
 
-    this.scene.input.keyboard.once("keydown-ENTER", () => {
-      const selected = this.options[this.selectedOptionIndex];
-      selected?.callback();
-    });
+    /*this.keyboard.once(Keyboard.toEvent("keydown", Keyboard.Key.Action), () => {
+      this.eventHandler?.("selected", this.selectedOptionIndex);
+    });*/
   }
 
   private selectedOptionIndex = 0;
@@ -144,6 +189,8 @@ export class DialogBox extends Phaser.GameObjects.Container {
   }
 
   public clear() {
+    this.options = [];
+    this.eventHandler = undefined;
     this.textObject.setText("");
     this.pages = [];
     this.fullText = "";

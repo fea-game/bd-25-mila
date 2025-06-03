@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { ActionZoneSize } from "../../../common/config";
 import { assertsHasBody, Body, GameObject, InteractionType } from "../../../common/types";
 import { Actor } from "../character/action-component";
-import { Indicator } from "../../../game-objects/helper/indicator";
+import { Indicator } from "../../../ui/indicator";
 import { InteractableComponent } from "./interactable-component";
 
 type Config = {
@@ -93,7 +93,8 @@ export class ActionableComponent extends InteractableComponent<typeof Interactio
 
     this.#isFocused = actor;
 
-    this.#indicator = this.#indicator ?? new Indicator({ host: this.host, texture: "controls", frame: 0 });
+    this.#indicator =
+      this.#indicator ?? new Indicator({ host: this.host, content: [{ texture: "controls", frame: 0 }] });
     this.#indicator.setScale(2).show();
   }
 

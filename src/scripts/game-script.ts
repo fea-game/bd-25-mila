@@ -1,6 +1,7 @@
 import GameScene from "../scenes/game-scene";
 import { Objects } from "../components/game-scene/objects-component";
 import { GameStateManager } from "../manager/game-state-manager";
+import { Dialog } from "../components/game-scene/dialog-component";
 
 export abstract class GameScript<
   I extends string = string,
@@ -10,7 +11,11 @@ export abstract class GameScript<
 > {
   protected scenes: R;
 
-  public constructor(public readonly host: GameScene, public readonly objects: Objects) {
+  public constructor(
+    protected readonly host: GameScene,
+    protected readonly objects: Objects,
+    protected readonly dialog: Dialog
+  ) {
     this.scenes = {} as R;
   }
 
@@ -48,6 +53,22 @@ export abstract class GameScript<
 
       this.startCurrentScene();
     }
+  }
+
+  protected showDialog(...args: Parameters<Dialog["show"]>) {
+    this.objects.player.controls.isMovementLocked = true;
+    this.dialog.show(...args);
+  }
+
+  protected hideDialog() {
+    this.dialog.hide();
+
+    if (!this.isScene(GameStateManager.instance.scene.current)) {
+      throw new Error(`No valid current Scene present: ${GameStateManager.instance.scene.current}!`);
+    }
+
+    this.objects.player.controls.isMovementLocked =
+      this.scenes[GameStateManager.instance.scene.current].type === "Roaming";
   }
 
   protected startCurrentScene(): void {

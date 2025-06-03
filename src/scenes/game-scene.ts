@@ -6,9 +6,11 @@ import { InteractionComponent } from "../components/game-scene/interaction-compo
 import { ObjectsComponent } from "../components/game-scene/objects-component";
 import { GameScript } from "../scripts/game-script";
 import { HouseScript } from "../scripts/house-script";
+import { DialogComponent } from "../components/game-scene/dialog-component";
 
 export default class GameScene extends Phaser.Scene {
   #collisionComponent: CollisionComponent;
+  #dialogComponent: DialogComponent;
   #interactionComponent: InteractionComponent;
   #keyboardComponent: KeyboardComponent;
   #objectsComponent: ObjectsComponent;
@@ -33,8 +35,9 @@ export default class GameScene extends Phaser.Scene {
     });
     this.#collisionComponent = new CollisionComponent(this, this.#objectsComponent);
     this.#interactionComponent = new InteractionComponent(this, this.#objectsComponent);
+    this.#dialogComponent = new DialogComponent(this, this.#keyboardComponent);
 
-    this.#script = new HouseScript(this, this.#objectsComponent);
+    this.#script = new HouseScript(this, this.#objectsComponent, this.#dialogComponent);
   }
 
   update(time: number, delta: number): void {

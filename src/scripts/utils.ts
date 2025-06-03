@@ -4,7 +4,7 @@ import { Depth } from "../common/config";
 export async function playCinematicIntro({
   scene,
   player,
-  duration = 3000,
+  duration = 4000,
   onComplete,
 }: {
   scene: Phaser.Scene;
@@ -16,11 +16,12 @@ export async function playCinematicIntro({
   camera.startFollow(player);
   camera.setZoom(4);
   const title = scene.add
-    .text(scene.cameras.main.centerX, scene.cameras.main.centerY + 24, "Guten Morgen Mila!", {
-      fontSize: `${48 / camera.zoom}px`,
+    .text(scene.cameras.main.centerX, scene.cameras.main.centerY + 24, "Milas Geburtstagsabenteuer\n20. Juni 2025", {
+      fontSize: `${42 / camera.zoom}px`,
       color: "#ffffff",
       stroke: "#000000",
-      strokeThickness: 8,
+      strokeThickness: 6,
+      align: "center",
     })
     .setAlpha(0.7)
     .setDepth(Depth.Hud)
@@ -32,7 +33,7 @@ export async function playCinematicIntro({
         resolve(undefined);
       });
       camera.fadeIn(duration, 0, 0, 0, () => {
-        title.setFontSize(`${48 / camera.zoom}px`);
+        title.setFontSize(`${42 / camera.zoom}px`);
       });
     }),
     new Promise((resolve) => {

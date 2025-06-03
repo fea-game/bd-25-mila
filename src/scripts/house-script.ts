@@ -9,7 +9,7 @@ import { Objects } from "../components/game-scene/objects-component";
 import { Audio } from "../common/assets";
 import { assertNpcsPresent, getNpcs } from "../common/utils";
 import { GameStateManager } from "../manager/game-state-manager";
-import { DialogBox } from "../ui/dialog-box";
+import { Dialog } from "../components/game-scene/dialog-component";
 
 const HouseScriptScene = {
   WakingUp: "house-waking-up",
@@ -29,8 +29,8 @@ export class HouseScript extends GameScript<HouseScriptScene> {
     Tobias: Npc;
   };
 
-  public constructor(host: GameScene, objects: Objects) {
-    super(host, objects);
+  public constructor(host: GameScene, objects: Objects, dialog: Dialog) {
+    super(host, objects, dialog);
 
     const npcs = getNpcs(objects);
 
@@ -40,6 +40,8 @@ export class HouseScript extends GameScript<HouseScriptScene> {
 
     this.add(
       class extends Scene {
+        declare script: HouseScript;
+
         public readonly id = "house-waking-up";
         public readonly type = "Scripted";
 
@@ -47,31 +49,25 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           return GameStateManager.instance.house.wokeUp;
         }
 
-        public start() {
-          const dialog = new DialogBox(host, host.scale.width, 150);
-
-          dialog.setText(
-            "It's your birthday today! Everyone is waiting in the living room to celebrate with you. " +
-              "You should get ready and head downstairs as soon as possible. There's cake!" +
-              "It's your birthday today! Everyone is waiting in the living room to celebrate with you. " +
-              "You should get ready and head downstairs as soon as possible. There's cake!" +
-              "It's your birthday today! Everyone is waiting in the living room to celebrate with you. " +
-              "You should get ready and head downstairs as soon as possible. There's cake!"
-          );
-
-          dialog.setOptions([
-            { text: "Go downstairs", callback: () => console.log("Player chose to go downstairs") },
-            { text: "Stay in room", callback: () => console.log("Player stayed") },
-          ]);
-
-          /*playCinematicIntro({
+        public async start() {
+          await playCinematicIntro({
             scene: this.script.host,
             player: this.script.objects.player,
-            duration: 5000,
-            onComplete: () => {
-              GameStateManager.instance.house.wokeUp = true;
-            },
-          });*/
+            duration: 6000,
+          });
+
+          this.script.showDialog(
+            "Guten Morgen Mila, es ist dein 9. Geburtstag!\n" +
+              "Wie du siehst, wartet deine Familie schon auf dich im Wohnzimmer. " +
+              "Schnell, geh zu ihnen! Es gibt bestimmt tolle Geschenke und einen leckeren Kuchen für dich.",
+            {
+              on: (event, _?: number) => {
+                if (event === "closed") {
+                  GameStateManager.instance.house.wokeUp = true;
+                }
+              },
+            }
+          );
         }
       },
       class extends Scene {
@@ -86,7 +82,6 @@ export class HouseScript extends GameScript<HouseScriptScene> {
 
         public start() {
           this.script.host.time.delayedCall(2000, () => {
-            console.log("MOVE AMELIE", [this.script.npcs.Amelie.x, this.script.npcs.Amelie.y]);
             this.script.npcs.Amelie.move(
               [
                 { direction: Direction.Left, distance: 170 },
