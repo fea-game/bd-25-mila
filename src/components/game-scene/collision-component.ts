@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { Player } from "../../game-objects/characters/player/player";
+import { Player } from "../../game-objects/characters/player";
 import GameScene from "../../scenes/game-scene";
 import { BaseGameSceneComponent } from "./base-game-scene-component";
 import { InteractionType } from "../../common/types";

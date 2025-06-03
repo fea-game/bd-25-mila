@@ -9,6 +9,7 @@ import { Objects } from "../components/game-scene/objects-component";
 import { Audio } from "../common/assets";
 import { assertNpcsPresent, getNpcs } from "../common/utils";
 import { GameStateManager } from "../manager/game-state-manager";
+import { DialogBox } from "../ui/dialog-box";
 
 const HouseScriptScene = {
   WakingUp: "house-waking-up",
@@ -47,14 +48,30 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         }
 
         public start() {
-          playCinematicIntro({
+          const dialog = new DialogBox(host, host.scale.width, 150);
+
+          dialog.setText(
+            "It's your birthday today! Everyone is waiting in the living room to celebrate with you. " +
+              "You should get ready and head downstairs as soon as possible. There's cake!" +
+              "It's your birthday today! Everyone is waiting in the living room to celebrate with you. " +
+              "You should get ready and head downstairs as soon as possible. There's cake!" +
+              "It's your birthday today! Everyone is waiting in the living room to celebrate with you. " +
+              "You should get ready and head downstairs as soon as possible. There's cake!"
+          );
+
+          dialog.setOptions([
+            { text: "Go downstairs", callback: () => console.log("Player chose to go downstairs") },
+            { text: "Stay in room", callback: () => console.log("Player stayed") },
+          ]);
+
+          /*playCinematicIntro({
             scene: this.script.host,
             player: this.script.objects.player,
             duration: 5000,
             onComplete: () => {
               GameStateManager.instance.house.wokeUp = true;
             },
-          });
+          });*/
         }
       },
       class extends Scene {

@@ -2,7 +2,7 @@ import { Depth } from "../../../../common/config";
 import { Direction } from "../../../../common/types";
 import { BaseCharacter } from "../../../../game-objects/characters/base-character";
 import { NpcType } from "../../../../game-objects/characters/npc";
-import { PlayerType } from "../../../../game-objects/characters/player/player";
+import { PlayerType } from "../../../../game-objects/characters/player";
 import { GameStateManager } from "../../../../manager/game-state-manager";
 import { StateMachine } from "../state-machine";
 import { BaseCharacterState, CharacterState } from "./base-character-state";

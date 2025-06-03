@@ -12,7 +12,7 @@ import { Body, Direction, GameObject } from "../../common/types";
 import { ActionComponent, isActor } from "../../components/game-object/character/action-component";
 import { Depth } from "../../common/config";
 import { NpcType } from "./npc";
-import { PlayerType } from "./player/player";
+import { PlayerType } from "./player";
 import { Persistable, PersistableComponent } from "../../components/game-object/common/persistable-component";
 
 export type Config = {

@@ -2,7 +2,7 @@ import { Area, Direction } from "../common/types";
 import { load, save } from "../common/utils";
 import { PersistableProperties } from "../components/game-object/common/persistable-component";
 import { NpcType } from "../game-objects/characters/npc";
-import { PlayerType } from "../game-objects/characters/player/player";
+import { PlayerType } from "../game-objects/characters/player";
 
 export interface GameState {
   area: Area;

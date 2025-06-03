@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { ActionZoneSize } from "../../common/config";
 import { hasBody, InteractionType } from "../../common/types";
-import { Player } from "../../game-objects/characters/player/player";
+import { Player } from "../../game-objects/characters/player";
 import GameScene from "../../scenes/game-scene";
 import { Actionable, isActionTrigger } from "../game-object/object/actionable-component";
 import { BaseGameSceneComponent } from "./base-game-scene-component";
