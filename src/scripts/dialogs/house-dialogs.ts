@@ -1,3 +1,4 @@
+import { NpcType } from "../../game-objects/characters/npc";
 import { GameStateManager } from "../../manager/game-state-manager";
 import { DialogScript } from "./dialog-script";
 
@@ -17,6 +18,8 @@ export const HouseDialogs = {
       },
     },
   ]),
+  Amelie: new DialogScript([]),
+  Cynthia: new DialogScript([]),
   Tobias: new DialogScript([
     {
       id: "dialog-house-tobias-1",
@@ -39,4 +42,4 @@ export const HouseDialogs = {
       },
     },
   ]),
-};
+} satisfies Record<NpcType | "Narrator", DialogScript>;

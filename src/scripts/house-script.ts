@@ -1,16 +1,17 @@
-import { GameScript, Scene } from "./game-script";
+import { GameScript, Scene, SceneType } from "./game-script";
 import { Direction } from "../common/types";
 import GameScene from "../scenes/game-scene";
 import { playCinematicIntro } from "./utils";
 import { EventBus, EventPayload } from "../common/event-bus";
 import { Trigger } from "../game-objects/objects/trigger";
-import { Npc } from "../game-objects/characters/npc";
+import { Npc, NpcType } from "../game-objects/characters/npc";
 import { Objects } from "../components/game-scene/objects-component";
 import { Audio } from "../common/assets";
 import { assertNpcsPresent, getNpcs } from "../common/utils";
 import { GameStateManager } from "../manager/game-state-manager";
 import { Dialog } from "../components/game-scene/dialog-component";
 import { HouseDialogs } from "./dialogs/house-dialogs";
+import { Dialog as DialogContent } from "./dialogs/dialog-script";
 
 const HouseScriptScene = {
   WakingUp: "house-waking-up",
@@ -24,6 +25,8 @@ type HouseScriptScene = (typeof HouseScriptScene)[keyof typeof HouseScriptScene]
 const HouseScriptSceneValues: string[] = Object.values(HouseScriptScene);
 
 export class HouseScript extends GameScript<HouseScriptScene> {
+  protected declare scenes: Record<HouseScriptScene, HouseScene<HouseScriptScene, SceneType>>;
+
   public readonly npcs: {
     Amelie: Npc;
     Cynthia: Npc;
@@ -40,9 +43,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
     this.npcs = npcs;
 
     this.add(
-      class extends Scene {
-        declare script: HouseScript;
-
+      class extends HouseScene {
         public readonly id = "house-waking-up";
         public readonly type = "Scripted";
 
@@ -51,6 +52,8 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         }
 
         public async start() {
+          super.start();
+
           await playCinematicIntro({
             scene: this.script.host,
             player: this.script.objects.player,
@@ -72,9 +75,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           });
         }
       },
-      class extends Scene {
-        declare script: HouseScript;
-
+      class extends HouseScene {
         public readonly id = "house-after-waking-up";
         public readonly type = "Roaming";
 
@@ -83,6 +84,8 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         }
 
         public start() {
+          super.start();
+
           this.script.host.time.delayedCall(2000, () => {
             this.script.npcs.Amelie.move(
               [
@@ -104,9 +107,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           );
         }
       },
-      class extends Scene {
-        declare script: HouseScript;
-
+      class extends HouseScene {
         public readonly id = "house-singing-happy-birthday";
         public readonly type = "Scripted";
 
@@ -115,6 +116,8 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         }
 
         async start() {
+          super.start();
+
           await this.moveFamily();
           await this.singHappyBirthday();
 
@@ -175,9 +178,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           });
         }
       },
-      class extends Scene {
-        declare script: HouseScript;
-
+      class extends HouseScene {
         public readonly id = "house-after-singing-happy-birthday";
         public readonly type = "Roaming";
 
@@ -186,7 +187,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         }
 
         public start() {
-          this.script.npcs.Tobias.isInteractable.canBeInteractedWith = true;
+          super.start();
 
           EventBus.instance.on(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
         }
@@ -199,23 +200,17 @@ export class HouseScript extends GameScript<HouseScriptScene> {
               this.interactWithTobias();
               break;
             default:
-              console.log("ACTED WITH", interactedWith.id);
+              console.log("INTERACTED WITH", interactedWith.id);
           }
         }
 
         private interactWithTobias() {
           const dialog = HouseDialogs.Tobias.current();
 
-          if (!dialog || !dialog.isAvailable()) return;
+          if (!dialog) return;
 
           this.script.showDialog(dialog, {
-            on: (event, _?: number) => {
-              if (event === "closed") {
-                if (HouseDialogs.Tobias.current()?.isAvailable()) {
-                  this.script.npcs.Tobias.isInteractable.canBeInteractedWith = true;
-                }
-              }
-            },
+            on: (event, _?: number) => {},
           });
         }
       }
@@ -226,6 +221,16 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         ? GameStateManager.instance.scene.current
         : "house-waking-up"
     );
+  }
+
+  public override hideDialog(dialog: DialogContent): void {
+    super.hideDialog(dialog);
+
+    if (!this.isScene(GameStateManager.instance.scene.current)) return;
+    const currentScene = this.scenes[GameStateManager.instance.scene.current];
+    if (!currentScene) return;
+
+    currentScene.resetNpcInteractions();
   }
 
   protected isScene(value: unknown): value is HouseScriptScene {
@@ -246,6 +251,20 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         return "house-after-singing-happy-birthday";
       default:
         return "house-waking-up";
+    }
+  }
+}
+
+abstract class HouseScene<I extends string = string, T extends SceneType = SceneType> extends Scene<I, T> {
+  declare script: HouseScript;
+
+  public start(): void {
+    this.resetNpcInteractions();
+  }
+
+  public resetNpcInteractions(): void {
+    for (const npc of Object.values(this.script.npcs)) {
+      npc.isInteractable.canBeInteractedWith = !!HouseDialogs[npc.characterType]?.current();
     }
   }
 }
