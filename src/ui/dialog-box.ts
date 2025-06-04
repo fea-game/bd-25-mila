@@ -2,6 +2,8 @@ import Phaser from "phaser";
 import { Depth } from "../common/config";
 import GameScene from "../scenes/game-scene";
 import { Keyboard } from "../components/input/keyboard-component";
+import { TextStyle } from "./text-style";
+import { Cta } from "./cta";
 
 type DialogOption = string;
 
@@ -10,8 +12,8 @@ type Event = ["selected", number] | ["proceeded"] | ["closed"];
 export class DialogBox extends Phaser.GameObjects.Container {
   private background: Phaser.GameObjects.Rectangle;
   private textObject: Phaser.GameObjects.Text;
-  private continueText: Phaser.GameObjects.Text;
-  private closeText: Phaser.GameObjects.Text;
+  private continueText: Cta;
+  private closeText: Cta;
   private optionTexts: Phaser.GameObjects.Text[] = [];
 
   private fullText = "";
@@ -41,33 +43,34 @@ export class DialogBox extends Phaser.GameObjects.Container {
     this.background = scene.add.rectangle(0, 0, width, height, 0x800080, 0.8).setOrigin(0, 0);
     this.add(this.background);
 
-    this.textObject = scene.add.text(this.padding, this.padding, "", {
-      fontSize: "18px",
-      wordWrap: { width: width - this.padding * 2 },
-      color: "#ffffff",
-    });
+    this.textObject = scene.add.text(
+      this.padding,
+      this.padding,
+      "",
+      TextStyle.new()
+        .add({ wordWrap: { width: width - this.padding * 2 } })
+        .get()
+    );
     this.add(this.textObject);
 
     this.textHeight = height - this.padding * 2;
 
-    this.continueText = scene.add
-      .text(width - this.padding, height - this.padding / 2, "Weiter", {
-        fontSize: "14px",
-        color: "#cccccc",
-      })
-      .setOrigin(1, 1)
-      .setVisible(false);
-    this.continueText.setX(width - this.continueText.width);
+    this.continueText = new Cta({
+      host: scene,
+      content: [{ texture: "controls", frame: 0 }, "Weiter"],
+      x: width - this.padding,
+      y: height - this.padding,
+    });
+    this.continueText.setVisible(false).setX(width - this.continueText.getBounds().width);
     this.add(this.continueText);
 
-    this.closeText = scene.add
-      .text(width - this.padding, height - this.padding / 2, "Schließen", {
-        fontSize: "14px",
-        color: "#cccccc",
-      })
-      .setOrigin(1, 1)
-      .setVisible(false);
-    this.closeText.setX(width - this.closeText.width);
+    this.closeText = new Cta({
+      host: scene,
+      content: [{ texture: "controls", frame: 0 }, "Schließen"],
+      x: width - this.padding,
+      y: height - this.padding,
+    });
+    this.closeText.setVisible(false).setX(width - this.closeText.getBounds().width);
     this.add(this.closeText);
 
     // Input handling
@@ -125,16 +128,18 @@ export class DialogBox extends Phaser.GameObjects.Container {
     this.textObject.setText(this.pages[index]);
 
     if (index < this.pages.length - 1) {
-      this.continueText.setVisible(true);
+      this.continueText.show();
       return;
     }
+
+    this.continueText.hide();
 
     if (this.options.length) {
       this.showOptions();
       return;
     }
 
-    this.closeText.setVisible(true);
+    this.closeText.show();
   }
 
   private onActionDown() {
@@ -159,24 +164,24 @@ export class DialogBox extends Phaser.GameObjects.Container {
   }
 
   private showOptions() {
-    this.continueText.setVisible(false);
-    this.closeText.setVisible(false);
+    this.continueText.hide();
+    this.closeText.hide();
 
     const startY = this.textObject.y + this.textObject.height + 10;
     this.optionTexts = this.options.map((opt, index) => {
-      const txt = this.scene.add.text(this.padding, startY + index * 24, opt, {
-        fontSize: "16px",
-        color: index === 0 ? "#ffff00" : "#ffffff",
-      });
+      const txt = this.scene.add.text(
+        this.padding,
+        startY + index * 24,
+        opt,
+        TextStyle.new()
+          .color(index === 0 ? "#ffff00" : "#ffffff")
+          .get()
+      );
       this.add(txt);
       return txt;
     });
 
     this.selectedOptionIndex = 0;
-
-    /*this.keyboard.once(Keyboard.toEvent("keydown", Keyboard.Key.Action), () => {
-      this.eventHandler?.("selected", this.selectedOptionIndex);
-    });*/
   }
 
   private selectedOptionIndex = 0;
@@ -198,6 +203,7 @@ export class DialogBox extends Phaser.GameObjects.Container {
     this.optionTexts.forEach((txt) => txt.destroy());
     this.optionTexts = [];
     this.selectedOptionIndex = 0;
-    this.continueText.setVisible(false);
+    this.continueText.hide();
+    this.closeText.hide();
   }
 }

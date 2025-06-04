@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { Depth } from "../common/config";
+import { TextStyle } from "../ui/text-style";
 
 export async function playCinematicIntro({
   scene,
@@ -16,13 +17,16 @@ export async function playCinematicIntro({
   camera.startFollow(player);
   camera.setZoom(4);
   const title = scene.add
-    .text(scene.cameras.main.centerX, scene.cameras.main.centerY + 24, "Milas Geburtstagsabenteuer\n20. Juni 2025", {
-      fontSize: `${42 / camera.zoom}px`,
-      color: "#ffffff",
-      stroke: "#000000",
-      strokeThickness: 6,
-      align: "center",
-    })
+    .text(
+      scene.cameras.main.centerX,
+      scene.cameras.main.centerY + 24,
+      "Milas Geburtstagsabenteuer\n20. Juni 2025",
+      TextStyle.new()
+        .size(`${42 / camera.zoom}px`)
+        .withBorder({ thickness: 8 })
+        .add({ align: "center" })
+        .get()
+    )
     .setAlpha(0.7)
     .setDepth(Depth.Hud)
     .setOrigin(0.5);
