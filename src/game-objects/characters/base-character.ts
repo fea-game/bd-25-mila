@@ -9,7 +9,7 @@ import { InputComponent } from "../../components/input/input-component";
 import { DirectionComponent } from "../../components/game-object/character/direction-component";
 import { SpeedComponent } from "../../components/game-object/character/speed-component";
 import { Body, Direction, GameObject } from "../../common/types";
-import { ActionComponent, isActor } from "../../components/game-object/character/action-component";
+import { ActionComponent, Actor, isActor } from "../../components/game-object/character/action-component";
 import { Depth } from "../../common/config";
 import { NpcType } from "./npc";
 import { PlayerType } from "./player";
@@ -46,11 +46,11 @@ export abstract class BaseCharacter<T extends NpcType | PlayerType>
 
   public readonly id: string;
 
-  private animationComponent: CharacterAnimationComponent;
-  private controlsComponent: ControlsComponent;
-  private directionComponent: DirectionComponent;
-  private speedComponent: SpeedComponent;
-  private persistableComponent: PersistableComponent<Properties>;
+  protected animationComponent: CharacterAnimationComponent;
+  protected controlsComponent: ControlsComponent;
+  protected directionComponent: DirectionComponent;
+  protected speedComponent: SpeedComponent;
+  protected persistableComponent: PersistableComponent<Properties>;
   protected stateMachine: StateMachine;
 
   public abstract isActor: false | ActionComponent;
@@ -123,6 +123,6 @@ export abstract class BaseCharacter<T extends NpcType | PlayerType>
     const focused = this.isActor.focused;
     if (!focused?.isInteractable.canBeInteractedWith) return;
 
-    focused.isInteractable.interact(this);
+    focused.isInteractable.interact(this as GameObject & Actor);
   }
 }

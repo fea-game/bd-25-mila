@@ -2,7 +2,7 @@ import { GameScript, Scene } from "./game-script";
 import { Direction } from "../common/types";
 import GameScene from "../scenes/game-scene";
 import { playCinematicIntro } from "./utils";
-import { EventBus } from "../common/event-bus";
+import { EventBus, EventPayload } from "../common/event-bus";
 import { Trigger } from "../game-objects/objects/trigger";
 import { Npc } from "../game-objects/characters/npc";
 import { Objects } from "../components/game-scene/objects-component";
@@ -10,6 +10,7 @@ import { Audio } from "../common/assets";
 import { assertNpcsPresent, getNpcs } from "../common/utils";
 import { GameStateManager } from "../manager/game-state-manager";
 import { Dialog } from "../components/game-scene/dialog-component";
+import { HouseDialogs } from "./dialogs/house-dialogs";
 
 const HouseScriptScene = {
   WakingUp: "house-waking-up",
@@ -56,18 +57,19 @@ export class HouseScript extends GameScript<HouseScriptScene> {
             duration: 6000,
           });
 
-          this.script.showDialog(
-            "Guten Morgen Mila, es ist dein 9. Geburtstag!\n" +
-              "Wie du siehst, wartet deine Familie schon auf dich im Wohnzimmer. " +
-              "Schnell, geh zu ihnen! Es gibt bestimmt tolle Geschenke und einen leckeren Kuchen für dich.",
-            {
-              on: (event, _?: number) => {
-                if (event === "closed") {
-                  GameStateManager.instance.house.wokeUp = true;
-                }
-              },
-            }
-          );
+          const dialog = HouseDialogs.Narrator.get(0);
+
+          if (!dialog || !dialog.isAvailable()) {
+            throw new Error("Couldn't find the first Dialog!");
+          }
+
+          this.script.showDialog(dialog, {
+            on: (event, _?: number) => {
+              if (event === "closed") {
+                GameStateManager.instance.house.wokeUp = true;
+              }
+            },
+          });
         }
       },
       class extends Scene {
@@ -183,7 +185,39 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           return false;
         }
 
-        public start() {}
+        public start() {
+          this.script.npcs.Tobias.isInteractable.canBeInteractedWith = true;
+
+          EventBus.instance.on(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
+        }
+
+        private onInteract({ interactedWith }: EventPayload[typeof EventBus.Event.Acted]) {
+          interactedWith.isInteractable.canBeInteractedWith = false;
+
+          switch (interactedWith.id) {
+            case this.script.npcs.Tobias.id:
+              this.interactWithTobias();
+              break;
+            default:
+              console.log("ACTED WITH", interactedWith.id);
+          }
+        }
+
+        private interactWithTobias() {
+          const dialog = HouseDialogs.Tobias.current();
+
+          if (!dialog || !dialog.isAvailable()) return;
+
+          this.script.showDialog(dialog, {
+            on: (event, _?: number) => {
+              if (event === "closed") {
+                if (HouseDialogs.Tobias.current()?.isAvailable()) {
+                  this.script.npcs.Tobias.isInteractable.canBeInteractedWith = true;
+                }
+              }
+            },
+          });
+        }
       }
     );
 

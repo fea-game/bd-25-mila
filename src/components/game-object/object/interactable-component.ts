@@ -6,6 +6,7 @@ type Config<T extends InteractionType> = {
   host: GameObject;
   type: T;
   id?: string;
+  canBeInteractedWith?: boolean;
 };
 
 export abstract class InteractableComponent<T extends InteractionType> extends BaseGameObjectComponent {
@@ -17,7 +18,7 @@ export abstract class InteractableComponent<T extends InteractionType> extends B
   constructor(config: Config<T>) {
     super(config.host);
 
-    this.#canBeInteractedWith = true;
+    this.#canBeInteractedWith = config.canBeInteractedWith ?? true;
     this.id = config.id ?? `${this.constructor.name}-${Phaser.Math.RND.uuid()}`;
     this.type = config.type;
   }

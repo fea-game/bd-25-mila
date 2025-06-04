@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import { PersistableComponent, PersistableProperties } from "../components/game-object/common/persistable-component";
 
 export const SceneKey = {
   Preload: "preload",
@@ -70,3 +69,5 @@ export const InteractionType = {
 } as const;
 
 export type InteractionType = (typeof InteractionType)[keyof typeof InteractionType];
+
+export type Tail<T extends any[]> = T extends [any, ...infer R] ? R : never;

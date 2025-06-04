@@ -2,6 +2,8 @@ import GameScene from "../scenes/game-scene";
 import { Objects } from "../components/game-scene/objects-component";
 import { GameStateManager } from "../manager/game-state-manager";
 import { Dialog } from "../components/game-scene/dialog-component";
+import { Dialog as DialogContent } from "./dialogs/dialog-script";
+import { Tail } from "../common/types";
 
 export abstract class GameScript<
   I extends string = string,
@@ -55,12 +57,23 @@ export abstract class GameScript<
     }
   }
 
-  protected showDialog(...args: Parameters<Dialog["show"]>) {
+  protected showDialog(dialog: DialogContent, opts: Parameters<Dialog["show"]>[1]) {
     this.objects.player.controls.isMovementLocked = true;
-    this.dialog.show(...args);
+
+    this.dialog.show(dialog.text, {
+      ...opts,
+      on: (...args) => {
+        if (args[0] === "closed") {
+          this.hideDialog(dialog);
+        }
+        opts?.on?.(...args);
+      },
+    });
   }
 
-  protected hideDialog() {
+  protected hideDialog(dialog: DialogContent) {
+    GameStateManager.instance.finishDialog(dialog.id);
+
     this.dialog.hide();
 
     if (!this.isScene(GameStateManager.instance.scene.current)) {
@@ -68,7 +81,7 @@ export abstract class GameScript<
     }
 
     this.objects.player.controls.isMovementLocked =
-      this.scenes[GameStateManager.instance.scene.current].type === "Roaming";
+      this.scenes[GameStateManager.instance.scene.current].type === "Scripted";
   }
 
   protected startCurrentScene(): void {

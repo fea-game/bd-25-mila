@@ -4,8 +4,10 @@ import { IdleState } from "../../components/game-object/state-machine/character/
 import { MovingState } from "../../components/game-object/state-machine/character/moving-state";
 import { BaseCharacter, Config as CharacterGameObjectConfig } from "./base-character";
 import * as tiled from "../../tiled/types";
-import { Direction } from "../../common/types";
+import { Direction, GameObject } from "../../common/types";
 import { GameStateManager } from "../../manager/game-state-manager";
+import { Actionable, ActionableComponent } from "../../components/game-object/object/actionable-component";
+import { Actor } from "../../components/game-object/character/action-component";
 
 export type NpcType = Exclude<tiled.NPC["properties"]["type"], "Dog" | "Neighbor" | "Thief">;
 
@@ -13,7 +15,7 @@ type Config = Omit<CharacterGameObjectConfig, "id" | "animations" | "speed" | "t
   properties: Pick<tiled.NPC, "x" | "y"> & tiled.NPC["properties"] & { direction?: Direction };
 };
 
-export class Npc extends BaseCharacter<NpcType> {
+export class Npc extends BaseCharacter<NpcType> implements Actionable {
   private static getAnimations(npcKey: NpcType): CharacterGameObjectConfig["animations"] {
     return {
       character: Character[npcKey],
@@ -50,9 +52,9 @@ export class Npc extends BaseCharacter<NpcType> {
   }
 
   public readonly isActor = false;
-  public readonly isInteractable = false;
 
   #npcType: NpcType;
+  #isInteractable: ActionableComponent;
 
   constructor({ properties: { id, type, x, y, direction }, ...config }: Config) {
     if (type === "Dog" || type === "Neighbor" || type === "Thief") {
@@ -72,6 +74,15 @@ export class Npc extends BaseCharacter<NpcType> {
 
     this.#npcType = type;
 
+    this.#isInteractable = new ActionableComponent({
+      host: this,
+      interact: (actor: GameObject & Actor) => {
+        this.turn(this.directionComponent.getDirectionTo(actor));
+      },
+      id,
+      canBeInteractedWith: false,
+    });
+
     this.stateMachine.addState(new IdleState(this, this.stateMachine));
     this.stateMachine.addState(new MovingState(this, this.stateMachine));
     this.stateMachine.setState(CharacterState.Idle);
@@ -84,6 +95,10 @@ export class Npc extends BaseCharacter<NpcType> {
 
   public get characterType(): NpcType {
     return this.#npcType;
+  }
+
+  get isInteractable(): ActionableComponent {
+    return this.#isInteractable;
   }
 
   public turn(direction: Direction, onFinished?: () => void): void {

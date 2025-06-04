@@ -78,11 +78,10 @@ export class DialogBox extends Phaser.GameObjects.Container {
     this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Up), () => this.selectOption(-1));
     this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Down), () => this.selectOption(1));
 
-    this.hide();
+    this.hide(true);
   }
 
-  public hide() {
-    this.eventHandler?.("closed");
+  public hide(skipEventHandler = false) {
     this.clear();
     this.active = false;
     this.setVisible(false);
@@ -149,7 +148,7 @@ export class DialogBox extends Phaser.GameObjects.Container {
     }
 
     if (this.closeText.visible) {
-      this.hide();
+      this.eventHandler?.("closed");
       return;
     }
 

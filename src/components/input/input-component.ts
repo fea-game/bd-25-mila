@@ -64,13 +64,7 @@ export class InputComponent {
   }
 
   get isNoMovement(): boolean {
-    return (
-      this.isMovementLocked ||
-      (!this.isDownDown &&
-        !this.isUpDown &&
-        !this.isLeftDown &&
-        !this.isRightDown)
-    );
+    return this.isMovementLocked || (!this.isDownDown && !this.isUpDown && !this.isLeftDown && !this.isRightDown);
   }
 
   public reset(): void {

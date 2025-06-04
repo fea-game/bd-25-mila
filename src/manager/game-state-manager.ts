@@ -7,6 +7,7 @@ import { PlayerType } from "../game-objects/characters/player";
 export interface GameState {
   area: Area;
   character: CharacterState;
+  dialog: DialogState;
   scene: SceneState;
   [Area.House]: HouseState;
 }
@@ -25,6 +26,9 @@ export class GameStateManager implements GameState {
   private static EmptyState = {
     area: Area.House,
     character: {},
+    dialog: {
+      finished: {},
+    },
     scene: {
       current: null,
       finished: [],
@@ -45,12 +49,7 @@ export class GameStateManager implements GameState {
   constructor() {
     const initial = this.getInitialState();
 
-    this.#state = {
-      area: initial.area,
-      character: initial.character,
-      scene: initial.scene,
-      [Area.House]: initial.house,
-    };
+    this.#state = initial;
   }
 
   public get area() {
@@ -59,6 +58,10 @@ export class GameStateManager implements GameState {
 
   public get character() {
     return this.#state.character;
+  }
+
+  public get dialog() {
+    return this.#state.dialog;
   }
 
   public get scene() {
@@ -71,6 +74,14 @@ export class GameStateManager implements GameState {
 
   public getAreaState(area: Area): AreaState {
     return this.#state[area];
+  }
+
+  public isDialogFinished(dialogId: string): boolean {
+    return this.#state.dialog.finished[dialogId] ?? false;
+  }
+
+  public finishDialog(dialogId: string) {
+    this.#state.dialog.finished[dialogId] = true;
   }
 
   public persist() {
@@ -89,6 +100,10 @@ export class GameStateManager implements GameState {
 }
 
 type CharacterState = Partial<Record<NpcType | PlayerType, { id: string; x: number; y: number; direction: Direction }>>;
+
+type DialogState = {
+  finished: Record<string, true>;
+};
 
 type SceneState = {
   current: string | null;
@@ -119,12 +134,14 @@ function toGameState(value: unknown): GameState | undefined {
 function assertIsGameState(value: unknown): asserts value is GameState {
   if (!value) throw new Error("GameState is not present!");
   if (typeof value !== "object") throw new Error("GameState is no object!");
-  if (!("area" in value) || typeof value.area !== "string") throw new Error("GameState doesn't containe area!");
-  if (!("character" in value)) throw new Error("GameState doesn't containe character state!");
-  if (!("scene" in value)) throw new Error("GameState doesn't containe scene state!");
-  if (!("house" in value)) throw new Error("GameState doesn't containe house state!");
+  if (!("area" in value) || typeof value.area !== "string") throw new Error("GameState doesn't contain area!");
+  if (!("character" in value)) throw new Error("GameState doesn't contain character state!");
+  if (!("dialog" in value)) throw new Error("GameState doesn't contain dialog state!");
+  if (!("scene" in value)) throw new Error("GameState doesn't contain scene state!");
+  if (!("house" in value)) throw new Error("GameState doesn't contain house state!");
 
   assertIsCharacterState(value.character);
+  assertIsDialogState(value.dialog);
   assertIsSceneState(value.scene);
   assertIsHouseState(value.house);
 }
@@ -148,6 +165,13 @@ function assertIsCharacterState(value: unknown): asserts value is CharacterState
     if (typeof value[character].direction !== "string")
       throw new Error(`CharacterState.${character}.direction is no string!`);
   }
+}
+
+function assertIsDialogState(value: unknown): asserts value is DialogState {
+  if (!value) throw new Error("DialogState is not present!");
+  if (typeof value !== "object") throw new Error("DialogState is no object!");
+  if (!("finished" in value) || !value.finished || typeof value.finished !== "object")
+    throw new Error("DialogState doesn't contain finished!");
 }
 
 function assertIsSceneState(value: unknown): asserts value is SceneState {

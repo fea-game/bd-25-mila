@@ -4,10 +4,13 @@ import { assertsHasBody, Body, GameObject, InteractionType } from "../../../comm
 import { Actor } from "../character/action-component";
 import { Indicator } from "../../../game-objects/helper/indicator";
 import { InteractableComponent } from "./interactable-component";
+import { EventBus } from "../../../common/event-bus";
 
 type Config = {
   host: GameObject & Actionable;
-  interact: (actor: Actor, onFinished?: () => void) => void;
+  interact: (actor: GameObject & Actor, onFinished?: () => void) => void;
+  id?: string;
+  canBeInteractedWith?: boolean;
 };
 
 export class ActionableComponent extends InteractableComponent<typeof InteractionType.Action> {
@@ -43,14 +46,21 @@ export class ActionableComponent extends InteractableComponent<typeof Interactio
   #trigger: ActionTrigger;
   #indicator?: Indicator;
 
-  public readonly interact: (actor: Actor, onFinished?: () => void) => void;
+  public readonly interact: (actor: GameObject & Actor, onFinished?: () => void) => void;
 
   constructor(config: Config) {
-    super({ host: config.host, type: InteractionType.Action });
+    super({
+      host: config.host,
+      type: InteractionType.Action,
+      id: config.id,
+      canBeInteractedWith: config.canBeInteractedWith,
+    });
 
     this.#isFocused = false;
-    this.interact = (actor: Actor, onFinished?: () => void) => {
+    this.interact = (actor: GameObject & Actor, onFinished?: () => void) => {
       if (!this.#isFocused) return;
+
+      EventBus.acted({ actor: this.#isFocused, interactedWith: this.host });
 
       config.interact(actor, onFinished);
     };
@@ -126,6 +136,7 @@ export class ActionableComponent extends InteractableComponent<typeof Interactio
 }
 
 export interface Actionable {
+  id: string;
   isInteractable: ActionableComponent;
 }
 
