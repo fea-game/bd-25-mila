@@ -21,14 +21,6 @@ type Properties = {
 };
 
 export class Crumbs extends BaseObject<Properties> implements Contactable, Persistable<Properties> {
-  public static readonly TriggerId = {
-    House: {
-      Crumbs0: "house-crumbs-0",
-      Crumbs1: "house-crumbs-1",
-      Crumbs2: "house-crumbs-2",
-    },
-  } as const;
-
   private static getTexture(type: CrumbsType): Texture {
     return Texture[`Crumbs${type}`];
   }

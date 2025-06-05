@@ -82,6 +82,12 @@
       },
       {
         "type": "aseprite",
+        "key": "racoon",
+        "textureURL": "racoon.png",
+        "atlasURL": "racoon.aesprite.json"
+      },
+      {
+        "type": "aseprite",
         "key": "tobias",
         "textureURL": "tobias-party-hat.png",
         "atlasURL": "tobias.aesprite.json"

@@ -8,6 +8,7 @@ export const Character = {
   Amelie: "amelie",
   Cynthia: "cynthia",
   Mila: "mila",
+  Thief: "racoon",
   Tobias: "tobias",
 } as const;
 
@@ -29,6 +30,7 @@ export const Texture = {
   Cake: "cake",
   PlateWithCake: "plate-with-cake",
   PlateWithoutCake: "plate-without-cake",
+  Thief: "racoon",
   ToiletClosed: "toilet-closed",
   ToiletOpened: "toilet-opened",
 } as const satisfies Record<CharacterKey | string, string>;
@@ -40,6 +42,7 @@ export const AnimatedTextures: Array<Texture> = [
   Texture.Amelie,
   Texture.Cynthia,
   Texture.Mila,
+  Texture.Thief,
   Texture.Tobias,
   Texture.YellowBalloon,
 ];

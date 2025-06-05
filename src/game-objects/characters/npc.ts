@@ -9,7 +9,7 @@ import { GameStateManager } from "../../manager/game-state-manager";
 import { Actionable, ActionableComponent } from "../../components/game-object/object/actionable-component";
 import { Actor } from "../../components/game-object/character/action-component";
 
-export type NpcType = Exclude<tiled.NPC["properties"]["type"], "Dog" | "Neighbor" | "Thief">;
+export type NpcType = Exclude<tiled.NPC["properties"]["type"], "Dog" | "Neighbor">;
 
 type Config = Omit<CharacterGameObjectConfig, "id" | "animations" | "speed" | "texture" | "x" | "y"> & {
   properties: Pick<tiled.NPC, "x" | "y"> & tiled.NPC["properties"] & { direction?: Direction };
@@ -57,7 +57,7 @@ export class Npc extends BaseCharacter<NpcType> implements Actionable {
   #isInteractable: ActionableComponent;
 
   constructor({ properties: { id, type, x, y, direction }, ...config }: Config) {
-    if (type === "Dog" || type === "Neighbor" || type === "Thief") {
+    if (type === "Dog" || type === "Neighbor") {
       throw new Error(`${type} NPC isn't supported yet!`);
     }
 

@@ -911,24 +911,6 @@
                                 },
                             
                                 {
-                                 "gid":293,
-                                 "height":48,
-                                 "id":45,
-                                 "name":"",
-                                 "properties":[
-                                        {
-                                         "name":"id",
-                                         "type":"string",
-                                         "value":"house-thief-hideout"
-                                        }],
-                                 "rotation":0,
-                                 "type":"Trigger",
-                                 "visible":true,
-                                 "width":48,
-                                 "x":360,
-                                 "y":240
-                                }, 
-                                {
                                  "gid":294,
                                  "height":48,
                                  "id":46,
@@ -999,6 +981,30 @@
                                  "width":48,
                                  "x":288,
                                  "y":492
+                                }, 
+                                {
+                                 "gid":289,
+                                 "height":66,
+                                 "id":49,
+                                 "name":"",
+                                 "properties":[
+                                        {
+                                         "name":"id",
+                                         "type":"string",
+                                         "value":"Thief"
+                                        }, 
+                                        {
+                                         "name":"type",
+                                         "propertytype":"NpcType",
+                                         "type":"string",
+                                         "value":"Thief"
+                                        }],
+                                 "rotation":0,
+                                 "type":"NPC",
+                                 "visible":true,
+                                 "width":48,
+                                 "x":360,
+                                 "y":240
                                 }],
                          "opacity":0.62,
                          "type":"objectgroup",
@@ -1021,7 +1027,7 @@
          "y":0
         }],
  "nextlayerid":31,
- "nextobjectid":49,
+ "nextobjectid":50,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

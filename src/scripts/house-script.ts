@@ -4,7 +4,7 @@ import GameScene from "../scenes/game-scene";
 import { playCinematicIntro } from "./utils";
 import { EventBus, EventPayload } from "../common/event-bus";
 import { Trigger } from "../game-objects/objects/trigger";
-import { Npc, NpcType } from "../game-objects/characters/npc";
+import { Npc } from "../game-objects/characters/npc";
 import { Objects } from "../components/game-scene/objects-component";
 import { Audio } from "../common/assets";
 import { assertNpcsPresent, getCrumbs, getNpcs, isWithId } from "../common/utils";
@@ -34,6 +34,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
   public readonly npcs: {
     Amelie: Npc;
     Cynthia: Npc;
+    Thief: Npc;
     Tobias: Npc;
   };
 
@@ -45,10 +46,10 @@ export class HouseScript extends GameScript<HouseScriptScene> {
     this.crumbs = getCrumbs(objects);
 
     const npcs = getNpcs(objects);
-
-    assertNpcsPresent(npcs, ["Amelie", "Cynthia", "Tobias"]);
-
+    assertNpcsPresent(npcs, ["Amelie", "Cynthia", "Thief", "Tobias"]);
     this.npcs = npcs;
+
+    this.npcs.Thief.setVisible(false).body.checkCollision.none = true;
 
     this.add(
       class extends HouseScene {
@@ -216,10 +217,12 @@ export class HouseScript extends GameScript<HouseScriptScene> {
             this.script.showDialog(dialog, {
               on: (event, _?: number) => {
                 if (event === "closed") {
+                  EventBus.instance.off(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
                   GameStateManager.instance.house.discoveredCakeIsMissing = true;
                 }
               },
             });
+            return;
           }
         }
 
@@ -243,24 +246,25 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         public start() {
           super.start();
 
+          this.script.npcs.Thief.isInteractable.canBeInteractedWith = true;
+
           EventBus.instance.on(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
 
           this.script.crumbs.forEach((crumbs) => {
             crumbs.isInteractable.canBeInteractedWith = !crumbs.isRevealed;
+
+            if (crumbs.isInteractable.canBeInteractedWith) {
+              EventBus.instance.once(EventBus.getSubject(EventBus.Event.Contacted, crumbs.id), this.onContact, this);
+            }
           });
+        }
 
-          for (const triggerId of Object.values(Crumbs.TriggerId.House)) {
-            EventBus.instance.once(
-              EventBus.getSubject(EventBus.Event.Contacted, triggerId),
-              ({ interactedWith }: { interactedWith: Contactable }) => {
-                if (!(interactedWith instanceof Crumbs)) return;
+        private onContact({ interactedWith }: { interactedWith: Contactable }) {
+          if (!(interactedWith instanceof Crumbs)) return;
 
-                interactedWith.isInteractable.canBeInteractedWith = false;
-                interactedWith.isRevealed = true;
-                GameStateManager.instance.house.numCrumbsDiscovered += 1;
-              }
-            );
-          }
+          interactedWith.isInteractable.canBeInteractedWith = false;
+          interactedWith.isRevealed = true;
+          GameStateManager.instance.house.numCrumbsDiscovered += 1;
         }
 
         private onInteract({ interactedWith }: EventPayload[typeof EventBus.Event.Acted]) {
@@ -270,6 +274,8 @@ export class HouseScript extends GameScript<HouseScriptScene> {
             this.interactWith(interactedWith);
             return;
           }
+
+          console.log(HouseScriptScene.AfterDiscoveringMissingCake, "UNKNOWN INTERACTION", interactedWith.id);
         }
 
         private interactWith(actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }) {
