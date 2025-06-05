@@ -4,14 +4,6 @@ import { PersistableProperties } from "../components/game-object/common/persista
 import { NpcType } from "../game-objects/characters/npc";
 import { PlayerType } from "../game-objects/characters/player";
 
-export interface GameState {
-  area: Area;
-  character: CharacterState;
-  dialog: DialogState;
-  scene: SceneState;
-  [Area.House]: HouseState;
-}
-
 export class GameStateManager implements GameState {
   public static get instance() {
     if (!GameStateManager.#instance) {
@@ -23,24 +15,15 @@ export class GameStateManager implements GameState {
 
   static #instance: GameStateManager;
 
-  private static EmptyState = {
-    area: Area.House,
-    character: {},
-    dialog: {
-      finished: {},
-    },
-    scene: {
-      current: null,
-      finished: [],
-    },
-    [Area.House]: {
-      wokeUp: false,
-      wentToLivingRoom: false,
-      sisterMoved: false,
-      happyBirthdaySung: false,
-      objects: {},
-    } satisfies HouseState,
-  } satisfies Record<keyof GameState, GameState[keyof GameState]>;
+  private static getEmptyState() {
+    return {
+      area: Area.House,
+      character: getEmptyCharacterState(),
+      dialog: getEmptyDialogState(),
+      scene: getEmptySceneState(),
+      [Area.House]: getEmptyHouseState(),
+    } satisfies Record<keyof GameState, GameState[keyof GameState]>;
+  }
 
   private static StorageKey = "bd-25-game-state";
 
@@ -95,20 +78,45 @@ export class GameStateManager implements GameState {
   private getInitialState(): GameState {
     const stored = load(GameStateManager.StorageKey, toGameState);
 
-    return stored ?? GameStateManager.EmptyState;
+    return stored ?? GameStateManager.getEmptyState();
   }
 }
 
+export interface GameState {
+  area: Area;
+  character: CharacterState;
+  dialog: DialogState;
+  scene: SceneState;
+  [Area.House]: HouseState;
+}
+
 type CharacterState = Partial<Record<NpcType | PlayerType, { id: string; x: number; y: number; direction: Direction }>>;
+
+function getEmptyCharacterState(): CharacterState {
+  return {};
+}
 
 type DialogState = {
   finished: Record<string, true>;
 };
 
+function getEmptyDialogState(): DialogState {
+  return {
+    finished: {},
+  };
+}
+
 type SceneState = {
   current: string | null;
   finished: string[];
 };
+
+function getEmptySceneState(): SceneState {
+  return {
+    current: null,
+    finished: [],
+  };
+}
 
 type AreaState = {
   objects: Record<string, PersistableProperties>;
@@ -119,7 +127,29 @@ type HouseState = AreaState & {
   wentToLivingRoom: boolean;
   sisterMoved: boolean;
   happyBirthdaySung: boolean;
+  discoveredCakeIsMissing: boolean;
+  numCrumbsDiscovered: number;
+  discoveredThief: boolean;
+  foodForThiefReceived: boolean;
+  obtainedCake: boolean;
+  putCakeBack: boolean;
 };
+
+function getEmptyHouseState(): HouseState {
+  return {
+    wokeUp: false,
+    wentToLivingRoom: false,
+    sisterMoved: false,
+    happyBirthdaySung: false,
+    discoveredCakeIsMissing: false,
+    numCrumbsDiscovered: 0,
+    discoveredThief: false,
+    foodForThiefReceived: false,
+    obtainedCake: false,
+    putCakeBack: false,
+    objects: {},
+  };
+}
 
 function toGameState(value: unknown): GameState | undefined {
   try {
@@ -195,6 +225,18 @@ function assertIsHouseState(value: unknown): asserts value is HouseState {
     throw new Error("HouseState doesn't contain valid sisterMoved!");
   if (!("happyBirthdaySung" in value) || typeof value.happyBirthdaySung !== "boolean")
     throw new Error("HouseState doesn't contain valid happyBirthdaySung!");
+  if (!("discoveredCakeIsMissing" in value) || typeof value.discoveredCakeIsMissing !== "boolean")
+    throw new Error("HouseState doesn't contain valid discoveredCakeIsMissing!");
+  if (!("numCrumbsDiscovered" in value) || typeof value.numCrumbsDiscovered !== "number")
+    throw new Error("HouseState doesn't contain valid numCrumbsDiscovered!");
+  if (!("discoveredThief" in value) || typeof value.discoveredThief !== "boolean")
+    throw new Error("HouseState doesn't contain valid discoveredThief!");
+  if (!("foodForThiefReceived" in value) || typeof value.foodForThiefReceived !== "boolean")
+    throw new Error("HouseState doesn't contain valid obtainedCake!");
+  if (!("obtainedCake" in value) || typeof value.obtainedCake !== "boolean")
+    throw new Error("HouseState doesn't contain valid happyBirthdaySung!");
+  if (!("putCakeBack" in value) || typeof value.putCakeBack !== "boolean")
+    throw new Error("HouseState doesn't contain valid putCakeBack!");
   if (!("objects" in value) || typeof value.objects !== "object" || !value.objects)
     throw new Error("HouseState doesn't contain valid objects!");
 }

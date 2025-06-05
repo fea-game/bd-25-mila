@@ -196,16 +196,17 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           interactedWith.isInteractable.canBeInteractedWith = false;
 
           switch (interactedWith.id) {
-            case this.script.npcs.Tobias.id:
-              this.interactWithTobias();
+            case "Amelie":
+            case "Cynthia":
+            case "Tobias":
+              this.interactWith(interactedWith.id);
               break;
             default:
-              console.log("INTERACTED WITH", interactedWith.id);
           }
         }
 
-        private interactWithTobias() {
-          const dialog = HouseDialogs.Tobias.current();
+        private interactWith(id: "Amelie" | "Cynthia" | "Tobias") {
+          const dialog = HouseDialogs[id].current();
 
           if (!dialog) return;
 
