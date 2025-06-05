@@ -187,7 +187,20 @@ export class ObjectsComponent extends BaseGameSceneComponent implements Objects 
               },
             });
           case "Plate":
-            return new Plate({ scene: this.host, properties: { ...tiledObject, ...tiledObject.properties } });
+            if (!GameStateManager.instance[area].objects[tiledObject.properties.id]) {
+              GameStateManager.instance[area].objects[tiledObject.properties.id] = {
+                id: tiledObject.properties.id,
+                isWithCake: tiledObject.properties.isWithCake,
+              };
+            }
+            return new Plate({
+              scene: this.host,
+              properties: {
+                ...tiledObject,
+                ...tiledObject.properties,
+                ...GameStateManager.instance[area].objects[tiledObject.properties.id],
+              },
+            });
           case "Player":
             if (!GameStateManager.instance.character.Mila) {
               GameStateManager.instance.character.Mila = {

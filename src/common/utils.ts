@@ -64,3 +64,13 @@ export function assertNpcsPresent<K extends keyof Npcs>(
     throw new Error(`Missing required NPCs: ${missing.join(", ")}`);
   }
 }
+
+export function isWithId<T, Ids extends readonly string[]>(value: T, ...ids: Ids): value is T & { id: Ids[number] } {
+  if (!value) return false;
+  if (typeof value !== "object") return false;
+  if (!("id" in value)) return false;
+  if (typeof value.id !== "string") return false;
+  if (!ids.includes(value.id)) return false;
+
+  return true;
+}

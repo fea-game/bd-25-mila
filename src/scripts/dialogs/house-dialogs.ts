@@ -69,7 +69,7 @@ export const HouseDialogs = {
   Amelie: new DialogScript([
     {
       id: "dialog-house-amelie-1",
-      text: "Amelie: HAPPY BIRTHDAY!!!! \n" + "Ich habe dich soooo doll lieb!",
+      text: "Amelie: HAPPY BIRTHDAY!!!! \n" + "Ich habe dich soooo doll lieb! 💖",
       isAvailable: () => {
         if (!GameStateManager.instance.house.happyBirthdaySung) return false;
         if (GameStateManager.instance.house.discoveredCakeIsMissing) return false;
@@ -80,7 +80,7 @@ export const HouseDialogs = {
     },
     {
       id: "dialog-house-amelie-2",
-      text: "Amelie: NEIIIIIIN!!! Der Kuchen ist weg? Das kann doch nicht sein.",
+      text: "Amelie: NEIIIIIIN!!! Der Kuchen ist weg? Das kann doch nicht sein. 😱",
       isAvailable: () => {
         if (!GameStateManager.instance.house.discoveredCakeIsMissing) return false;
         if (GameStateManager.instance.house.discoveredThief) return false;
@@ -102,7 +102,7 @@ export const HouseDialogs = {
     },
     {
       id: "dialog-house-amelie-4",
-      text: "Amelie: Juchuuu, du hast den Kuchen gefunden. Kann ich ein Stück haben?",
+      text: "Amelie: Juchuuu, du hast den Kuchen gefunden. Kann ich ein Stück haben? 😋",
       isAvailable: () => {
         if (!GameStateManager.instance.house.putCakeBack) return false;
 
@@ -114,11 +114,11 @@ export const HouseDialogs = {
     {
       id: "dialog-house-cynthia-1",
       text:
-        "Mama: ¡Feliz cumpleaños, mi princesita! 🎉🎂 \n" +
+        "Mama: ¡Feliz cumpleaños, mi princesita! 🎉 \n" +
         "Hoy cumples 9 años y no puedo creer lo rápido que estás creciendo. " +
         "Me siento tan orgullosa de la niña hermosa, inteligente y cariñosa que eres. " +
         "Cada día me enseñas algo nuevo con tu sonrisa, tu ternura y tu alegría. \n\n" +
-        "Gracias por hacerme la mamá más feliz del mundo. Te amo con todo mi corazón, mi vida. " +
+        "Gracias por hacerme la mamá más feliz del mundo. Te amo con todo mi corazón, mi vida. ❤️ " +
         "Que este día esté lleno de risas, abrazos, pastel y mucha diversión. ¡Te mereces lo mejor del universo!",
       isAvailable: () => {
         if (!GameStateManager.instance.house.happyBirthdaySung) return false;
@@ -131,9 +131,9 @@ export const HouseDialogs = {
     {
       id: "dialog-house-cynthia-2",
       text:
-        "Mama: ¿Cómo que ya no está el pastel? ¡Pero si lo dejé en la mesa hace un momentito! \n" +
+        "Mama: ¿Cómo que ya no está el pastel? ¡Pero si lo dejé en la mesa hace un momentito! 😰 \n" +
         "¿Tú crees que hayan sido fantasmas de verdad? " +
-        "¡Ay, yo siempre lo supe! Pero tu papá dice que estoy loca… y nunca me cree.",
+        "¡Ay, yo siempre lo supe! Pero tu papá dice que estoy loca… y nunca me cree. 🙄",
       isAvailable: () => {
         if (!GameStateManager.instance.house.discoveredCakeIsMissing) return false;
         if (GameStateManager.instance.house.discoveredThief) return false;
@@ -146,7 +146,7 @@ export const HouseDialogs = {
       id: "dialog-house-cynthia-3",
       text:
         "Mama: Pero… el pastel no está. ¿Cómo vamos a tener un cumpleaños sin pastel? " +
-        "¡Un cumpleaños sin pastel no es un cumpleaños de verdad!",
+        "¡Un cumpleaños sin pastel no es un cumpleaños de verdad! 😤",
       isAvailable: () => {
         if (!GameStateManager.instance.house.obtainedCake) return false;
 
@@ -156,9 +156,9 @@ export const HouseDialogs = {
     {
       id: "dialog-house-cynthia-4",
       text:
-        "Mama: ¡Ay, mi amor! ¡Qué alivio! ¡Encontraste el pastel y lo trajiste de vuelta!" +
+        "Mama: ¡Ay, mi amor! ¡Qué alivio! ¡Encontraste el pastel y lo trajiste de vuelta! 😍 " +
         "Estoy tan orgullosa de ti… mi valiente detective.\n" +
-        "¿Un mapache se lo llevó? ¡No lo puedo creer. Y yo pensando que eran fantasmas… hahaha",
+        "¿Un mapache se lo llevó? ¡No lo puedo creer. Y yo pensando que eran fantasmas… hahaha 😆",
       isAvailable: () => {
         if (!GameStateManager.instance.house.putCakeBack) return false;
         if (GameStateManager.instance.isDialogFinished("dialog-house-cynthia-4")) return false;
@@ -171,9 +171,9 @@ export const HouseDialogs = {
     {
       id: "dialog-house-tobias-1",
       text:
-        "Papa: Alles Gute zum Geburtstag mein Schatz!!!! \n" +
-        "Ich wünsche dir viel Gesundheit, Glück, Zufriedenheit und ganz ganz viel Spaß in deinem neuen Lebensjahr. " +
-        "Hast du schon den leckeren Kuchen gesehen den Mama für dich gebacken hat?",
+        "Papa: Alles Gute zum Geburtstag mein Schatz!!!! 🎉 \n" +
+        "Ich wünsche dir viel Gesundheit, Glück, Zufriedenheit und ganz ganz viel Spaß in deinem neuen Lebensjahr. \n" +
+        "Hast du schon den leckeren Kuchen gesehen den Mama für dich gebacken hat? 😊",
       isAvailable: () => {
         if (!GameStateManager.instance.house.happyBirthdaySung) return false;
         if (GameStateManager.instance.house.discoveredCakeIsMissing) return false;
@@ -184,7 +184,7 @@ export const HouseDialogs = {
     },
     {
       id: "dialog-house-tobias-2",
-      text: "Papa: Was, der Kuchen ist weg? Das kann doch gar nicht sein. Vorhin war er noch da.",
+      text: "Papa: Was, der Kuchen ist weg? Das kann doch gar nicht sein. Vorhin war er noch da. 😟",
       isAvailable: () => {
         if (!GameStateManager.instance.house.discoveredCakeIsMissing) return false;
         if (GameStateManager.instance.house.numCrumbsDiscovered > 0) return false;
@@ -198,7 +198,7 @@ export const HouseDialogs = {
       id: "dialog-house-tobias-3",
       text:
         "Papa: Was, du hast Kuchenkrümel auf dem Boden gefunden? " +
-        "Vielleicht findest du noch mehr und sie führen dich zu dem Kuchen!?",
+        "Vielleicht findest du noch mehr und sie führen dich zu dem Kuchen!? 🕵️",
       isAvailable: () => {
         if (GameStateManager.instance.house.numCrumbsDiscovered === 0) return false;
         if (GameStateManager.instance.house.discoveredThief) return false;
@@ -210,7 +210,7 @@ export const HouseDialogs = {
     {
       id: "dialog-house-tobias-4",
       text:
-        "Papa: Was, ein Washbär hat den Kuchen gemopst? Hahaha, das ist schon irgendwie lustig. " +
+        "Papa: Was, ein Washbär hat den Kuchen gemopst? Hahaha, das ist schon irgendwie lustig. 😄 " +
         "Wie du ihn zurück bekommen kannst? Hmmm, vielleicht hat er Hunger, vielleicht hilft es, " +
         "wenn du ihm etwas anderes zu essen anbietest? \n" +
         "Hier, nimm ein Würstchen, vielleicht mag er das!?",
@@ -224,7 +224,7 @@ export const HouseDialogs = {
     },
     {
       id: "dialog-house-tobias-5",
-      text: "Papa: Super, du hast den Kuchen zurück bekommen. Hat ihm das Würstchen geschmeckt?",
+      text: "Papa: Super, du hast den Kuchen zurück bekommen. 🎉 Hat ihm das Würstchen geschmeckt?",
       isAvailable: () => {
         if (!GameStateManager.instance.house.obtainedCake) return false;
         if (GameStateManager.instance.house.putCakeBack) return false;
@@ -236,8 +236,8 @@ export const HouseDialogs = {
     {
       id: "dialog-house-tobias-6",
       text:
-        "Papa: Super, Detektivin Mila hat einen weiteren Fall gelöst. " +
-        "Ich bin stolz auf dich! Jetzt lassen wir uns aber den Kuchen schmecken.",
+        "Papa: Großartig, Detektivin Mila hat einen weiteren Fall gelöst. " +
+        "Ich bin stolz auf dich! Jetzt lassen wir uns aber den Kuchen schmecken. 😋",
       isAvailable: () => {
         if (!GameStateManager.instance.house.putCakeBack) return false;
         if (GameStateManager.instance.isDialogFinished("dialog-house-tobias-6")) return false;

@@ -7,11 +7,12 @@ import { Trigger } from "../game-objects/objects/trigger";
 import { Npc, NpcType } from "../game-objects/characters/npc";
 import { Objects } from "../components/game-scene/objects-component";
 import { Audio } from "../common/assets";
-import { assertNpcsPresent, getNpcs } from "../common/utils";
+import { assertNpcsPresent, getNpcs, isWithId } from "../common/utils";
 import { GameStateManager } from "../manager/game-state-manager";
 import { Dialog } from "../components/game-scene/dialog-component";
 import { HouseDialogs } from "./dialogs/house-dialogs";
 import { Dialog as DialogContent } from "./dialogs/dialog-script";
+import { Actionable } from "../components/game-object/object/actionable-component";
 
 const HouseScriptScene = {
   WakingUp: "house-waking-up",
@@ -195,19 +196,28 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         private onInteract({ interactedWith }: EventPayload[typeof EventBus.Event.Acted]) {
           interactedWith.isInteractable.canBeInteractedWith = false;
 
-          switch (interactedWith.id) {
-            case "Amelie":
-            case "Cynthia":
-            case "Tobias":
-              this.interactWith(interactedWith.id);
-              break;
-            default:
+          if (isWithId(interactedWith, "Amelie", "Cynthia", "Tobias")) {
+            this.interactWith(interactedWith);
+            return;
+          }
+
+          if (interactedWith.id === "plate-1") {
+            GameStateManager.instance.house.discoveredCakeIsMissing = true;
+
+            const dialog = HouseDialogs.Narrator.current();
+            if (!dialog) return;
+
+            this.script.showDialog(dialog, {
+              on: (event, _?: number) => {
+                if (event === "closed") {
+                }
+              },
+            });
           }
         }
 
-        private interactWith(id: "Amelie" | "Cynthia" | "Tobias") {
-          const dialog = HouseDialogs[id].current();
-
+        private interactWith(actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }) {
+          const dialog = HouseDialogs[actionable.id].current();
           if (!dialog) return;
 
           this.script.showDialog(dialog, {
