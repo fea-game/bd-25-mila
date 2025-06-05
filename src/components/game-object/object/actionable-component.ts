@@ -5,6 +5,10 @@ import { Actor } from "../character/action-component";
 import { Indicator } from "../../../game-objects/helper/indicator";
 import { InteractableComponent } from "./interactable-component";
 import { EventBus } from "../../../common/event-bus";
+import { isPersistable, PersistableComponent, PersistableProperties } from "../common/persistable-component";
+import { GameStateManager } from "../../../manager/game-state-manager";
+import { Crumbs } from "../../../game-objects/objects/crumbs";
+import { Plate } from "../../../game-objects/objects/plate";
 
 type Config = {
   host: GameObject & Actionable;
@@ -45,6 +49,7 @@ export class ActionableComponent extends InteractableComponent<typeof Interactio
   #isFocused: Actor | false;
   #trigger: ActionTrigger;
   #indicator?: Indicator;
+  #isHostPersistable: false | PersistableComponent<PersistableProperties>;
 
   public readonly interact: (actor: GameObject & Actor, onFinished?: () => void) => void;
 
@@ -73,6 +78,8 @@ export class ActionableComponent extends InteractableComponent<typeof Interactio
     this.#trigger = trigger;
     this.host.scene.physics.add.existing(this.#trigger);
 
+    this.#isHostPersistable = isPersistable(this.host) ? this.host.isPersistable : false;
+
     this.host.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     this.host.scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.host.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
@@ -90,6 +97,13 @@ export class ActionableComponent extends InteractableComponent<typeof Interactio
 
     if (!this.canBeInteractedWith) {
       this.unfocus();
+    }
+
+    if (this.#isHostPersistable) {
+      const persistenceProperties = this.#isHostPersistable.toPersistenceProperties();
+
+      GameStateManager.instance[GameStateManager.instance.area].objects[persistenceProperties.id] =
+        persistenceProperties;
     }
   }
 

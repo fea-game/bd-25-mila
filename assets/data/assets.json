@@ -115,6 +115,21 @@
       },
       {
         "type": "image",
+        "key": "crumbs-0",
+        "textureURL": "crumbs-0.png"
+      },
+      {
+        "type": "image",
+        "key": "crumbs-1",
+        "textureURL": "crumbs-1.png"
+      },
+      {
+        "type": "image",
+        "key": "crumbs-2",
+        "textureURL": "crumbs-2.png"
+      },
+      {
+        "type": "image",
         "key": "plate-with-cake",
         "textureURL": "plate-with-cake.png"
       },

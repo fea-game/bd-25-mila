@@ -55,6 +55,49 @@
             "valuesAsFlags": false
         },
         {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 22,
+            "members": [
+                {
+                    "name": "id",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "type",
+                    "propertyType": "CrumbsType",
+                    "type": "int",
+                    "value": 0
+                }
+            ],
+            "name": "Crumbs",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "id": 20,
+            "name": "CrumbsType",
+            "storageType": "int",
+            "type": "enum",
+            "values": [
+                "0",
+                "1",
+                "2"
+            ],
+            "valuesAsFlags": false
+        },
+        {
             "id": 16,
             "name": "Foreground",
             "storageType": "string",

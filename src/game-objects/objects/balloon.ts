@@ -37,8 +37,8 @@ export class Balloon extends BaseObject<Properties> implements Persistable<Prope
     super({ scene, x, y, texture });
 
     this.id = id;
-
     this.#color = color;
+
     this.#isPersistable = new PersistableComponent<Properties>({
       host: this,
       toPersistenceProperties: () => ({
@@ -47,6 +47,7 @@ export class Balloon extends BaseObject<Properties> implements Persistable<Prope
         y: this.y,
       }),
     });
+
     this.#isInteractable = new PushableComponent({
       host: this,
       baseDepth: Depth.Objects,

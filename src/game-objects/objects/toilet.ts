@@ -37,18 +37,20 @@ export class Toilet extends BaseObject<Properties> implements Actionable, Persis
     this.setBodySize(this.displayWidth, this.displayHeight - Toilet.ShortenBodyBy).setOffset(0, Toilet.ShortenBodyBy);
     this.setImmovable(true);
     this.setPushable(false);
-    this.#isInteractable = new ActionableComponent({
-      host: this,
-      interact: () => {
-        this.isOpened = !this.#isOpened;
-      },
-    });
+
     this.#isPersistable = new PersistableComponent<Properties>({
       host: this,
       toPersistenceProperties: () => ({
         id: this.id,
         isOpened: this.#isOpened,
       }),
+    });
+
+    this.#isInteractable = new ActionableComponent({
+      host: this,
+      interact: () => {
+        this.isOpened = !this.#isOpened;
+      },
     });
   }
 

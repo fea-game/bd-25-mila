@@ -63,9 +63,6 @@ export abstract class BaseCharacter<T extends NpcType | PlayerType>
 
     this.id = id;
 
-    this.animationComponent = new CharacterAnimationComponent(this, animations);
-    this.controlsComponent = new ControlsComponent(this, input);
-    this.directionComponent = new DirectionComponent(this, onDirectionChange, direction);
     this.persistableComponent = new PersistableComponent<Properties>({
       host: this,
       toPersistenceProperties: () => ({
@@ -75,6 +72,9 @@ export abstract class BaseCharacter<T extends NpcType | PlayerType>
         direction: this.direction,
       }),
     });
+    this.animationComponent = new CharacterAnimationComponent(this, animations);
+    this.controlsComponent = new ControlsComponent(this, input);
+    this.directionComponent = new DirectionComponent(this, onDirectionChange, direction);
     this.speedComponent = new SpeedComponent(this, speed);
     this.stateMachine = new StateMachine(id);
 

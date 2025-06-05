@@ -6,12 +6,13 @@ import { Persistable, PersistableComponent } from "../../components/game-object/
 
 type Config = {
   scene: Phaser.Scene;
-  properties: Pick<tiled.Plate, "x" | "y"> & tiled.Plate["properties"];
+  properties: Pick<tiled.Plate, "x" | "y"> & tiled.Plate["properties"] & { canBeInteractedWith?: boolean };
 };
 
 type Properties = {
   id: string;
   isWithCake: boolean;
+  canBeInteractedWith: boolean;
 };
 
 export class Plate extends BaseObject<Properties> implements Actionable, Persistable<Properties> {
@@ -25,25 +26,26 @@ export class Plate extends BaseObject<Properties> implements Actionable, Persist
   #isInteractable: ActionableComponent;
   #isPersistable: PersistableComponent<Properties>;
 
-  constructor({ scene, properties: { id, x, y, isWithCake } }: Config) {
+  constructor({ scene, properties: { id, x, y, isWithCake, canBeInteractedWith = true } }: Config) {
     super({ scene, x, y, texture: Plate.getTexture(isWithCake) });
 
     this.id = id;
     this.#isWithCake = isWithCake;
-
-    this.#isInteractable = new ActionableComponent({
-      host: this,
-      interact: () => {},
-      id,
-      canBeInteractedWith: true,
-    });
 
     this.#isPersistable = new PersistableComponent<Properties>({
       host: this,
       toPersistenceProperties: () => ({
         id: this.id,
         isWithCake: this.#isWithCake,
+        canBeInteractedWith: this.#isInteractable.canBeInteractedWith,
       }),
+    });
+
+    this.#isInteractable = new ActionableComponent({
+      host: this,
+      interact: () => {},
+      id,
+      canBeInteractedWith,
     });
 
     this.setImmovable(true);

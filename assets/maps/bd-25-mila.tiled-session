@@ -184,7 +184,7 @@
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/objects.map.tmx"
     ],
     "project": "bd-25-mila.tiled-project",
-    "property.type": "string",
+    "property.type": "CrumbsType",
     "recentFiles": [
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/interior.tsx",
         "/Users/tobiasbelch/fea/game/bd-25-mila/assets/tilesets/animated-objects.map.tmx",

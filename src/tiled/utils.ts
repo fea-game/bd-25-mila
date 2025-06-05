@@ -17,6 +17,8 @@ import {
   Layer,
   Trigger,
   TriggerCause,
+  Crumbs,
+  CrumbsType,
 } from "./types";
 
 /**
@@ -40,11 +42,13 @@ export function getObjectLayerNames(
 }
 
 const colorValues: string[] = Object.values(Enum.Color);
+const crumbsTypeValues: number[] = Object.values(Enum.CrumbsType);
 const npcTypeValues: string[] = Object.values(Enum.NpcType);
 const triggerCauseValues: string[] = Object.values(Enum.TriggerCause);
 
 const EnumValidator = {
   isColor: (value: unknown): value is Color => typeof value === "string" && colorValues.includes(value),
+  isCrumbsType: (value: unknown): value is CrumbsType => typeof value === "number" && crumbsTypeValues.includes(value),
   isNpcType: (value: unknown): value is NpcType => typeof value === "string" && npcTypeValues.includes(value),
   isTriggerCause: (value: unknown): value is TriggerCause =>
     typeof value === "string" && triggerCauseValues.includes(value),
@@ -80,6 +84,37 @@ const ObjectMapper = {
       width,
       height,
       properties: { id, color },
+    };
+  },
+  Crumbs: ({
+    type,
+    x,
+    y,
+    width,
+    height,
+    properties,
+  }: Phaser.Types.Tilemaps.TiledObject & ObjectWithProperties<"Crumbs">): Crumbs | undefined => {
+    const id = properties?.find((prop) => prop.name === "id")?.value;
+
+    if (typeof id !== "string") {
+      console.error("Balloon doesnt have a valid id", { type, id, properties });
+      return;
+    }
+
+    const crumbsType = properties?.find((prop) => prop.name === "type")?.value;
+
+    if (!EnumValidator.isCrumbsType(crumbsType)) {
+      console.error("Crumbs doesnt have a valid type", { type, crumbsType, properties });
+      return;
+    }
+
+    return {
+      type,
+      x,
+      y,
+      width,
+      height,
+      properties: { id, type: crumbsType },
     };
   },
   Foreground: (

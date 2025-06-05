@@ -4,13 +4,19 @@ import { InteractableComponent } from "./interactable-component";
 type Config = {
   host: GameObject & Contactable;
   id: string;
+  canBeInteractedWith?: boolean;
 };
 
 export class ContactableComponent extends InteractableComponent<typeof InteractionType.Contact> {
   declare host: GameObject & Contactable;
 
   constructor(config: Config) {
-    super({ host: config.host, type: InteractionType.Contact, id: config.id });
+    super({
+      host: config.host,
+      type: InteractionType.Contact,
+      id: config.id,
+      canBeInteractedWith: config.canBeInteractedWith ?? true,
+    });
   }
 }
 
@@ -23,7 +29,6 @@ export function isContactable<T>(object: T): object is T & Contactable {
   if (typeof object !== "object") return false;
   if (!("isInteractable" in object)) return false;
   if (typeof object.isInteractable !== "object") return false;
-  if (!(object.isInteractable instanceof ContactableComponent)) return false;
 
-  return object.isInteractable.canBeInteractedWith;
+  return object.isInteractable instanceof ContactableComponent;
 }

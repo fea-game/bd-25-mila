@@ -18,6 +18,7 @@ import { isContactable } from "../game-object/object/contactable-component";
 import { isPushable } from "../game-object/object/pushable-component";
 import { Trigger } from "../../game-objects/objects/trigger";
 import { GameStateManager } from "../../manager/game-state-manager";
+import { Crumbs } from "../../game-objects/objects/crumbs";
 
 export class ObjectsComponent extends BaseGameSceneComponent implements Objects {
   public static for({
@@ -168,6 +169,24 @@ export class ObjectsComponent extends BaseGameSceneComponent implements Objects 
                 ...GameStateManager.instance[area].objects[tiledObject.properties.id],
               },
             });
+          case "Crumbs":
+            if (!GameStateManager.instance[area].objects[tiledObject.properties.id]) {
+              GameStateManager.instance[area].objects[tiledObject.properties.id] = {
+                id: tiledObject.properties.id,
+                x: tiledObject.x,
+                y: tiledObject.y,
+                isRevealed: false,
+                type: tiledObject.properties.type ?? 0,
+              };
+            }
+            return new Crumbs({
+              scene: this.host,
+              properties: {
+                ...tiledObject,
+                ...tiledObject.properties,
+                ...GameStateManager.instance[area].objects[tiledObject.properties.id],
+              },
+            });
           case "NPC":
             if (!GameStateManager.instance.character[tiledObject.properties.type]) {
               GameStateManager.instance.character[tiledObject.properties.type] = {
@@ -234,6 +253,7 @@ export class ObjectsComponent extends BaseGameSceneComponent implements Objects 
           case "Trigger":
             return new Trigger({ scene: this.host, properties: { ...tiledObject, ...tiledObject.properties } });
           default:
+            console.log("FOUND UNKNOWN OBJECT!", tiledObject);
         }
       })(tiledObject);
 

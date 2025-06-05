@@ -1,5 +1,6 @@
 import { Objects } from "../components/game-scene/objects-component";
 import { Npc, NpcType } from "../game-objects/characters/npc";
+import { Crumbs } from "../game-objects/objects/crumbs";
 
 export function createReactiveState<T extends Record<string | symbol | number, unknown>>(
   initial: T,
@@ -39,6 +40,10 @@ export function load<T>(key: string, deserialise: (value: string) => T): T | und
     console.error("Error while trying to load value!", e, { key });
     return;
   }
+}
+
+export function getCrumbs(objects: Objects): Crumbs[] {
+  return objects.interactable.contact.getChildren().filter((object): object is Crumbs => object instanceof Crumbs);
 }
 
 type Npcs = Record<NpcType, Npc>;

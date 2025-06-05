@@ -23,6 +23,9 @@ export const Texture = {
   GreenBalloon: "animated-objects",
   RedBalloon: "animated-objects",
   YellowBalloon: "animated-objects",
+  Crumbs0: "crumbs-0",
+  Crumbs1: "crumbs-1",
+  Crumbs2: "crumbs-2",
   Cake: "cake",
   PlateWithCake: "plate-with-cake",
   PlateWithoutCake: "plate-without-cake",
@@ -93,9 +96,7 @@ export function getAreaImage(area: Area, type: ImageType): AreaImage {
 }
 
 const AreaMap = {
-  forest: "forest-map",
   house: "house-map",
-  neighborhood: "neighborhood-map",
 } as const satisfies Record<Area, string>;
 
 type AreaMap = (typeof AreaMap)[keyof typeof AreaMap];

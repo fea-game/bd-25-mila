@@ -7,18 +7,21 @@ import { Trigger } from "../game-objects/objects/trigger";
 import { Npc, NpcType } from "../game-objects/characters/npc";
 import { Objects } from "../components/game-scene/objects-component";
 import { Audio } from "../common/assets";
-import { assertNpcsPresent, getNpcs, isWithId } from "../common/utils";
+import { assertNpcsPresent, getCrumbs, getNpcs, isWithId } from "../common/utils";
 import { GameStateManager } from "../manager/game-state-manager";
 import { Dialog } from "../components/game-scene/dialog-component";
 import { HouseDialogs } from "./dialogs/house-dialogs";
 import { Dialog as DialogContent } from "./dialogs/dialog-script";
 import { Actionable } from "../components/game-object/object/actionable-component";
+import { Contactable } from "../components/game-object/object/contactable-component";
+import { Crumbs } from "../game-objects/objects/crumbs";
 
 const HouseScriptScene = {
   WakingUp: "house-waking-up",
   AfterWakingUp: "house-after-waking-up",
   SigningHappyBirthday: "house-singing-happy-birthday",
   AfterSigningHappyBirthday: "house-after-singing-happy-birthday",
+  AfterDiscoveringMissingCake: "house-after-discovering-missing-cake",
 } as const;
 
 type HouseScriptScene = (typeof HouseScriptScene)[keyof typeof HouseScriptScene];
@@ -34,8 +37,12 @@ export class HouseScript extends GameScript<HouseScriptScene> {
     Tobias: Npc;
   };
 
+  public readonly crumbs: Crumbs[];
+
   public constructor(host: GameScene, objects: Objects, dialog: Dialog) {
     super(host, objects, dialog);
+
+    this.crumbs = getCrumbs(objects);
 
     const npcs = getNpcs(objects);
 
@@ -45,7 +52,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
 
     this.add(
       class extends HouseScene {
-        public readonly id = "house-waking-up";
+        public readonly id = HouseScriptScene.WakingUp;
         public readonly type = "Scripted";
 
         public isFinished() {
@@ -77,7 +84,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         }
       },
       class extends HouseScene {
-        public readonly id = "house-after-waking-up";
+        public readonly id = HouseScriptScene.AfterWakingUp;
         public readonly type = "Roaming";
 
         public isFinished() {
@@ -102,14 +109,15 @@ export class HouseScript extends GameScript<HouseScriptScene> {
 
           EventBus.instance.once(
             EventBus.getSubject(EventBus.Event.Contacted, Trigger.Id.House.HallwayLivingRoomTransition),
-            () => {
+            ({ interactedWith }: { interactedWith: Contactable }) => {
+              interactedWith.isInteractable.canBeInteractedWith = false;
               GameStateManager.instance.house.wentToLivingRoom = true;
             }
           );
         }
       },
       class extends HouseScene {
-        public readonly id = "house-singing-happy-birthday";
+        public readonly id = HouseScriptScene.SigningHappyBirthday;
         public readonly type = "Scripted";
 
         isFinished() {
@@ -180,11 +188,11 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         }
       },
       class extends HouseScene {
-        public readonly id = "house-after-singing-happy-birthday";
+        public readonly id = HouseScriptScene.AfterSigningHappyBirthday;
         public readonly type = "Roaming";
 
         public isFinished() {
-          return false;
+          return GameStateManager.instance.house.discoveredCakeIsMissing;
         }
 
         public start() {
@@ -202,17 +210,65 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           }
 
           if (interactedWith.id === "plate-1") {
-            GameStateManager.instance.house.discoveredCakeIsMissing = true;
-
             const dialog = HouseDialogs.Narrator.current();
             if (!dialog) return;
 
             this.script.showDialog(dialog, {
               on: (event, _?: number) => {
                 if (event === "closed") {
+                  GameStateManager.instance.house.discoveredCakeIsMissing = true;
                 }
               },
             });
+          }
+        }
+
+        private interactWith(actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }) {
+          const dialog = HouseDialogs[actionable.id].current();
+          if (!dialog) return;
+
+          this.script.showDialog(dialog, {
+            on: (event, _?: number) => {},
+          });
+        }
+      },
+      class extends HouseScene {
+        public readonly id = HouseScriptScene.AfterDiscoveringMissingCake;
+        public readonly type = "Roaming";
+
+        public isFinished() {
+          return false;
+        }
+
+        public start() {
+          super.start();
+
+          EventBus.instance.on(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
+
+          this.script.crumbs.forEach((crumbs) => {
+            crumbs.isInteractable.canBeInteractedWith = !crumbs.isRevealed;
+          });
+
+          for (const triggerId of Object.values(Crumbs.TriggerId.House)) {
+            EventBus.instance.once(
+              EventBus.getSubject(EventBus.Event.Contacted, triggerId),
+              ({ interactedWith }: { interactedWith: Contactable }) => {
+                if (!(interactedWith instanceof Crumbs)) return;
+
+                interactedWith.isInteractable.canBeInteractedWith = false;
+                interactedWith.isRevealed = true;
+                GameStateManager.instance.house.numCrumbsDiscovered += 1;
+              }
+            );
+          }
+        }
+
+        private onInteract({ interactedWith }: EventPayload[typeof EventBus.Event.Acted]) {
+          interactedWith.isInteractable.canBeInteractedWith = false;
+
+          if (isWithId(interactedWith, "Amelie", "Cynthia", "Tobias")) {
+            this.interactWith(interactedWith);
+            return;
           }
         }
 
@@ -230,7 +286,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
     this.start(
       this.isScene(GameStateManager.instance.scene.current)
         ? GameStateManager.instance.scene.current
-        : "house-waking-up"
+        : HouseScriptScene.WakingUp
     );
   }
 
@@ -254,14 +310,16 @@ export class HouseScript extends GameScript<HouseScriptScene> {
 
   public next(currentScene: HouseScriptScene): HouseScriptScene {
     switch (currentScene) {
-      case "house-waking-up":
-        return "house-after-waking-up";
-      case "house-after-waking-up":
-        return "house-singing-happy-birthday";
-      case "house-singing-happy-birthday":
-        return "house-after-singing-happy-birthday";
+      case HouseScriptScene.WakingUp:
+        return HouseScriptScene.AfterWakingUp;
+      case HouseScriptScene.AfterWakingUp:
+        return HouseScriptScene.SigningHappyBirthday;
+      case HouseScriptScene.SigningHappyBirthday:
+        return HouseScriptScene.AfterSigningHappyBirthday;
+      case HouseScriptScene.AfterSigningHappyBirthday:
+        return HouseScriptScene.AfterDiscoveringMissingCake;
       default:
-        return "house-waking-up";
+        return HouseScriptScene.WakingUp;
     }
   }
 }

@@ -21,8 +21,7 @@ export const HouseDialogs = {
       id: "dialog-house-2",
       text: "Wo ist denn der Kuchen? Der sollte doch hier stehen, oder?",
       isAvailable: () => {
-        if (!GameStateManager.instance.house.discoveredCakeIsMissing) return false;
-        if (GameStateManager.instance.house.discoveredThief) return false;
+        if (GameStateManager.instance.house.discoveredCakeIsMissing) return false;
 
         return true;
       },

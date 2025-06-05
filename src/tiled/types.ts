@@ -1,5 +1,6 @@
 export const ObjectType = {
   Balloon: "Balloon",
+  Crumbs: "Crumbs",
   Foreground: "Foreground",
   NPC: "NPC",
   Plate: "Plate",
@@ -36,6 +37,11 @@ export const Enum = {
     Red: "Red",
     Yellow: "Yellow",
   },
+  CrumbsType: {
+    0: 0,
+    1: 1,
+    2: 2,
+  },
   NpcType: {
     Dog: "Dog",
     Tobias: "Tobias",
@@ -50,6 +56,7 @@ export const Enum = {
 } as const;
 
 export type Color = (typeof Enum.Color)[keyof typeof Enum.Color];
+export type CrumbsType = (typeof Enum.CrumbsType)[keyof typeof Enum.CrumbsType];
 export type NpcType = (typeof Enum.NpcType)[keyof typeof Enum.NpcType];
 export type TriggerCause = (typeof Enum.TriggerCause)[keyof typeof Enum.TriggerCause];
 
@@ -59,6 +66,13 @@ export type Balloon = Object<typeof ObjectType.Balloon> & {
   properties: {
     id: string;
     color: Color;
+  };
+};
+
+export type Crumbs = Object<typeof ObjectType.Crumbs> & {
+  properties: {
+    id: string;
+    type: CrumbsType;
   };
 };
 
@@ -102,10 +116,11 @@ export type Trigger = Object<typeof ObjectType.Trigger> & {
   };
 };
 
-export type ValidObject = Balloon | Foreground | NPC | Plate | Player | Toilet | Trigger;
+export type ValidObject = Balloon | Crumbs | Foreground | NPC | Plate | Player | Toilet | Trigger;
 
 export type ValidObjectMappedByType = {
   Balloon: Balloon;
+  Crumbs: Crumbs;
   Foreground: Foreground;
   NPC: NPC;
   Plate: Plate;
