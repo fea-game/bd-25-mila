@@ -7,8 +7,6 @@ import { InteractableComponent } from "./interactable-component";
 import { EventBus } from "../../../common/event-bus";
 import { isPersistable, PersistableComponent, PersistableProperties } from "../common/persistable-component";
 import { GameStateManager } from "../../../manager/game-state-manager";
-import { Crumbs } from "../../../game-objects/objects/crumbs";
-import { Plate } from "../../../game-objects/objects/plate";
 
 type Config = {
   host: GameObject & Actionable;
@@ -107,7 +105,7 @@ export class ActionableComponent extends InteractableComponent<typeof Interactio
     }
   }
 
-  get trigger(): Phaser.GameObjects.GameObject {
+  get trigger(): ActionTrigger {
     return this.#trigger;
   }
 
@@ -163,20 +161,31 @@ export function isActionable<T>(object: T): object is T & Actionable {
   return object.isInteractable instanceof ActionableComponent;
 }
 
-export function isActionTrigger<T>(object: T): object is T & ActionTrigger {
-  if (!object) return false;
-  if (typeof object !== "object") return false;
-  if (!("host" in object)) return false;
-  if (!object.host) return false;
-  if (typeof object.host !== "object") return false;
-  if (!("isInteractable" in object.host)) return false;
-  if (!object.host.isInteractable) return false;
-  if (typeof object.host.isInteractable !== "object") return false;
-  if (!(object.host.isInteractable instanceof ActionableComponent)) return false;
+export function isActionTrigger<T>(value: T): value is T & ActionTrigger {
+  try {
+    assertsIsActionTrigger(value);
 
-  return object.host.isInteractable.canBeInteractedWith;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function assertsIsActionTrigger<T>(object: T): asserts object is T & ActionTrigger {
+  if (!object) throw new Error("Value is not present!");
+  if (typeof object !== "object") throw new Error("Value is not an object!");
+  if (!("host" in object)) throw new Error("Value is has no property host!");
+  if (!object.host) throw new Error("Host is not present!");
+  if (typeof object.host !== "object") throw new Error("Host is not an object!");
+  if (!("isInteractable" in object.host)) throw new Error("Host is not interactable!");
+  if (!object.host.isInteractable) throw new Error("Host.isInteractable is not present!");
+  if (typeof object.host.isInteractable !== "object") throw new Error("Host.isInteractable is not an object!");
+  if (!(object.host.isInteractable instanceof ActionableComponent))
+    throw new Error("Host.isInteractable is not an ActionableComponent!");
+  if (!object.host.isInteractable.canBeInteractedWith) throw new Error("Host can't be interacted with!");
 }
 
 export type ActionTrigger = Phaser.GameObjects.Zone & {
   readonly host: Actionable;
+  readonly body: Body;
 };

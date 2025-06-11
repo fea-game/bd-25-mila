@@ -57,7 +57,7 @@ export abstract class GameScript<
     }
   }
 
-  protected showDialog(dialog: DialogContent, opts: Parameters<Dialog["show"]>[1]) {
+  protected showDialog(dialog: DialogContent, opts: Parameters<Dialog["show"]>[1] = {}) {
     this.objects.player.controls.isMovementLocked = true;
 
     this.dialog.show(dialog.text, {

@@ -7,7 +7,7 @@ import { Trigger } from "../game-objects/objects/trigger";
 import { Npc } from "../game-objects/characters/npc";
 import { Objects } from "../components/game-scene/objects-component";
 import { Audio } from "../common/assets";
-import { assertNpcsPresent, getCrumbs, getNpcs, isWithId } from "../common/utils";
+import { assertNpcsPresent, getCrumbs, getNpcs, getPlate, isWithId } from "../common/utils";
 import { GameStateManager } from "../manager/game-state-manager";
 import { Dialog } from "../components/game-scene/dialog-component";
 import { HouseDialogs } from "./dialogs/house-dialogs";
@@ -15,6 +15,7 @@ import { Dialog as DialogContent } from "./dialogs/dialog-script";
 import { Actionable } from "../components/game-object/object/actionable-component";
 import { Contactable } from "../components/game-object/object/contactable-component";
 import { Crumbs } from "../game-objects/objects/crumbs";
+import { Plate } from "../game-objects/objects/plate";
 
 const HouseScriptScene = {
   WakingUp: "house-waking-up",
@@ -22,6 +23,8 @@ const HouseScriptScene = {
   SigningHappyBirthday: "house-singing-happy-birthday",
   AfterSigningHappyBirthday: "house-after-singing-happy-birthday",
   AfterDiscoveringMissingCake: "house-after-discovering-missing-cake",
+  AfterObtainingCake: "house-after-obtaining-cake",
+  AfterPuttingBackCake: "house-after-putting-back-cake",
 } as const;
 
 type HouseScriptScene = (typeof HouseScriptScene)[keyof typeof HouseScriptScene];
@@ -31,25 +34,31 @@ const HouseScriptSceneValues: string[] = Object.values(HouseScriptScene);
 export class HouseScript extends GameScript<HouseScriptScene> {
   protected declare scenes: Record<HouseScriptScene, HouseScene<HouseScriptScene, SceneType>>;
 
+  public readonly crumbs: Crumbs[];
   public readonly npcs: {
     Amelie: Npc;
     Cynthia: Npc;
     Thief: Npc;
     Tobias: Npc;
   };
-
-  public readonly crumbs: Crumbs[];
+  public readonly plate: Plate;
 
   public constructor(host: GameScene, objects: Objects, dialog: Dialog) {
     super(host, objects, dialog);
 
     this.crumbs = getCrumbs(objects);
 
+    const plate = getPlate(objects);
+    if (!plate) {
+      throw new Error("No Plate found!");
+    }
+    this.plate = plate;
+
     const npcs = getNpcs(objects);
     assertNpcsPresent(npcs, ["Amelie", "Cynthia", "Thief", "Tobias"]);
     this.npcs = npcs;
 
-    this.npcs.Thief.setVisible(false).body.checkCollision.none = true;
+    this.hideThief();
 
     this.add(
       class extends HouseScene {
@@ -199,6 +208,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         public start() {
           super.start();
 
+          this.script.plate.isInteractable.canBeInteractedWith = true;
           EventBus.instance.on(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
         }
 
@@ -240,13 +250,13 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         public readonly type = "Roaming";
 
         public isFinished() {
-          return false;
+          return GameStateManager.instance.house.obtainedCake;
         }
 
         public start() {
           super.start();
 
-          this.script.npcs.Thief.isInteractable.canBeInteractedWith = true;
+          this.script.enableThiefInteraction();
 
           EventBus.instance.on(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
 
@@ -265,6 +275,11 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           interactedWith.isInteractable.canBeInteractedWith = false;
           interactedWith.isRevealed = true;
           GameStateManager.instance.house.numCrumbsDiscovered += 1;
+
+          const dialog = HouseDialogs.Narrator.current();
+          if (!dialog) return;
+
+          this.script.showDialog(dialog);
         }
 
         private onInteract({ interactedWith }: EventPayload[typeof EventBus.Event.Acted]) {
@@ -275,7 +290,10 @@ export class HouseScript extends GameScript<HouseScriptScene> {
             return;
           }
 
-          console.log(HouseScriptScene.AfterDiscoveringMissingCake, "UNKNOWN INTERACTION", interactedWith.id);
+          if (isWithId(interactedWith, "Thief")) {
+            this.interactWithThief(interactedWith);
+            return;
+          }
         }
 
         private interactWith(actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }) {
@@ -283,8 +301,146 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           if (!dialog) return;
 
           this.script.showDialog(dialog, {
-            on: (event, _?: number) => {},
+            on: (type, _?: number) => {
+              if (dialog.id === "dialog-house-tobias-4") {
+                GameStateManager.instance.house.foodForThiefReceived = true;
+
+                const dialog = HouseDialogs.Narrator.current();
+                if (!dialog) return;
+
+                this.script.showDialog(dialog);
+              }
+            },
           });
+        }
+
+        private interactWithThief(actionable: Actionable & { id: "Thief" }) {
+          if (!GameStateManager.instance.house.discoveredThief) {
+            this.script.showThief();
+            this.script.npcs.Thief.move([{ direction: Direction.Left, distance: 128 }], () => {
+              const dialog = HouseDialogs[actionable.id].current();
+              if (!dialog) return;
+
+              this.script.showDialog(dialog, {
+                on: (type, _?: number) => {
+                  GameStateManager.instance.house.discoveredThief = true;
+
+                  const dialog = HouseDialogs.Narrator.current();
+                  if (!dialog) return;
+
+                  this.script.showDialog(dialog);
+                },
+              });
+            });
+
+            return;
+          }
+
+          const dialog = HouseDialogs[actionable.id].current();
+          if (!dialog) return;
+
+          this.script.showDialog(dialog, {
+            on: (type, _?: number) => {
+              if (dialog.id === "dialog-house-thief-2") {
+                this.script.npcs.Thief.isInteractable.canBeInteractedWith = false;
+                this.script.npcs.Thief.move(
+                  [
+                    { direction: Direction.Down, distance: 100 },
+                    { direction: Direction.Left, distance: 150 },
+                    { direction: Direction.Down, distance: 150 },
+                    { direction: Direction.Right, distance: 400 },
+                    { direction: Direction.Up, distance: 150 },
+                    { direction: Direction.Right, distance: 150 },
+                    { direction: Direction.Up, distance: 50 },
+                    { direction: Direction.Right, distance: 150 },
+                  ],
+                  () => {
+                    this.script.hideThief();
+                  }
+                );
+
+                GameStateManager.instance.house.obtainedCake = true;
+
+                let dialog = HouseDialogs.Narrator.current();
+                if (!dialog) return;
+
+                this.script.showDialog(dialog);
+              }
+            },
+          });
+        }
+      },
+      class extends HouseScene {
+        public readonly id = HouseScriptScene.AfterObtainingCake;
+        public readonly type = "Roaming";
+
+        public isFinished() {
+          return GameStateManager.instance.house.putCakeBack;
+        }
+
+        public start() {
+          super.start();
+
+          this.script.plate.isInteractable.canBeInteractedWith = true;
+          EventBus.instance.on(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
+        }
+
+        private onInteract({ interactedWith }: EventPayload[typeof EventBus.Event.Acted]) {
+          interactedWith.isInteractable.canBeInteractedWith = false;
+
+          if (isWithId(interactedWith, "Amelie", "Cynthia", "Tobias")) {
+            this.interactWith(interactedWith);
+            return;
+          }
+
+          if (interactedWith.id === "plate-1") {
+            this.script.plate.isWithCake = true;
+            this.script.plate.isInteractable.canBeInteractedWith = false;
+            GameStateManager.instance.house.putCakeBack = true;
+            return;
+          }
+        }
+
+        private interactWith(actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }) {
+          const dialog = HouseDialogs[actionable.id].current();
+          if (!dialog) return;
+
+          this.script.showDialog(dialog);
+        }
+      },
+      class extends HouseScene {
+        public readonly id = HouseScriptScene.AfterPuttingBackCake;
+        public readonly type = "Roaming";
+
+        public isFinished() {
+          return false;
+        }
+
+        public start() {
+          super.start();
+
+          EventBus.instance.on(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
+
+          const dialog = HouseDialogs.Narrator.current();
+          if (!dialog) return;
+
+          this.script.showDialog(dialog);
+        }
+
+        private onInteract({ interactedWith }: EventPayload[typeof EventBus.Event.Acted]) {
+          interactedWith.isInteractable.canBeInteractedWith = false;
+
+          if (isWithId(interactedWith, "Amelie", "Cynthia", "Tobias")) {
+            this.interactWith(interactedWith);
+            return;
+          }
+        }
+
+        private interactWith(actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }) {
+          const dialog = HouseDialogs[actionable.id].current();
+          if (!dialog) return;
+
+          this.script.showDialog(dialog);
         }
       }
     );
@@ -294,6 +450,24 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         ? GameStateManager.instance.scene.current
         : HouseScriptScene.WakingUp
     );
+  }
+
+  public hideThief() {
+    this.npcs.Thief.setVisible(false);
+    this.npcs.Thief.body.checkCollision.none = true;
+    this.npcs.Thief.isInteractable.trigger.body.checkCollision.none = true;
+    this.npcs.Thief.isInteractable.canBeInteractedWith = false;
+  }
+
+  public enableThiefInteraction() {
+    this.npcs.Thief.body.checkCollision.none = false;
+    this.npcs.Thief.isInteractable.trigger.body.checkCollision.none = false;
+    this.npcs.Thief.isInteractable.canBeInteractedWith = true;
+  }
+
+  public showThief() {
+    this.npcs.Thief.setVisible(true);
+    this.enableThiefInteraction();
   }
 
   public override hideDialog(dialog: DialogContent): void {
@@ -324,6 +498,10 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         return HouseScriptScene.AfterSigningHappyBirthday;
       case HouseScriptScene.AfterSigningHappyBirthday:
         return HouseScriptScene.AfterDiscoveringMissingCake;
+      case HouseScriptScene.AfterDiscoveringMissingCake:
+        return HouseScriptScene.AfterObtainingCake;
+      case HouseScriptScene.AfterObtainingCake:
+        return HouseScriptScene.AfterPuttingBackCake;
       default:
         return HouseScriptScene.WakingUp;
     }

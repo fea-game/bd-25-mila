@@ -1,6 +1,8 @@
+import { ActionTrigger } from "../components/game-object/object/actionable-component";
 import { Objects } from "../components/game-scene/objects-component";
 import { Npc, NpcType } from "../game-objects/characters/npc";
 import { Crumbs } from "../game-objects/objects/crumbs";
+import { Plate } from "../game-objects/objects/plate";
 
 export function createReactiveState<T extends Record<string | symbol | number, unknown>>(
   initial: T,
@@ -56,6 +58,18 @@ export function getNpcs(objects: Objects): Partial<Npcs> {
 
     return npcs;
   }, {});
+}
+
+export function getPlate(objects: Objects): Plate | undefined {
+  const plateTrigger = objects.interactable.action
+    .getChildren()
+    .find((object): object is ActionTrigger & { host: Plate } => {
+      if (!("host" in object)) return false;
+
+      return object.host instanceof Plate;
+    });
+
+  return plateTrigger?.host;
 }
 
 type RequireKeys<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: T[P] };

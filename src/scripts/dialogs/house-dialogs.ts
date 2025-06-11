@@ -28,18 +28,38 @@ export const HouseDialogs = {
     },
     {
       id: "dialog-house-3",
-      text:
-        "Na sowas, da dachte wohl noch jemand das der Kuchen lecker aussieht." +
-        "Vielleicht kannst du ihn ja überzeugen ihn dir zurück zu geben.",
+      text: "Oh, da liegen Kuchenkrümel.",
       isAvailable: () => {
-        if (!GameStateManager.instance.house.discoveredThief) return false;
-        if (GameStateManager.instance.house.obtainedCake) return false;
+        if (GameStateManager.instance.house.numCrumbsDiscovered === 0) return false;
+        if (GameStateManager.instance.house.discoveredThief) return false;
 
         return true;
       },
     },
     {
       id: "dialog-house-4",
+      text:
+        "Na sowas, da dachte wohl noch jemand das der Kuchen lecker aussieht. " +
+        "Vielleicht kannst du ihn ja überzeugen ihn dir zurück zu geben.",
+      isAvailable: () => {
+        if (!GameStateManager.instance.house.discoveredThief) return false;
+        if (GameStateManager.instance.house.foodForThiefReceived) return false;
+
+        return true;
+      },
+    },
+    {
+      id: "dialog-house-5",
+      text: "Mila hat ein Würstchen erhalten.",
+      isAvailable: () => {
+        if (!GameStateManager.instance.house.foodForThiefReceived) return false;
+        if (GameStateManager.instance.house.obtainedCake) return false;
+
+        return true;
+      },
+    },
+    {
+      id: "dialog-house-6",
       text:
         "Toll, du hast den Kuchen zurück bekommen. Sieht er nicht lecker aus? " +
         "Schnell, bring ihn zurück an seinen Platz, deine Mama wird bestimmt erleichtert sein.",
@@ -51,7 +71,7 @@ export const HouseDialogs = {
       },
     },
     {
-      id: "dialog-house-5",
+      id: "dialog-house-7",
       text:
         "Bravo, du hast es geschafft! \n" +
         "Du hast den Kuchen gefunden und zurück gebracht. " +
@@ -59,7 +79,7 @@ export const HouseDialogs = {
         "Guten Appetit und noch einen wunderschönen Geburtstagstag für dich.",
       isAvailable: () => {
         if (!GameStateManager.instance.house.putCakeBack) return false;
-        if (GameStateManager.instance.isDialogFinished("dialog-house-5")) return false;
+        if (GameStateManager.instance.isDialogFinished("dialog-house-7")) return false;
 
         return true;
       },
@@ -104,6 +124,7 @@ export const HouseDialogs = {
       text: "Amelie: Juchuuu, du hast den Kuchen gefunden. Kann ich ein Stück haben? 😋",
       isAvailable: () => {
         if (!GameStateManager.instance.house.putCakeBack) return false;
+        if (GameStateManager.instance.isDialogFinished("dialog-house-amelie-4")) return false;
 
         return true;
       },
@@ -147,7 +168,9 @@ export const HouseDialogs = {
         "Mama: Pero… el pastel no está. ¿Cómo vamos a tener un cumpleaños sin pastel? " +
         "¡Un cumpleaños sin pastel no es un cumpleaños de verdad! 😤",
       isAvailable: () => {
-        if (!GameStateManager.instance.house.obtainedCake) return false;
+        if (!GameStateManager.instance.house.discoveredCakeIsMissing) return false;
+        if (GameStateManager.instance.house.discoveredThief) return false;
+        if (GameStateManager.instance.isDialogFinished("dialog-house-cynthia-3")) return false;
 
         return true;
       },
@@ -216,7 +239,6 @@ export const HouseDialogs = {
       isAvailable: () => {
         if (!GameStateManager.instance.house.discoveredThief) return false;
         if (GameStateManager.instance.house.foodForThiefReceived) return false;
-        if (GameStateManager.instance.isDialogFinished("dialog-house-tobias-4")) return false;
 
         return true;
       },
@@ -240,6 +262,28 @@ export const HouseDialogs = {
       isAvailable: () => {
         if (!GameStateManager.instance.house.putCakeBack) return false;
         if (GameStateManager.instance.isDialogFinished("dialog-house-tobias-6")) return false;
+
+        return true;
+      },
+    },
+  ]),
+  Thief: new DialogScript([
+    {
+      id: "dialog-house-thief-1",
+      text: "Waschbär: Chrrrrk! Hssss! Grrrff! Chik-chik-chik!",
+      isAvailable: () => {
+        if (!GameStateManager.instance.house.discoveredCakeIsMissing) return false;
+        if (GameStateManager.instance.house.foodForThiefReceived) return false;
+
+        return true;
+      },
+    },
+    {
+      id: "dialog-house-thief-2",
+      text: "Waschbär: Chik-chik! Mrrreeee! 🌭🔄🍰 ❤️",
+      isAvailable: () => {
+        if (!GameStateManager.instance.house.discoveredThief) return false;
+        if (!GameStateManager.instance.house.foodForThiefReceived) return false;
 
         return true;
       },
