@@ -1,6 +1,7 @@
 import "phaser";
 import PreloadScene from "./scenes/preload-scene";
 import GameScene from "./scenes/game-scene";
+import { isDebugEnabled } from "./common/config";
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.WEBGL,
@@ -11,7 +12,7 @@ const config: Phaser.Types.Core.GameConfig = {
     default: "arcade",
     arcade: {
       gravity: { y: 0, x: 0 },
-      debug: true,
+      debug: isDebugEnabled,
     },
   },
   scale: {

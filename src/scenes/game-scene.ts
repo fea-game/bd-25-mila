@@ -25,8 +25,6 @@ export default class GameScene extends Phaser.Scene {
       throw new Error("Phaser keyboard plugin not enabled");
     }
 
-    this.physics.world.createDebugGraphic();
-
     this.#keyboardComponent = new KeyboardComponent(this.input.keyboard);
     this.#objectsComponent = ObjectsComponent.for({
       host: this,

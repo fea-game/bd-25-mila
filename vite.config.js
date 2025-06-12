@@ -1,7 +1,20 @@
 import { defineConfig } from "vite";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   server: {
-    port: 4000
-  }
-});
+    port: 4000,
+  },
+  plugins: [
+    command === "build" &&
+      viteStaticCopy({
+        targets: [
+          {
+            structured: true,
+            src: "assets/*",
+            dest: "assets",
+          },
+        ],
+      }),
+  ].filter(Boolean),
+}));

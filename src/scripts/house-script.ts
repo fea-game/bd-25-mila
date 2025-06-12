@@ -350,7 +350,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
                     { direction: Direction.Left, distance: 150 },
                     { direction: Direction.Down, distance: 150 },
                     { direction: Direction.Right, distance: 400 },
-                    { direction: Direction.Up, distance: 150 },
+                    { direction: Direction.Up, distance: 200 },
                     { direction: Direction.Right, distance: 150 },
                     { direction: Direction.Up, distance: 50 },
                     { direction: Direction.Right, distance: 150 },

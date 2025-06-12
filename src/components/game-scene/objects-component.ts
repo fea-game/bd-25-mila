@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { getAreaImage, getAreaMap, getAreaTileset, ImageType, TilesetType } from "../../common/assets";
-import { Depth } from "../../common/config";
+import { Depth, isDebugEnabled } from "../../common/config";
 import { Area, Direction, getAreaLayer, InteractionType, LayerType, LayerTypeKey } from "../../common/types";
 import GameScene from "../../scenes/game-scene";
 import { BaseGameSceneComponent } from "./base-game-scene-component";
@@ -123,7 +123,8 @@ export class ObjectsComponent extends BaseGameSceneComponent implements Objects 
       throw new Error("Error while creating collision layer!");
     }
 
-    collisionLayer.setDepth(Depth.Collision).setAlpha(0.3).setCollision([collisionLayer.tileset[0].firstgid]);
+    collisionLayer.setDepth(Depth.Collision).setCollision([collisionLayer.tileset[0].firstgid]);
+    collisionLayer.setAlpha(0.3).setVisible(isDebugEnabled);
 
     this.#collision.add(collisionLayer);
   }

@@ -1,5 +1,9 @@
 import { LayerTypeKey } from "./types";
 
+export const ActionZoneSize = 60;
+
+export const isDebugEnabled = import.meta.env.MODE === "development";
+
 export const Depth = {
   Background: 1,
   Collision: 2,
@@ -14,5 +18,3 @@ export const Depth = {
   LayerTypeKey | "Character" | "Hud" | "Indicators" | "Objects" | "Overlay" | "Trigger",
   number
 >;
-
-export const ActionZoneSize = 60;
