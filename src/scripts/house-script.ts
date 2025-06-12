@@ -16,6 +16,7 @@ import { Actionable } from "../components/game-object/object/actionable-componen
 import { Contactable } from "../components/game-object/object/contactable-component";
 import { Crumbs } from "../game-objects/objects/crumbs";
 import { Plate } from "../game-objects/objects/plate";
+import { Depth } from "../common/config";
 
 const HouseScriptScene = {
   WakingUp: "house-waking-up",
@@ -425,6 +426,40 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           if (!dialog) return;
 
           this.script.showDialog(dialog);
+
+          const texture = this.script.host.textures.createCanvas("particleTexture", 10, 10);
+          if (!texture) return;
+
+          const context = texture.getContext();
+          context.fillStyle = "#ffffff";
+          context.fillRect(0, 0, 10, 10);
+          texture.refresh();
+
+          this.script.host.add
+            .particles(0, 0, "particleTexture", {
+              emitZone: {
+                type: "random",
+                quantity: 1,
+                source: new Phaser.Geom.Rectangle(0, 0, this.script.host.cameras.main.width, 1),
+              },
+              speedY: { min: 200, max: 300 },
+              speedX: { min: -100, max: 100 },
+              accelerationY: { min: 50, max: 100 },
+              lifespan: { min: 2000, max: 3000 },
+              scaleX: {
+                onUpdate: (particle, key, t) => {
+                  // console.log('particle', particle, key, t);
+                  return Math.sin((t / 1) * Math.PI * 10);
+                },
+              },
+              blendMode: "ADD",
+              rotate: { min: -180, max: 180 },
+              frequency: 50,
+              quantity: 2,
+              tint: [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff],
+            })
+            .setDepth(Depth.Overlay)
+            .setScrollFactor(0);
         }
 
         private onInteract({ interactedWith }: EventPayload[typeof EventBus.Event.Acted]) {

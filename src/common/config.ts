@@ -9,6 +9,10 @@ export const Depth = {
   Objects: 3,
   Indicators: 6,
   Hud: 7,
-} as const satisfies Record<LayerTypeKey | "Character" | "Hud" | "Indicators" | "Objects" | "Trigger", number>;
+  Overlay: 8,
+} as const satisfies Record<
+  LayerTypeKey | "Character" | "Hud" | "Indicators" | "Objects" | "Overlay" | "Trigger",
+  number
+>;
 
 export const ActionZoneSize = 60;
