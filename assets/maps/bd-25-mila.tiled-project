@@ -1,0 +1,282 @@
+{
+    "automappingRulesFile": "",
+    "commands": [
+    ],
+    "compatibilityVersion": 1100,
+    "extensionsPath": "extensions",
+    "folders": [
+        "."
+    ],
+    "properties": [
+    ],
+    "propertyTypes": [
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 2,
+            "members": [
+                {
+                    "name": "color",
+                    "propertyType": "Color",
+                    "type": "string",
+                    "value": "Blue"
+                },
+                {
+                    "name": "id",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "Balloon",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "id": 7,
+            "name": "Color",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "Blue",
+                "Green",
+                "Red",
+                "Yellow"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 22,
+            "members": [
+                {
+                    "name": "id",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "type",
+                    "propertyType": "CrumbsType",
+                    "type": "int",
+                    "value": 0
+                }
+            ],
+            "name": "Crumbs",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "id": 20,
+            "name": "CrumbsType",
+            "storageType": "int",
+            "type": "enum",
+            "values": [
+                "0",
+                "1",
+                "2"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 16,
+            "name": "Foreground",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 10,
+            "members": [
+                {
+                    "name": "id",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "type",
+                    "propertyType": "NpcType",
+                    "type": "string",
+                    "value": "Dog"
+                }
+            ],
+            "name": "NPC",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "id": 15,
+            "name": "NpcType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "Dog",
+                "Tobias",
+                "Neighbor",
+                "Cynthia",
+                "Amelie",
+                "Thief"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 1,
+            "members": [
+                {
+                    "name": "id",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "isWithCake",
+                    "type": "bool",
+                    "value": false
+                }
+            ],
+            "name": "Plate",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 8,
+            "members": [
+                {
+                    "name": "id",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "Player",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 4,
+            "members": [
+                {
+                    "name": "id",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "isOpened",
+                    "type": "bool",
+                    "value": false
+                }
+            ],
+            "name": "Toilet",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 17,
+            "members": [
+                {
+                    "name": "cause",
+                    "propertyType": "TriggerCause",
+                    "type": "string",
+                    "value": "Overlap"
+                },
+                {
+                    "name": "id",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "Trigger",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "id": 18,
+            "name": "TriggerCause",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "Overlap"
+            ],
+            "valuesAsFlags": false
+        }
+    ]
+}

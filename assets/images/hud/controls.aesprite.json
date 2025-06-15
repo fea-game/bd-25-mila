@@ -1,0 +1,42 @@
+{
+  "frames": {
+    "0": {
+      "name": "control-action",
+      "frame": { "x": 0, "y": 0, "w": 16, "h": 16 },
+      "rotated": false,
+      "trimmed": false
+    },
+    "1": {
+      "name": "control-down",
+      "frame": { "x": 16, "y": 0, "w": 16, "h": 16 },
+      "rotated": false,
+      "trimmed": false
+    },
+    "2": {
+      "name": "control-left",
+      "frame": { "x": 32, "y": 0, "w": 16, "h": 16 },
+      "rotated": false,
+      "trimmed": false
+    },
+    "3": {
+      "name": "control-right",
+      "frame": { "x": 48, "y": 0, "w": 16, "h": 16 },
+      "rotated": false,
+      "trimmed": false
+    },
+    "4": {
+      "name": "control-up",
+      "frame": { "x": 64, "y": 0, "w": 16, "h": 16 },
+      "rotated": false,
+      "trimmed": false
+    }
+  },
+  "meta": {
+    "app": "manually compiled",
+    "version": "1.0",
+    "image": "controls.png",
+    "format": "RGBA8888",
+    "size": { "w": 80, "h": 16 },
+    "scale": "1"
+  }
+}

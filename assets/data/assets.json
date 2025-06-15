@@ -1,0 +1,159 @@
+[
+  {
+    "path": "assets/audio",
+    "files": [
+      {
+        "type": "audio",
+        "key": "happy-birthday",
+        "url": "happy-birthday.mp3"
+      }
+    ]
+  },
+  {
+    "path": "assets/images/areas/house",
+    "files": [
+      {
+        "type": "image",
+        "key": "house-background",
+        "url": "house-background.png"
+      },
+      {
+        "type": "image",
+        "key": "house-collision",
+        "url": "house-collision.png"
+      },
+      {
+        "type": "tilemapTiledJSON",
+        "key": "house-map",
+        "url": "house-map.json"
+      }
+    ]
+  },
+  {
+    "path": "assets/images/areas/house/foreground",
+    "files": [
+      {
+        "type": "image",
+        "key": "house-foreground-bed",
+        "url": "bed.png"
+      },
+      {
+        "type": "image",
+        "key": "house-foreground-gifts",
+        "url": "gifts.png"
+      },
+      {
+        "type": "image",
+        "key": "house-foreground-wall-1",
+        "url": "wall-1.png"
+      },
+      {
+        "type": "image",
+        "key": "house-foreground-wall-2",
+        "url": "wall-2.png"
+      },
+      {
+        "type": "image",
+        "key": "house-foreground-wall-3",
+        "url": "wall-3.png"
+      }
+    ]
+  },
+  {
+    "path": "assets/images/characters",
+    "files": [
+      {
+        "type": "aseprite",
+        "key": "amelie",
+        "textureURL": "amelie-party-hat.png",
+        "atlasURL": "amelie.aesprite.json"
+      },
+      {
+        "type": "aseprite",
+        "key": "cynthia",
+        "textureURL": "cynthia-party-hat.png",
+        "atlasURL": "cynthia.aesprite.json"
+      },
+      {
+        "type": "aseprite",
+        "key": "mila",
+        "textureURL": "mila-party-hat.png",
+        "atlasURL": "mila.aesprite.json"
+      },
+      {
+        "type": "aseprite",
+        "key": "racoon",
+        "textureURL": "racoon.png",
+        "atlasURL": "racoon.aesprite.json"
+      },
+      {
+        "type": "aseprite",
+        "key": "tobias",
+        "textureURL": "tobias-party-hat.png",
+        "atlasURL": "tobias.aesprite.json"
+      }
+    ]
+  },
+  {
+    "path": "assets/images/hud",
+    "files": [
+      {
+        "type": "aseprite",
+        "key": "controls",
+        "textureURL": "controls.png",
+        "atlasURL": "controls.aesprite.json"
+      }
+    ]
+  },
+  {
+    "path": "assets/images/objects",
+    "files": [
+      {
+        "type": "aseprite",
+        "key": "animated-objects",
+        "textureURL": "animated-objects.png",
+        "atlasURL": "animated-objects.aesprite.json"
+      },
+      {
+        "type": "image",
+        "key": "cake",
+        "textureURL": "cake.png"
+      },
+      {
+        "type": "image",
+        "key": "crumbs-0",
+        "textureURL": "crumbs-0.png"
+      },
+      {
+        "type": "image",
+        "key": "crumbs-1",
+        "textureURL": "crumbs-1.png"
+      },
+      {
+        "type": "image",
+        "key": "crumbs-2",
+        "textureURL": "crumbs-2.png"
+      },
+      {
+        "type": "image",
+        "key": "plate-with-cake",
+        "textureURL": "plate-with-cake.png"
+      },
+      {
+        "type": "image",
+        "key": "plate-without-cake",
+        "textureURL": "plate-without-cake.png"
+      },
+      {
+        "type": "image",
+        "key": "toilet-closed",
+        "textureURL": "toilet-closed.png"
+      },
+      {
+        "type": "image",
+        "key": "toilet-opened",
+        "textureURL": "toilet-opened.png"
+      }
+    ]
+  }
+]
