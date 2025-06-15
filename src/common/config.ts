@@ -14,6 +14,7 @@ export const Depth = {
   Indicators: 6,
   Hud: 7,
   Overlay: 8,
+  Controls: 9,
 } as const satisfies Record<
   LayerTypeKey | "Character" | "Hud" | "Indicators" | "Objects" | "Overlay" | "Trigger",
   number

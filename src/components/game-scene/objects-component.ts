@@ -28,7 +28,7 @@ export class ObjectsComponent extends BaseGameSceneComponent implements Objects 
   }: {
     host: GameScene;
     area: Area;
-    keyboard: KeyboardComponent;
+    keyboard: InputComponent;
   }): ObjectsComponent {
     const objects = new ObjectsComponent(host);
     objects.create(area, keyboard);
@@ -65,7 +65,7 @@ export class ObjectsComponent extends BaseGameSceneComponent implements Objects 
     return this.#player;
   }
 
-  public create(area: Area, keyboard: KeyboardComponent): void {
+  public create(area: Area, keyboard: InputComponent): void {
     this.#image = this.host.add.group([]);
     this.#collision = this.host.add.group([]);
     this.#foreground = this.host.add.group([]);
@@ -129,7 +129,7 @@ export class ObjectsComponent extends BaseGameSceneComponent implements Objects 
     this.#collision.add(collisionLayer);
   }
 
-  private createChunks(area: Area, map: Phaser.Tilemaps.Tilemap, keyboard: KeyboardComponent): void {
+  private createChunks(area: Area, map: Phaser.Tilemaps.Tilemap, keyboard: InputComponent): void {
     const chunkLayers = tiled.getObjectLayerNames(map, { prefix: tiled.Layer.Chunks, minDepth: 2 }).map((layerName) => {
       const [_, id, group, ...rest] = layerName.split(tiled.LayerNameDelimiter);
 
@@ -148,7 +148,7 @@ export class ObjectsComponent extends BaseGameSceneComponent implements Objects 
     }
   }
 
-  private createObjects(layer: string, area: Area, map: Phaser.Tilemaps.Tilemap, keyboard: KeyboardComponent): void {
+  private createObjects(layer: string, area: Area, map: Phaser.Tilemaps.Tilemap, keyboard: InputComponent): void {
     const tiledObjects = tiled.getObjectsFromLayer(map, layer, area);
 
     for (const tiledObject of tiledObjects) {

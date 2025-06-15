@@ -4,6 +4,7 @@ import GameScene from "../scenes/game-scene";
 import { Keyboard } from "../components/input/keyboard-component";
 import { TextStyle } from "./text-style";
 import { Cta } from "./cta";
+import { TouchComponent } from "../components/input/touch-component";
 
 type DialogOption = string;
 
@@ -75,8 +76,8 @@ export class DialogBox extends Phaser.GameObjects.Container {
 
     // Input handling
     this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Action), this.onActionDown, this);
-    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Up), () => this.selectOption(-1));
-    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Down), () => this.selectOption(1));
+    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Up), () => this.selectOption(-1), this);
+    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Down), () => this.selectOption(1), this);
 
     this.hide(true);
   }

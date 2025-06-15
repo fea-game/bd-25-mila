@@ -1,18 +1,20 @@
 import Phaser from "phaser";
 import { Area, SceneKey } from "../common/types";
-import { KeyboardComponent } from "../components/input/keyboard-component";
+import { Keyboard, KeyboardComponent } from "../components/input/keyboard-component";
 import { CollisionComponent } from "../components/game-scene/collision-component";
 import { InteractionComponent } from "../components/game-scene/interaction-component";
 import { ObjectsComponent } from "../components/game-scene/objects-component";
 import { GameScript } from "../scripts/game-script";
 import { HouseScript } from "../scripts/house-script";
 import { DialogComponent } from "../components/game-scene/dialog-component";
+import { TouchComponent } from "../components/input/touch-component";
+import { InputComponent } from "../components/input/input-component";
 
 export default class GameScene extends Phaser.Scene {
   #collisionComponent: CollisionComponent;
   #dialogComponent: DialogComponent;
   #interactionComponent: InteractionComponent;
-  #keyboardComponent: KeyboardComponent;
+  #keyboardComponent: InputComponent & Keyboard;
   #objectsComponent: ObjectsComponent;
   #script: GameScript;
 
@@ -25,7 +27,10 @@ export default class GameScene extends Phaser.Scene {
       throw new Error("Phaser keyboard plugin not enabled");
     }
 
-    this.#keyboardComponent = new KeyboardComponent(this.input.keyboard);
+    const isMobile = this.sys.game.device.os.android || this.sys.game.device.os.iOS;
+
+    this.#keyboardComponent = isMobile ? new TouchComponent(this) : new KeyboardComponent(this.input.keyboard);
+
     this.#objectsComponent = ObjectsComponent.for({
       host: this,
       area: Area.House,

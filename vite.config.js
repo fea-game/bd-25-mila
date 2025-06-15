@@ -5,6 +5,8 @@ export default defineConfig(({ command }) => ({
   base: "/bd-25/",
   server: {
     port: 4000,
+    host: true,
+    strictPort: true,
   },
   plugins: [
     command === "build" &&

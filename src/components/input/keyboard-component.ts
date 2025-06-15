@@ -40,22 +40,23 @@ export class KeyboardComponent extends InputComponent implements Keyboard {
     return Phaser.Input.Keyboard.JustDown(this.#actionKey);
   }
 
-  public on(
-    ...args: Parameters<Phaser.Input.Keyboard.KeyboardPlugin["on"]>
-  ): ReturnType<Phaser.Input.Keyboard.KeyboardPlugin["on"]> {
-    return this.#keyboard.on(...args);
+  public on(...args: Parameters<Phaser.Input.Keyboard.KeyboardPlugin["on"]>): Keyboard {
+    console.log(args);
+    this.#keyboard.on(...args);
+
+    return this;
   }
 
-  public once(
-    ...args: Parameters<Phaser.Input.Keyboard.KeyboardPlugin["once"]>
-  ): ReturnType<Phaser.Input.Keyboard.KeyboardPlugin["once"]> {
-    return this.#keyboard.once(...args);
+  public once(...args: Parameters<Phaser.Input.Keyboard.KeyboardPlugin["once"]>): Keyboard {
+    this.#keyboard.once(...args);
+
+    return this;
   }
 
-  public off(
-    ...args: Parameters<Phaser.Input.Keyboard.KeyboardPlugin["off"]>
-  ): ReturnType<Phaser.Input.Keyboard.KeyboardPlugin["off"]> {
-    return this.#keyboard.off(...args);
+  public off(...args: Parameters<Phaser.Input.Keyboard.KeyboardPlugin["off"]>): Keyboard {
+    this.#keyboard.off(...args);
+
+    return this;
   }
 }
 
@@ -67,9 +68,9 @@ export interface Keyboard {
   readonly isLeftDown: boolean;
   readonly isRightDown: boolean;
   readonly isActionKeyJustDown: boolean;
-  readonly on: Phaser.Input.Keyboard.KeyboardPlugin["on"];
-  readonly once: Phaser.Input.Keyboard.KeyboardPlugin["once"];
-  readonly off: Phaser.Input.Keyboard.KeyboardPlugin["off"];
+  readonly on: (...args: Parameters<Phaser.Input.Keyboard.KeyboardPlugin["on"]>) => Keyboard;
+  readonly once: (...args: Parameters<Phaser.Input.Keyboard.KeyboardPlugin["once"]>) => Keyboard;
+  readonly off: (...args: Parameters<Phaser.Input.Keyboard.KeyboardPlugin["off"]>) => Keyboard;
 }
 
 export const Keyboard = {
