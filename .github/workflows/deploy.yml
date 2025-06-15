@@ -33,6 +33,9 @@ jobs:
           mv dist tmp/bd-25
           mv tmp dist
 
+      - name: Create CNAME file
+        run: echo 'game.mila.belgar.eu' > dist/CNAME
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
