@@ -29,7 +29,7 @@ export default class GameScene extends Phaser.Scene {
 
     const isMobile = this.sys.game.device.os.android || this.sys.game.device.os.iOS;
 
-    this.#keyboardComponent = isMobile ? new TouchComponent(this) : new KeyboardComponent(this.input.keyboard);
+    this.#keyboardComponent = isMobile ? new TouchComponent() : new KeyboardComponent(this.input.keyboard);
 
     this.#objectsComponent = ObjectsComponent.for({
       host: this,

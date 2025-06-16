@@ -41,7 +41,6 @@ export class KeyboardComponent extends InputComponent implements Keyboard {
   }
 
   public on(...args: Parameters<Phaser.Input.Keyboard.KeyboardPlugin["on"]>): Keyboard {
-    console.log(args);
     this.#keyboard.on(...args);
 
     return this;
@@ -82,7 +81,7 @@ export const Keyboard = {
     Up: "UP",
   } as const satisfies Record<string, keyof typeof Phaser.Input.Keyboard.KeyCodes>,
 
-  toEvent(event: "keydown", key: (typeof Keyboard.Key)[keyof typeof Keyboard.Key]): string {
+  toEvent(event: "keydown" | "keyup", key: (typeof Keyboard.Key)[keyof typeof Keyboard.Key]): string {
     return `${event}-${key}`;
   },
 };
