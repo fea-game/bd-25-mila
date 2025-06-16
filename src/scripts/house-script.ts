@@ -292,6 +292,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           }
 
           if (isWithId(interactedWith, "Thief")) {
+            console.log("THIEF 1", interactedWith.isInteractable.canBeInteractedWith);
             this.interactWithThief(interactedWith);
             return;
           }
@@ -324,6 +325,7 @@ export class HouseScript extends GameScript<HouseScriptScene> {
 
               this.script.showDialog(dialog, {
                 on: (type, _?: number) => {
+                  console.log("THIEF 2", actionable.isInteractable.canBeInteractedWith);
                   GameStateManager.instance.house.discoveredThief = true;
 
                   const dialog = HouseDialogs.Narrator.current();
@@ -339,6 +341,8 @@ export class HouseScript extends GameScript<HouseScriptScene> {
 
           const dialog = HouseDialogs[actionable.id].current();
           if (!dialog) return;
+
+          console.log("THIEF 3", actionable.isInteractable.canBeInteractedWith);
 
           this.script.showDialog(dialog, {
             on: (type, _?: number) => {

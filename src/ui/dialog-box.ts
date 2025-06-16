@@ -74,15 +74,10 @@ export class DialogBox extends Phaser.GameObjects.Container {
     this.closeText.setVisible(false).setX(width - this.closeText.getBounds().width);
     this.add(this.closeText);
 
-    // Input handling
-    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Action), this.onActionDown, this);
-    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Up), () => this.selectOption(-1), this);
-    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Down), () => this.selectOption(1), this);
-
-    this.hide(true);
+    this.hide();
   }
 
-  public hide(skipEventHandler = false) {
+  public hide() {
     this.clear();
     this.active = false;
     this.setVisible(false);
@@ -90,6 +85,9 @@ export class DialogBox extends Phaser.GameObjects.Container {
 
   public show(text: string, opts: { options?: DialogOption[]; on?: DialogBox["eventHandler"] } = {}) {
     this.clear();
+    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Action), this.onActionDown, this);
+    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Up), () => this.selectOption(-1), this);
+    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Down), () => this.selectOption(1), this);
     this.options = opts.options || [];
     this.eventHandler = opts.on;
     this.active = true;
@@ -194,6 +192,9 @@ export class DialogBox extends Phaser.GameObjects.Container {
   }
 
   public clear() {
+    this.keyboard.off(Keyboard.toEvent("keydown", Keyboard.Key.Action), this.onActionDown, this);
+    this.keyboard.off(Keyboard.toEvent("keydown", Keyboard.Key.Up), () => this.selectOption(-1), this);
+    this.keyboard.off(Keyboard.toEvent("keydown", Keyboard.Key.Down), () => this.selectOption(1), this);
     this.options = [];
     this.eventHandler = undefined;
     this.textObject.setText("");

@@ -4,14 +4,14 @@ import { InputComponent } from "./input-component";
 export class KeyboardComponent extends InputComponent implements Keyboard {
   #cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
   #actionKey: Phaser.Input.Keyboard.Key;
-  #keyboard: Phaser.Input.Keyboard.KeyboardPlugin;
+  protected keyboard: Phaser.Input.Keyboard.KeyboardPlugin;
 
   constructor(keyboardPlugin: Phaser.Input.Keyboard.KeyboardPlugin) {
     super();
 
     this.#cursorKeys = keyboardPlugin.createCursorKeys();
     this.#actionKey = keyboardPlugin.addKey(Phaser.Input.Keyboard.KeyCodes[Keyboard.Key.Action]);
-    this.#keyboard = keyboardPlugin;
+    this.keyboard = keyboardPlugin;
   }
 
   override get isUpDown(): boolean {
@@ -41,19 +41,19 @@ export class KeyboardComponent extends InputComponent implements Keyboard {
   }
 
   public on(...args: Parameters<Phaser.Input.Keyboard.KeyboardPlugin["on"]>): Keyboard {
-    this.#keyboard.on(...args);
+    this.keyboard.on(...args);
 
     return this;
   }
 
   public once(...args: Parameters<Phaser.Input.Keyboard.KeyboardPlugin["once"]>): Keyboard {
-    this.#keyboard.once(...args);
+    this.keyboard.once(...args);
 
     return this;
   }
 
   public off(...args: Parameters<Phaser.Input.Keyboard.KeyboardPlugin["off"]>): Keyboard {
-    this.#keyboard.off(...args);
+    this.keyboard.off(...args);
 
     return this;
   }

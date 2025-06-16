@@ -274,6 +274,7 @@ export const HouseDialogs = {
       isAvailable: () => {
         if (!GameStateManager.instance.house.discoveredCakeIsMissing) return false;
         if (GameStateManager.instance.house.foodForThiefReceived) return false;
+        if (GameStateManager.instance.isDialogFinished("dialog-house-thief-1")) return false;
 
         return true;
       },

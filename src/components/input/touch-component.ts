@@ -33,13 +33,13 @@ export class TouchComponent extends InputComponent implements Keyboard {
     } as const;
 
     const onDown = (key: (typeof map)[keyof typeof map]) => {
-      EventBus.instance.emit(Keyboard.toEvent("keydown", key));
       this.#setKeyState(key, true);
+      EventBus.instance.emit(Keyboard.toEvent("keydown", key));
     };
 
     const onUp = (key: (typeof map)[keyof typeof map]) => {
-      EventBus.instance.emit(Keyboard.toEvent("keyup", key));
       this.#setKeyState(key, false);
+      EventBus.instance.emit(Keyboard.toEvent("keyup", key));
     };
 
     Object.values(map).forEach((key) => {
@@ -50,12 +50,27 @@ export class TouchComponent extends InputComponent implements Keyboard {
         e.preventDefault(); // prevent ghost clicks
         onDown(key);
       });
-      btn.addEventListener("touchend", () => onUp(key));
-      btn.addEventListener("touchcancel", () => onUp(key));
+      btn.addEventListener("touchend", (e) => {
+        e.preventDefault(); // prevent ghost clicks
+        onUp(key);
+      });
+      btn.addEventListener("touchcancel", (e) => {
+        e.preventDefault(); // prevent ghost clicks
+        onUp(key);
+      });
 
-      btn.addEventListener("mousedown", () => onDown(key));
-      btn.addEventListener("mouseup", () => onUp(key));
-      btn.addEventListener("mouseout", () => onUp(key));
+      btn.addEventListener("mousedown", (e) => {
+        e.preventDefault(); // prevent ghost clicks
+        onDown(key);
+      });
+      btn.addEventListener("mouseup", (e) => {
+        e.preventDefault(); // prevent ghost clicks
+        onUp(key);
+      });
+      btn.addEventListener("mouseout", (e) => {
+        e.preventDefault(); // prevent ghost clicks
+        onUp(key);
+      });
     });
   }
 
