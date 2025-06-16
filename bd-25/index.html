@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Milas 9. Geburtstag - Der verschwundene Geburtstagskuchen</title>
     <style>
       html,
@@ -14,10 +14,101 @@
         overflow: hidden;
         background: #000000;
       }
+
+      .mobile-controls {
+        position: fixed;
+        display: grid;
+      }
+
+      @media (pointer: fine) {
+        .mobile-controls {
+          display: none;
+        }
+      }
+
+      @media (orientation: portrait) {
+        .mobile-controls {
+          bottom: 0;
+          left: 0;
+          right: 0;
+          padding: 2rem;
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (orientation: landscape) {
+        .mobile-controls {
+          left: 0;
+          right: 0;
+          top: 50%;
+          transform: translate(0, -50%);
+          grid-template-columns: 1fr var(--mobile-controls-gap) 1fr;
+        }
+
+        .actions {
+          grid-column: 3;
+        }
+      }
+
+      .actions,
+      .dpad {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .dpad > div {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+      }
+
+      #control-up {
+        grid-row: 1;
+        grid-column: 2;
+      }
+
+      #control-left {
+        grid-row: 2;
+        grid-column: 1;
+      }
+
+      #control-right {
+        grid-row: 2;
+        grid-column: 3;
+      }
+
+      #control-down {
+        grid-row: 3;
+        grid-column: 2;
+      }
+
+      .mobile-controls button {
+        outline: none;
+        border: none;
+        padding: 0;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        image-rendering: pixelated;
+        cursor: pointer;
+      }
     </style>
-  <script type="module" crossorigin src="/bd-25/assets/index-Dz2tqEbZ.js"></script>
-</head>
-<body>
+    <script type="module" crossorigin src="/bd-25/assets/index-vPg6I6RO.js"></script>
+  </head>
+  <body>
+    <div class="mobile-controls">
+      <div class="dpad">
+        <div>
+          <button id="control-up" data-action="UP"></button>
+          <button id="control-left" data-action="LEFT"></button>
+          <button id="control-right" data-action="RIGHT"></button>
+          <button id="control-down" data-action="DOWN"></button>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="control-action" data-action="X"></button>
+      </div>
+    </div>
     <div class="container" id="game-container"></div>
-</body>
+  </body>
 </html>
