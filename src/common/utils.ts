@@ -93,3 +93,7 @@ export function isWithId<T, Ids extends readonly string[]>(value: T, ...ids: Ids
 
   return true;
 }
+
+export function getDepth(y: number, baseDepth: number): number {
+  return baseDepth + y / 10000;
+}

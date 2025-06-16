@@ -1,5 +1,6 @@
 import { Depth } from "../../../../common/config";
 import { Direction } from "../../../../common/types";
+import { getDepth } from "../../../../common/utils";
 import { BaseCharacter } from "../../../../game-objects/characters/base-character";
 import { NpcType } from "../../../../game-objects/characters/npc";
 import { PlayerType } from "../../../../game-objects/characters/player";
@@ -8,14 +9,8 @@ import { StateMachine } from "../state-machine";
 import { BaseCharacterState, CharacterState } from "./base-character-state";
 
 export class MovingState extends BaseCharacterState {
-  private static getDepth(y: number, baseDepth: number = Depth.Character): number {
-    return baseDepth + y / 10000;
-  }
-
   constructor(host: BaseCharacter<PlayerType | NpcType>, stateMachine: StateMachine) {
     super(CharacterState.Moving, host, stateMachine);
-
-    this.host.setDepth(MovingState.getDepth(this.host.y));
   }
 
   public onUpdate(): void {
@@ -59,7 +54,7 @@ export class MovingState extends BaseCharacterState {
     }
 
     this.normalizeVelocity();
-    this.host.setDepth(MovingState.getDepth(this.host.y));
+    this.host.setDepth(getDepth(this.host.y, Depth.Character));
 
     const persistenceProperties = this.host.isPersistable.toPersistenceProperties();
     GameStateManager.instance.character[persistenceProperties.id] = persistenceProperties;

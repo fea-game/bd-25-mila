@@ -5,6 +5,7 @@ import { PushableComponent } from "../../components/game-object/object/pushable-
 import { Depth } from "../../common/config";
 import { ContactableComponent } from "../../components/game-object/object/contactable-component";
 import { PersistableComponent, PersistableProperties } from "../../components/game-object/common/persistable-component";
+import { getDepth } from "../../common/utils";
 
 type Config = {
   scene: Phaser.Scene;
@@ -15,10 +16,6 @@ type Config = {
 };
 
 export abstract class BaseObject<TProperties = false> extends GameObject {
-  protected static getDepth(y: number, baseDepth: number): number {
-    return baseDepth + y / 10000;
-  }
-
   protected readonly baseDepth: number;
 
   public abstract isInteractable: false | ActionableComponent | ContactableComponent | PushableComponent;
@@ -34,7 +31,7 @@ export abstract class BaseObject<TProperties = false> extends GameObject {
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
 
-    this.setDepth(BaseObject.getDepth(this.y, this.baseDepth));
+    this.setDepth(getDepth(this.y, this.baseDepth));
     this.setOrigin(0, 1);
   }
 }

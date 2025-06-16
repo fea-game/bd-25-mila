@@ -4,6 +4,7 @@ import { assertsHasBody, Body, GameObject, InteractionType } from "../../../comm
 import { InteractableComponent } from "./interactable-component";
 import { isPersistable, PersistableComponent, PersistableProperties } from "../common/persistable-component";
 import { GameStateManager } from "../../../manager/game-state-manager";
+import { getDepth } from "../../../common/utils";
 
 type Config = {
   host: GameObject;
@@ -13,10 +14,6 @@ type Config = {
 };
 
 export class PushableComponent extends InteractableComponent<typeof InteractionType.Push> {
-  private static getDepth(y: number, baseDepth: number): number {
-    return baseDepth + y / 10000;
-  }
-
   declare host: GameObject & { body: Body };
 
   #baseDepth: number;
@@ -35,7 +32,7 @@ export class PushableComponent extends InteractableComponent<typeof InteractionT
 
     assertsHasBody(this.host);
 
-    this.host.setDepth(PushableComponent.getDepth(this.host.y, this.#baseDepth));
+    this.host.setDepth(getDepth(this.host.y, this.#baseDepth));
     this.host.setDrag(drag).setMaxVelocity(maxVelocity);
 
     this.host.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
@@ -66,7 +63,7 @@ export class PushableComponent extends InteractableComponent<typeof InteractionT
 
     if (!isYChanged) return;
 
-    this.host.setDepth(PushableComponent.getDepth(this.host.y, this.#baseDepth));
+    this.host.setDepth(getDepth(this.host.y, this.#baseDepth));
   }
 }
 

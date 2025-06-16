@@ -14,6 +14,7 @@ import { Depth } from "../../common/config";
 import { NpcType } from "./npc";
 import { PlayerType } from "./player";
 import { Persistable, PersistableComponent } from "../../components/game-object/common/persistable-component";
+import { getDepth } from "../../common/utils";
 
 export type Config = {
   animations: CharacterAnimationComponentConfig;
@@ -82,7 +83,7 @@ export abstract class BaseCharacter<T extends NpcType | PlayerType>
     scene.physics.add.existing(this);
 
     this.setBodySize(this.width, this.height - BaseCharacter.ShortenBodyBy);
-    this.setDepth(Depth.Character);
+    this.setDepth(getDepth(this.y, Depth.Character));
     this.setPushable(false);
     this.setOffset(0, BaseCharacter.ShortenBodyBy);
     this.setOrigin(0, 1);
