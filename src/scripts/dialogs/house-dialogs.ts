@@ -138,7 +138,7 @@ export const HouseDialogs = {
         "Hoy cumples 9 años y no puedo creer lo rápido que estás creciendo. " +
         "Me siento tan orgullosa de la niña hermosa, inteligente y cariñosa que eres. " +
         "Cada día me enseñas algo nuevo con tu sonrisa, tu ternura y tu alegría. \n" +
-        "Gracias por hacerme la mamá más feliz del mundo. Te amo con todo mi corazón, mi vida. ❤️ " +
+        "Gracias por hacerme la mamá más feliz del mundo. Te amo con todo mi corazón, mi chiqui. ❤️ " +
         "Que este día esté lleno de risas, abrazos, pastel y mucha diversión. ¡Te mereces lo mejor del universo!",
       isAvailable: () => {
         if (!GameStateManager.instance.house.happyBirthdaySung) return false;
