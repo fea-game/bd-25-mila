@@ -97,3 +97,11 @@ export function isWithId<T, Ids extends readonly string[]>(value: T, ...ids: Ids
 export function getDepth(y: number, baseDepth: number): number {
   return baseDepth + y / 10000;
 }
+
+export function isMobile(): boolean {
+  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+export function isPortrait(): boolean {
+  return window.matchMedia("(orientation: portrait)").matches;
+}

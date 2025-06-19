@@ -4,7 +4,7 @@ import GameScene from "../scenes/game-scene";
 import { Keyboard } from "../components/input/keyboard-component";
 import { TextStyle } from "./text-style";
 import { Cta } from "./cta";
-import { TouchComponent } from "../components/input/touch-component";
+import { isMobile, isPortrait } from "../common/utils";
 
 type DialogOption = string;
 
@@ -30,7 +30,7 @@ export class DialogBox extends Phaser.GameObjects.Container {
 
   constructor(scene: GameScene, keyboard: Keyboard) {
     const width = scene.scale.width;
-    const height = Math.round(scene.scale.height / 4);
+    const height = Math.round(scene.scale.height / (isMobile() && isPortrait() ? 3 : 4));
 
     super(scene, 0, scene.scale.height - height);
 
@@ -54,7 +54,7 @@ export class DialogBox extends Phaser.GameObjects.Container {
     );
     this.add(this.textObject);
 
-    this.textHeight = height - this.padding * 2;
+    this.textHeight = height - this.padding * (isMobile() ? 3 : 2);
 
     this.continueText = new Cta({
       host: scene,

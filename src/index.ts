@@ -3,18 +3,11 @@ import PreloadScene from "./scenes/preload-scene";
 import GameScene from "./scenes/game-scene";
 import { isDebugEnabled } from "./common/config";
 import controls from "../assets/images/hud/controls.aesprite.json";
+import { isMobile, isPortrait } from "./common/utils";
 
 const ControlScale = 4;
 const BASE_WIDTH = 768;
 const BASE_HEIGHT = 672;
-
-function isMobile(): boolean {
-  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-}
-
-function isPortrait(): boolean {
-  return window.matchMedia("(orientation: portrait)").matches;
-}
 
 function getConfig(): Phaser.Types.Core.GameConfig {
   const isMobileDevice = isMobile();
