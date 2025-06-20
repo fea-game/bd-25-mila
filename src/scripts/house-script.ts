@@ -479,7 +479,21 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           const dialog = HouseDialogs[actionable.id].current();
           if (!dialog) return;
 
-          this.script.showDialog(dialog);
+          this.script.showDialog(dialog, {
+            on: (...args) => {
+              console.log("ON", ...args);
+              if (args[0] === "selected" && dialog.id === "dialog-house-tobias-7") {
+                switch (args[1]) {
+                  case 0:
+                    GameStateManager.instance.clear();
+                    window.location.reload();
+                    break;
+                  case 1:
+                    this.script.hideDialog(dialog);
+                }
+              }
+            },
+          });
         }
       }
     );

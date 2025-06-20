@@ -17,6 +17,16 @@ export function createReactiveState<T extends Record<string | symbol | number, u
   });
 }
 
+export function destroy(key: string): undefined | Error {
+  try {
+    window.localStorage.removeItem(key);
+  } catch (e) {
+    console.error("Error while trying to remove value!", e, { key });
+
+    return e;
+  }
+}
+
 export function save<T>(key: string, value: T): undefined | Error {
   try {
     window.localStorage.setItem(key, JSON.stringify(value));

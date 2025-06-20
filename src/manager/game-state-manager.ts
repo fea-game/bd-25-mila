@@ -1,5 +1,5 @@
 import { Area, Direction } from "../common/types";
-import { load, save } from "../common/utils";
+import { destroy, load, save } from "../common/utils";
 import { PersistableProperties } from "../components/game-object/common/persistable-component";
 import { NpcType } from "../game-objects/characters/npc";
 import { PlayerType } from "../game-objects/characters/player";
@@ -65,6 +65,14 @@ export class GameStateManager implements GameState {
 
   public finishDialog(dialogId: string) {
     this.#state.dialog.finished[dialogId] = true;
+  }
+
+  public clear() {
+    const error = destroy(GameStateManager.StorageKey);
+
+    if (error) {
+      console.error("Error while clear state!", { error, state: this.#state });
+    }
   }
 
   public persist() {

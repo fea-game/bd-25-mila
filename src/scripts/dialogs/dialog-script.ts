@@ -21,5 +21,6 @@ export class DialogScript {
 export type Dialog = {
   readonly id: string;
   readonly text: string;
+  readonly options?: string[];
   isAvailable: () => boolean;
 };

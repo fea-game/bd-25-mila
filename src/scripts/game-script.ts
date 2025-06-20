@@ -62,6 +62,7 @@ export abstract class GameScript<
 
     this.dialog.show(dialog.text, {
       ...opts,
+      options: opts.options ?? dialog.options,
       on: (...args) => {
         if (args[0] === "closed") {
           this.hideDialog(dialog);

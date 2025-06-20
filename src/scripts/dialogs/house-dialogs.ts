@@ -266,6 +266,16 @@ export const HouseDialogs = {
         return true;
       },
     },
+    {
+      id: "dialog-house-tobias-7",
+      text: "Möchtest du noch einmal von vorne spielen?",
+      options: ["Ja", "Nein"],
+      isAvailable: () => {
+        if (!GameStateManager.instance.isDialogFinished("dialog-house-tobias-6")) return false;
+
+        return true;
+      },
+    },
   ]),
   Thief: new DialogScript([
     {

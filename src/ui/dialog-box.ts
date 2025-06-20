@@ -30,7 +30,9 @@ export class DialogBox extends Phaser.GameObjects.Container {
 
   constructor(scene: GameScene, keyboard: Keyboard) {
     const width = scene.scale.width;
-    const height = Math.round(scene.scale.height / (isMobile() && isPortrait() ? 3 : 4));
+    const height = Math.round(
+      scene.scale.height / (isMobile() && isPortrait() ? 3 : 4)
+    );
 
     super(scene, 0, scene.scale.height - height);
 
@@ -41,7 +43,9 @@ export class DialogBox extends Phaser.GameObjects.Container {
 
     scene.add.existing(this);
 
-    this.background = scene.add.rectangle(0, 0, width, height, 0x800080, 0.8).setOrigin(0, 0);
+    this.background = scene.add
+      .rectangle(0, 0, width, height, 0x800080, 0.8)
+      .setOrigin(0, 0);
     this.add(this.background);
 
     this.textObject = scene.add.text(
@@ -62,7 +66,9 @@ export class DialogBox extends Phaser.GameObjects.Container {
       x: width - this.padding,
       y: height - this.padding,
     });
-    this.continueText.setVisible(false).setX(width - this.continueText.getBounds().width);
+    this.continueText
+      .setVisible(false)
+      .setX(width - this.continueText.getBounds().width);
     this.add(this.continueText);
 
     this.closeText = new Cta({
@@ -71,7 +77,9 @@ export class DialogBox extends Phaser.GameObjects.Container {
       x: width - this.padding,
       y: height - this.padding,
     });
-    this.closeText.setVisible(false).setX(width - this.closeText.getBounds().width);
+    this.closeText
+      .setVisible(false)
+      .setX(width - this.closeText.getBounds().width);
     this.add(this.closeText);
 
     this.hide();
@@ -83,11 +91,26 @@ export class DialogBox extends Phaser.GameObjects.Container {
     this.setVisible(false);
   }
 
-  public show(text: string, opts: { options?: DialogOption[]; on?: DialogBox["eventHandler"] } = {}) {
+  public show(
+    text: string,
+    opts: { options?: DialogOption[]; on?: DialogBox["eventHandler"] } = {}
+  ) {
     this.clear();
-    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Action), this.onActionDown, this);
-    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Up), () => this.selectOption(-1), this);
-    this.keyboard.on(Keyboard.toEvent("keydown", Keyboard.Key.Down), () => this.selectOption(1), this);
+    this.keyboard.on(
+      Keyboard.toEvent("keydown", Keyboard.Key.Action),
+      this.onActionDown,
+      this
+    );
+    this.keyboard.on(
+      Keyboard.toEvent("keydown", Keyboard.Key.Up),
+      () => this.selectOption(-1),
+      this
+    );
+    this.keyboard.on(
+      Keyboard.toEvent("keydown", Keyboard.Key.Down),
+      () => this.selectOption(1),
+      this
+    );
     this.options = opts.options || [];
     this.eventHandler = opts.on;
     this.active = true;
@@ -141,6 +164,7 @@ export class DialogBox extends Phaser.GameObjects.Container {
   }
 
   private onActionDown() {
+    console.error("ACTION DOWN");
     if (this.continueText.visible) {
       this.nextPage();
       return;
@@ -184,17 +208,33 @@ export class DialogBox extends Phaser.GameObjects.Container {
 
   private selectedOptionIndex = 0;
   private selectOption(delta: -1 | 1) {
+    console.error("SELECT OPTION", { delta, options: this.optionTexts });
     if (this.optionTexts.length === 0) return;
 
-    this.selectedOptionIndex = Phaser.Math.Wrap(this.selectedOptionIndex + delta, 0, this.optionTexts.length);
+    this.selectedOptionIndex = Phaser.Math.Wrap(
+      this.selectedOptionIndex + delta,
+      0,
+      this.optionTexts.length
+    );
 
-    this.optionTexts.forEach((txt, i) => txt.setColor(i === this.selectedOptionIndex ? "#ffff00" : "#ffffff"));
+    console.error("SELECT OPTION", {
+      index: this.selectedOptionIndex,
+      options: this.optionTexts,
+    });
+
+    this.optionTexts.forEach((txt, i) =>
+      txt.setColor(i === this.selectedOptionIndex ? "#ffff00" : "#ffffff")
+    );
   }
 
   public clear() {
-    this.keyboard.off(Keyboard.toEvent("keydown", Keyboard.Key.Action), this.onActionDown, this);
-    this.keyboard.off(Keyboard.toEvent("keydown", Keyboard.Key.Up), () => this.selectOption(-1), this);
-    this.keyboard.off(Keyboard.toEvent("keydown", Keyboard.Key.Down), () => this.selectOption(1), this);
+    this.keyboard.off(
+      Keyboard.toEvent("keydown", Keyboard.Key.Action),
+      this.onActionDown,
+      this
+    );
+    this.keyboard.off(Keyboard.toEvent("keydown", Keyboard.Key.Up));
+    this.keyboard.off(Keyboard.toEvent("keydown", Keyboard.Key.Down));
     this.options = [];
     this.eventHandler = undefined;
     this.textObject.setText("");
