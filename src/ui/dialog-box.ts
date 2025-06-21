@@ -164,7 +164,6 @@ export class DialogBox extends Phaser.GameObjects.Container {
   }
 
   private onActionDown() {
-    console.error("ACTION DOWN");
     if (this.continueText.visible) {
       this.nextPage();
       return;

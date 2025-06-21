@@ -7,7 +7,13 @@ import { Trigger } from "../game-objects/objects/trigger";
 import { Npc } from "../game-objects/characters/npc";
 import { Objects } from "../components/game-scene/objects-component";
 import { Audio } from "../common/assets";
-import { assertNpcsPresent, getCrumbs, getNpcs, getPlate, isWithId } from "../common/utils";
+import {
+  assertNpcsPresent,
+  getCrumbs,
+  getNpcs,
+  getPlate,
+  isWithId,
+} from "../common/utils";
 import { GameStateManager } from "../manager/game-state-manager";
 import { Dialog } from "../components/game-scene/dialog-component";
 import { HouseDialogs } from "./dialogs/house-dialogs";
@@ -28,12 +34,16 @@ const HouseScriptScene = {
   AfterPuttingBackCake: "house-after-putting-back-cake",
 } as const;
 
-type HouseScriptScene = (typeof HouseScriptScene)[keyof typeof HouseScriptScene];
+type HouseScriptScene =
+  (typeof HouseScriptScene)[keyof typeof HouseScriptScene];
 
 const HouseScriptSceneValues: string[] = Object.values(HouseScriptScene);
 
 export class HouseScript extends GameScript<HouseScriptScene> {
-  protected declare scenes: Record<HouseScriptScene, HouseScene<HouseScriptScene, SceneType>>;
+  protected declare scenes: Record<
+    HouseScriptScene,
+    HouseScene<HouseScriptScene, SceneType>
+  >;
 
   public readonly crumbs: Crumbs[];
   public readonly npcs: {
@@ -99,7 +109,10 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         public readonly type = "Roaming";
 
         public isFinished() {
-          return GameStateManager.instance.house.wentToLivingRoom && GameStateManager.instance.house.sisterMoved;
+          return (
+            GameStateManager.instance.house.wentToLivingRoom &&
+            GameStateManager.instance.house.sisterMoved
+          );
         }
 
         public start() {
@@ -119,7 +132,10 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           });
 
           EventBus.instance.once(
-            EventBus.getSubject(EventBus.Event.Contacted, Trigger.Id.House.HallwayLivingRoomTransition),
+            EventBus.getSubject(
+              EventBus.Event.Contacted,
+              Trigger.Id.House.HallwayLivingRoomTransition
+            ),
             ({ interactedWith }: { interactedWith: Contactable }) => {
               interactedWith.isInteractable.canBeInteractedWith = false;
               GameStateManager.instance.house.wentToLivingRoom = true;
@@ -151,7 +167,10 @@ export class HouseScript extends GameScript<HouseScriptScene> {
                 [
                   {
                     direction: Direction.Down,
-                    distance: this.script.objects.player.y - this.script.npcs.Tobias.y + 36,
+                    distance:
+                      this.script.objects.player.y -
+                      this.script.npcs.Tobias.y +
+                      36,
                   },
                   { direction: Direction.Left, distance: 95 },
                 ],
@@ -165,7 +184,10 @@ export class HouseScript extends GameScript<HouseScriptScene> {
                 [
                   {
                     direction: Direction.Down,
-                    distance: this.script.objects.player.y - this.script.npcs.Cynthia.y - 36,
+                    distance:
+                      this.script.objects.player.y -
+                      this.script.npcs.Cynthia.y -
+                      36,
                   },
                   { direction: Direction.Left, distance: 90 },
                 ],
@@ -176,7 +198,13 @@ export class HouseScript extends GameScript<HouseScriptScene> {
             }),
             new Promise((resolve) => {
               this.script.npcs.Amelie.move(
-                [{ direction: Direction.Up, distance: this.script.npcs.Amelie.y - this.script.objects.player.y }],
+                [
+                  {
+                    direction: Direction.Up,
+                    distance:
+                      this.script.npcs.Amelie.y - this.script.objects.player.y,
+                  },
+                ],
                 () => {
                   this.script.npcs.Amelie.turn(Direction.Left, () => {
                     resolve(undefined);
@@ -210,10 +238,16 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           super.start();
 
           this.script.plate.isInteractable.canBeInteractedWith = true;
-          EventBus.instance.on(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
+          EventBus.instance.on(
+            EventBus.getSubject(EventBus.Event.Acted),
+            this.onInteract,
+            this
+          );
         }
 
-        private onInteract({ interactedWith }: EventPayload[typeof EventBus.Event.Acted]) {
+        private onInteract({
+          interactedWith,
+        }: EventPayload[typeof EventBus.Event.Acted]) {
           interactedWith.isInteractable.canBeInteractedWith = false;
 
           if (isWithId(interactedWith, "Amelie", "Cynthia", "Tobias")) {
@@ -228,8 +262,13 @@ export class HouseScript extends GameScript<HouseScriptScene> {
             this.script.showDialog(dialog, {
               on: (event, _?: number) => {
                 if (event === "closed") {
-                  EventBus.instance.off(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
-                  GameStateManager.instance.house.discoveredCakeIsMissing = true;
+                  EventBus.instance.off(
+                    EventBus.getSubject(EventBus.Event.Acted),
+                    this.onInteract,
+                    this
+                  );
+                  GameStateManager.instance.house.discoveredCakeIsMissing =
+                    true;
                 }
               },
             });
@@ -237,7 +276,9 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           }
         }
 
-        private interactWith(actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }) {
+        private interactWith(
+          actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }
+        ) {
           const dialog = HouseDialogs[actionable.id].current();
           if (!dialog) return;
 
@@ -259,13 +300,21 @@ export class HouseScript extends GameScript<HouseScriptScene> {
 
           this.script.enableThiefInteraction();
 
-          EventBus.instance.on(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
+          EventBus.instance.on(
+            EventBus.getSubject(EventBus.Event.Acted),
+            this.onInteract,
+            this
+          );
 
           this.script.crumbs.forEach((crumbs) => {
             crumbs.isInteractable.canBeInteractedWith = !crumbs.isRevealed;
 
             if (crumbs.isInteractable.canBeInteractedWith) {
-              EventBus.instance.once(EventBus.getSubject(EventBus.Event.Contacted, crumbs.id), this.onContact, this);
+              EventBus.instance.once(
+                EventBus.getSubject(EventBus.Event.Contacted, crumbs.id),
+                this.onContact,
+                this
+              );
             }
           });
         }
@@ -283,7 +332,9 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           this.script.showDialog(dialog);
         }
 
-        private onInteract({ interactedWith }: EventPayload[typeof EventBus.Event.Acted]) {
+        private onInteract({
+          interactedWith,
+        }: EventPayload[typeof EventBus.Event.Acted]) {
           interactedWith.isInteractable.canBeInteractedWith = false;
 
           if (isWithId(interactedWith, "Amelie", "Cynthia", "Tobias")) {
@@ -292,13 +343,14 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           }
 
           if (isWithId(interactedWith, "Thief")) {
-            console.log("THIEF 1", interactedWith.isInteractable.canBeInteractedWith);
             this.interactWithThief(interactedWith);
             return;
           }
         }
 
-        private interactWith(actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }) {
+        private interactWith(
+          actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }
+        ) {
           const dialog = HouseDialogs[actionable.id].current();
           if (!dialog) return;
 
@@ -319,22 +371,24 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         private interactWithThief(actionable: Actionable & { id: "Thief" }) {
           if (!GameStateManager.instance.house.discoveredThief) {
             this.script.showThief();
-            this.script.npcs.Thief.move([{ direction: Direction.Left, distance: 128 }], () => {
-              const dialog = HouseDialogs[actionable.id].current();
-              if (!dialog) return;
+            this.script.npcs.Thief.move(
+              [{ direction: Direction.Left, distance: 128 }],
+              () => {
+                const dialog = HouseDialogs[actionable.id].current();
+                if (!dialog) return;
 
-              this.script.showDialog(dialog, {
-                on: (type, _?: number) => {
-                  console.log("THIEF 2", actionable.isInteractable.canBeInteractedWith);
-                  GameStateManager.instance.house.discoveredThief = true;
+                this.script.showDialog(dialog, {
+                  on: (type, _?: number) => {
+                    GameStateManager.instance.house.discoveredThief = true;
 
-                  const dialog = HouseDialogs.Narrator.current();
-                  if (!dialog) return;
+                    const dialog = HouseDialogs.Narrator.current();
+                    if (!dialog) return;
 
-                  this.script.showDialog(dialog);
-                },
-              });
-            });
+                    this.script.showDialog(dialog);
+                  },
+                });
+              }
+            );
 
             return;
           }
@@ -342,12 +396,11 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           const dialog = HouseDialogs[actionable.id].current();
           if (!dialog) return;
 
-          console.log("THIEF 3", actionable.isInteractable.canBeInteractedWith);
-
           this.script.showDialog(dialog, {
             on: (type, _?: number) => {
               if (dialog.id === "dialog-house-thief-2") {
-                this.script.npcs.Thief.isInteractable.canBeInteractedWith = false;
+                this.script.npcs.Thief.isInteractable.canBeInteractedWith =
+                  false;
                 this.script.npcs.Thief.move(
                   [
                     { direction: Direction.Down, distance: 100 },
@@ -387,10 +440,16 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           super.start();
 
           this.script.plate.isInteractable.canBeInteractedWith = true;
-          EventBus.instance.on(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
+          EventBus.instance.on(
+            EventBus.getSubject(EventBus.Event.Acted),
+            this.onInteract,
+            this
+          );
         }
 
-        private onInteract({ interactedWith }: EventPayload[typeof EventBus.Event.Acted]) {
+        private onInteract({
+          interactedWith,
+        }: EventPayload[typeof EventBus.Event.Acted]) {
           interactedWith.isInteractable.canBeInteractedWith = false;
 
           if (isWithId(interactedWith, "Amelie", "Cynthia", "Tobias")) {
@@ -406,7 +465,9 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           }
         }
 
-        private interactWith(actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }) {
+        private interactWith(
+          actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }
+        ) {
           const dialog = HouseDialogs[actionable.id].current();
           if (!dialog) return;
 
@@ -424,14 +485,22 @@ export class HouseScript extends GameScript<HouseScriptScene> {
         public start() {
           super.start();
 
-          EventBus.instance.on(EventBus.getSubject(EventBus.Event.Acted), this.onInteract, this);
+          EventBus.instance.on(
+            EventBus.getSubject(EventBus.Event.Acted),
+            this.onInteract,
+            this
+          );
 
           const dialog = HouseDialogs.Narrator.current();
           if (!dialog) return;
 
           this.script.showDialog(dialog);
 
-          const texture = this.script.host.textures.createCanvas("particleTexture", 10, 10);
+          const texture = this.script.host.textures.createCanvas(
+            "particleTexture",
+            10,
+            10
+          );
           if (!texture) return;
 
           const context = texture.getContext();
@@ -444,7 +513,12 @@ export class HouseScript extends GameScript<HouseScriptScene> {
               emitZone: {
                 type: "random",
                 quantity: 1,
-                source: new Phaser.Geom.Rectangle(0, 0, this.script.host.cameras.main.width, 1),
+                source: new Phaser.Geom.Rectangle(
+                  0,
+                  0,
+                  this.script.host.cameras.main.width,
+                  1
+                ),
               },
               speedY: { min: 200, max: 300 },
               speedX: { min: -100, max: 100 },
@@ -460,13 +534,17 @@ export class HouseScript extends GameScript<HouseScriptScene> {
               rotate: { min: -180, max: 180 },
               frequency: 50,
               quantity: 2,
-              tint: [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff],
+              tint: [
+                0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff,
+              ],
             })
             .setDepth(Depth.Overlay)
             .setScrollFactor(0);
         }
 
-        private onInteract({ interactedWith }: EventPayload[typeof EventBus.Event.Acted]) {
+        private onInteract({
+          interactedWith,
+        }: EventPayload[typeof EventBus.Event.Acted]) {
           interactedWith.isInteractable.canBeInteractedWith = false;
 
           if (isWithId(interactedWith, "Amelie", "Cynthia", "Tobias")) {
@@ -475,14 +553,19 @@ export class HouseScript extends GameScript<HouseScriptScene> {
           }
         }
 
-        private interactWith(actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }) {
+        private interactWith(
+          actionable: Actionable & { id: "Amelie" | "Cynthia" | "Tobias" }
+        ) {
           const dialog = HouseDialogs[actionable.id].current();
           if (!dialog) return;
 
           this.script.showDialog(dialog, {
             on: (...args) => {
               console.log("ON", ...args);
-              if (args[0] === "selected" && dialog.id === "dialog-house-tobias-7") {
+              if (
+                args[0] === "selected" &&
+                dialog.id === "dialog-house-tobias-7"
+              ) {
                 switch (args[1]) {
                   case 0:
                     GameStateManager.instance.clear();
@@ -561,7 +644,10 @@ export class HouseScript extends GameScript<HouseScriptScene> {
   }
 }
 
-abstract class HouseScene<I extends string = string, T extends SceneType = SceneType> extends Scene<I, T> {
+abstract class HouseScene<
+  I extends string = string,
+  T extends SceneType = SceneType
+> extends Scene<I, T> {
   declare script: HouseScript;
 
   public start(): void {
@@ -570,7 +656,8 @@ abstract class HouseScene<I extends string = string, T extends SceneType = Scene
 
   public resetNpcInteractions(): void {
     for (const npc of Object.values(this.script.npcs)) {
-      npc.isInteractable.canBeInteractedWith = !!HouseDialogs[npc.characterType]?.current();
+      npc.isInteractable.canBeInteractedWith =
+        !!HouseDialogs[npc.characterType]?.current();
     }
   }
 }

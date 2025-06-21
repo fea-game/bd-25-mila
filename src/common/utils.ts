@@ -4,10 +4,9 @@ import { Npc, NpcType } from "../game-objects/characters/npc";
 import { Crumbs } from "../game-objects/objects/crumbs";
 import { Plate } from "../game-objects/objects/plate";
 
-export function createReactiveState<T extends Record<string | symbol | number, unknown>>(
-  initial: T,
-  onChange: (key: keyof T, value: T[keyof T]) => void
-): T {
+export function createReactiveState<
+  T extends Record<string | symbol | number, unknown>
+>(initial: T, onChange: (key: keyof T, value: T[keyof T]) => void): T {
   return new Proxy(initial, {
     set(target, prop, value) {
       target[prop as keyof T] = value;
@@ -37,7 +36,10 @@ export function save<T>(key: string, value: T): undefined | Error {
   }
 }
 
-export function load<T>(key: string, deserialise: (value: string) => T): T | undefined {
+export function load<T>(
+  key: string,
+  deserialise: (value: string) => T
+): T | undefined {
   try {
     const stored = window.localStorage.getItem(key);
     if (!stored) {
@@ -55,7 +57,9 @@ export function load<T>(key: string, deserialise: (value: string) => T): T | und
 }
 
 export function getCrumbs(objects: Objects): Crumbs[] {
-  return objects.interactable.contact.getChildren().filter((object): object is Crumbs => object instanceof Crumbs);
+  return objects.interactable.contact
+    .getChildren()
+    .filter((object): object is Crumbs => object instanceof Crumbs);
 }
 
 type Npcs = Record<NpcType, Npc>;
@@ -94,7 +98,10 @@ export function assertNpcsPresent<K extends keyof Npcs>(
   }
 }
 
-export function isWithId<T, Ids extends readonly string[]>(value: T, ...ids: Ids): value is T & { id: Ids[number] } {
+export function isWithId<T, Ids extends readonly string[]>(
+  value: T,
+  ...ids: Ids
+): value is T & { id: Ids[number] } {
   if (!value) return false;
   if (typeof value !== "object") return false;
   if (!("id" in value)) return false;

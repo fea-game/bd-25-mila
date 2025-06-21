@@ -1,12 +1,20 @@
 import { Texture } from "../../common/assets";
 import { BaseObject } from "./base-object";
 import * as tiled from "../../tiled/types";
-import { Actionable, ActionableComponent } from "../../components/game-object/object/actionable-component";
-import { Persistable, PersistableComponent } from "../../components/game-object/common/persistable-component";
+import {
+  Actionable,
+  ActionableComponent,
+} from "../../components/game-object/object/actionable-component";
+import {
+  Persistable,
+  PersistableComponent,
+} from "../../components/game-object/common/persistable-component";
+import { GameStateManager } from "../../manager/game-state-manager";
 
 type Config = {
   scene: Phaser.Scene;
-  properties: Pick<tiled.Plate, "x" | "y"> & tiled.Plate["properties"] & { canBeInteractedWith?: boolean };
+  properties: Pick<tiled.Plate, "x" | "y"> &
+    tiled.Plate["properties"] & { canBeInteractedWith?: boolean };
 };
 
 type Properties = {
@@ -15,8 +23,13 @@ type Properties = {
   canBeInteractedWith: boolean;
 };
 
-export class Plate extends BaseObject<Properties> implements Actionable, Persistable<Properties> {
-  private static getTexture(isWithCake: Config["properties"]["isWithCake"]): Texture {
+export class Plate
+  extends BaseObject<Properties>
+  implements Actionable, Persistable<Properties>
+{
+  private static getTexture(
+    isWithCake: Config["properties"]["isWithCake"]
+  ): Texture {
     return isWithCake ? Texture.PlateWithCake : Texture.PlateWithoutCake;
   }
 
@@ -26,7 +39,10 @@ export class Plate extends BaseObject<Properties> implements Actionable, Persist
   #isInteractable: ActionableComponent;
   #isPersistable: PersistableComponent<Properties>;
 
-  constructor({ scene, properties: { id, x, y, isWithCake, canBeInteractedWith = true } }: Config) {
+  constructor({
+    scene,
+    properties: { id, x, y, isWithCake, canBeInteractedWith = true },
+  }: Config) {
     super({ scene, x, y, texture: Plate.getTexture(isWithCake) });
 
     this.id = id;
@@ -34,11 +50,13 @@ export class Plate extends BaseObject<Properties> implements Actionable, Persist
 
     this.#isPersistable = new PersistableComponent<Properties>({
       host: this,
-      toPersistenceProperties: () => ({
-        id: this.id,
-        isWithCake: this.#isWithCake,
-        canBeInteractedWith: this.#isInteractable.canBeInteractedWith,
-      }),
+      toPersistenceProperties: () => {
+        return {
+          id: this.id,
+          isWithCake: this.#isWithCake,
+          canBeInteractedWith: this.#isInteractable.canBeInteractedWith,
+        };
+      },
     });
 
     this.#isInteractable = new ActionableComponent({
@@ -68,5 +86,11 @@ export class Plate extends BaseObject<Properties> implements Actionable, Persist
     this.#isWithCake = value;
 
     this.setTexture(Plate.getTexture(this.#isWithCake));
+
+    const persistenceProperties = this.isPersistable.toPersistenceProperties();
+
+    GameStateManager.instance[GameStateManager.instance.area].objects[
+      persistenceProperties.id
+    ] = persistenceProperties;
   }
 }
